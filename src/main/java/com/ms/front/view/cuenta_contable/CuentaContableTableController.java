@@ -1,20 +1,19 @@
 package com.ms.front.view.cuenta_contable;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 import javax.json.JsonArray;
 
+import com.ms.EnvVars;
 import com.ms.front.services.ResponseJsonObject;
 import com.ms.front.services.Service;
+import com.ms.front.view.JavaFXUtil;
 import com.ms.front.view.TableFilter;
-import com.ms.front.view.Util;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -275,7 +274,7 @@ public class CuentaContableTableController implements Initializable {
 	private void onEliminar(ActionEvent event) {
 		if (table.getSelectionModel().getSelectedIndex() > -1) {
 
-			Alert alertDeleteItem = Util
+			Alert alertDeleteItem = JavaFXUtil
 					.buildAlertConfirmDeleteItem(table.getSelectionModel().getSelectedItem().toString());
 
 			Optional<ButtonType> result = alertDeleteItem.showAndWait();
@@ -381,6 +380,10 @@ public class CuentaContableTableController implements Initializable {
 	private static CuentaContableTableController loadView(boolean modoSeleccionar, CuentaContableTableFilter filter)
 			throws IOException {
 
+		if (filter.getEjercicioContable() == null) {
+			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
+		}
+
 		FXMLLoader loader = new FXMLLoader(CuentaContableTableController.class.getResource("CuentaContableTable.fxml"));
 
 		loader.load();
@@ -448,16 +451,8 @@ public class CuentaContableTableController implements Initializable {
 		return null;
 	}
 
-	public static CuentaContableTableItem showAndWait(Stage stage, Node owner) throws IOException {
-		return showAndWait(stage, owner, new CuentaContableTableFilter());
-	}
-
 	public static void show(Stage stage, Node owner, CuentaContableTableFilter filter) throws IOException {
 		show(stage, owner, MODE_NORMAL, filter);
-	}
-
-	public static void show(Stage stage, Node owner) throws IOException {
-		show(stage, owner, MODE_NORMAL, new CuentaContableTableFilter());
 	}
 
 	// ================================================================================================
@@ -487,7 +482,7 @@ public class CuentaContableTableController implements Initializable {
 
 		status.setText("Buscando siguiente página...");
 
-		filterPagin.setOffset(filterPagin.getOffset() + filterPagin.getLimit());
+		filterPagin.setOffset(filterPagin.getOffset() + EnvVars.getPaginLimit());
 		List<CuentaContableTableItem> items = findAll(filterPagin, filter);
 		if (items.size() > 0) {
 			table.getItems().clear();
@@ -495,7 +490,7 @@ public class CuentaContableTableController implements Initializable {
 			table.getSelectionModel().select(0);
 			table.requestFocus();
 		} else {
-			this.filterPagin.setOffset(this.filterPagin.getOffset() - this.filterPagin.getLimit());
+			this.filterPagin.setOffset(this.filterPagin.getOffset() - EnvVars.getPaginLimit());
 		}
 
 		status.setText("");
@@ -505,7 +500,7 @@ public class CuentaContableTableController implements Initializable {
 
 		status.setText("Buscando página anterior...");
 
-		filterPagin.setOffset(filterPagin.getOffset() - filterPagin.getLimit());
+		filterPagin.setOffset(filterPagin.getOffset() - EnvVars.getPaginLimit());
 		if (this.filterPagin.getOffset() >= 0) {
 			List<CuentaContableTableItem> items = findAll(filterPagin, filter);
 			if (items.size() > 0) {
@@ -534,7 +529,7 @@ public class CuentaContableTableController implements Initializable {
 			table.getSelectionModel().select(table.getItems().size() - 1);
 			table.requestFocus();
 		} else {
-			this.filterPagin.setOffset(this.filterPagin.getOffset() - this.filterPagin.getLimit());
+			this.filterPagin.setOffset(this.filterPagin.getOffset() - EnvVars.getPaginLimit());
 		}
 
 		status.setText("");
@@ -543,7 +538,7 @@ public class CuentaContableTableController implements Initializable {
 	// ==========================================================================
 
 	private int findLastOffset(TableFilter filterPagin, CuentaContableTableFilter filter) {
-		int offset = CuentaContableService.items.size() - 1 - filterPagin.getLimit();
+		int offset = CuentaContableService.items.size() - 1 - EnvVars.getPaginLimit();
 		return offset;
 	}
 
@@ -553,16 +548,22 @@ public class CuentaContableTableController implements Initializable {
 
 		try {
 
-			String urlString = "CuentaContable/findAll?ejercicioContable=2002";
+			String urlString = "CuentaContable/findAll";
 
-			ResponseJsonObject r = Service.GET("rpc", urlString, "db1");
+			ResponseJsonObject r = Service.GET(Service.TYPE_RPC, urlString, "db1", "offset",
+					filterPagin.getOffset().toString(), "ejercicioContable", filter.getEjercicioContable(), "por",
+					filter.getPor(), "filtro", filter.getFiltro());
 
-			if (r.getStatus() == 200) {
+			if (r.getStatus() == 500) {
+				JavaFXUtil.buildAlertService500();
+			} else if (r.getStatus() == 204) {
+				return items;
+			} else if (r.getStatus() == 200) {
 				JsonArray rows = Service.toJsonArray(r.getPayload());
 				for (int i = 0; i < rows.size(); i++) {
-					JsonArray columns = rows.getJsonArray(i);					
+					JsonArray columns = rows.getJsonArray(i);
 					CuentaContableTableItem item = new CuentaContableTableItem();
-					
+
 					int c = 0;
 					if (columns.isNull(c) == false) {
 						item.setId(columns.getString(c));
@@ -595,11 +596,14 @@ public class CuentaContableTableController implements Initializable {
 
 					items.add(item);
 				}
+
+				return items;
+			} else {
+				throw new IllegalStateException("Illegal state response, code " + r.getStatus());
 			}
-			return items;
+
 		} catch (Exception e) {
-			System.out.println(e);
-			e.printStackTrace();
+			JavaFXUtil.buildAlertException(e);
 		}
 		return items;
 
@@ -638,59 +642,4 @@ public class CuentaContableTableController implements Initializable {
 //
 //	}
 
-	private void x() {
-
-		// inline will store the JSON data streamed in string format
-		String inline = "";
-
-		try {
-			URL url = new URL("http://localhost:4567/rpc/v1/CuentaContable/findAll?ejercicioContable=2002");
-			// Parse URL into HttpURLConnection in order to open the connection in order to
-			// get the JSON data
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			// Set the request to GET or POST as per the requirements
-			conn.setRequestMethod("GET");
-
-//			List<String> params = new ArrayList<String>();
-//			params.add("db1");
-//			
-//			conn.getHeaderFields().put("dbKey", params);
-
-			conn.setRequestProperty("dbKey", "db1");
-
-			// Use the connect method to create the connection bridge
-			conn.connect();
-			System.out.println(conn);
-			// Get the response status of the Rest API
-			int responsecode = conn.getResponseCode();
-			System.out.println("Response code is: " + responsecode);
-
-			// Iterating condition to if response code is not 200 then throw a runtime
-			// exception
-			// else continue the actual process of getting the JSON data
-			if (responsecode != 200)
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			else {
-				// Scanner functionality will read the JSON data from the stream
-				Scanner sc = new Scanner(url.openStream());
-				while (sc.hasNext()) {
-					inline += sc.nextLine();
-				}
-				System.out.println("\nJSON Response in String format");
-				System.out.println(inline);
-				// Close the stream when reading the data has been finished
-				sc.close();
-			}
-
-			// Disconnect the HttpURLConnection stream
-			conn.disconnect();
-
-			System.out.println(inline);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		System.exit(1);
-	}
 }

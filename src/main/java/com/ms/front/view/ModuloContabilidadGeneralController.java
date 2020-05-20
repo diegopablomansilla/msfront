@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.ms.front.view.cuenta_contable.CuentaContableTableController;
+import com.ms.front.view.cuenta_contable.CuentaContableTableFilter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,13 +65,17 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenCuentaContableList(ActionEvent event) {
 		try {
-			CuentaContableTableController.show(new Stage(), view);
+			
+			CuentaContableTableFilter filter = new CuentaContableTableFilter();
+			filter.setEjercicioContable("2002");
+			
+			CuentaContableTableController.show(new Stage(), view, filter);
 //			Object o = CuentaContableTableController.showAndWait(new Stage(), view);
 //			System.out.println("=================================================================");
 //			System.out.println("O : " + o);
 //			System.out.println("=================================================================");
 		} catch (IOException e) {
-			e.printStackTrace();
+			JavaFXUtil.buildAlertException(e);
 		}
 
 	}

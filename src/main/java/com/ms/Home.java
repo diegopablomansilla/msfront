@@ -27,9 +27,9 @@ public class Home extends Application {
 
 		try {
 
-			EnvironmentVariables.setApiHome(apiHome);
-			EnvironmentVariables.setApiVersion(apiVersion);
-			EnvironmentVariables.setDefaultPaginLimit(defaultPaginLimit);
+			EnvVars.setApiHome(apiHome);
+			EnvVars.setApiVersion(apiVersion);
+			EnvVars.setDefaultPaginLimit(defaultPaginLimit);
 			// --------------------------------------------------------------------------------------
 
 			ModuloContabilidadGeneralController.show(stage);

@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class CuentaContableTableFilter implements Cloneable {
 
+	private final SimpleStringProperty ejercicioContable = new SimpleStringProperty();
 	private final SimpleStringProperty filtro = new SimpleStringProperty();
 	private final SimpleStringProperty por = new SimpleStringProperty();
 
@@ -15,6 +16,10 @@ public class CuentaContableTableFilter implements Cloneable {
 
 	// ---------------------------------------------------------------
 
+	public SimpleStringProperty ejercicioContableProperty() {
+		return ejercicioContable;
+	}
+
 	public SimpleStringProperty filtroProperty() {
 		return filtro;
 	}
@@ -25,20 +30,28 @@ public class CuentaContableTableFilter implements Cloneable {
 
 	// ---------------------------------------------------------------
 
+	public String getEjercicioContable() {
+		return ejercicioContable.get();
+	}
+
+	public void setEjercicioContable(String v) {
+		this.ejercicioContable.set(v == null || v.trim().length() == 0 ? null : v.trim());
+	}
+
 	public String getFiltro() {
 		return filtro.get();
 	}
 
-	public void setFiltro(String filtro) {
-		this.filtro.set(filtro);
+	public void setFiltro(String v) {
+		this.filtro.set(v == null || v.trim().length() == 0 ? null : v.trim());
 	}
 
 	public String getPor() {
 		return por.get();
 	}
 
-	public void setPor(String por) {
-		this.por.set(por);
+	public void setPor(String v) {
+		this.por.set(v == null || v.trim().length() == 0 ? null : v.trim());
 	}
 
 	// ---------------------------------------------------------------
@@ -48,22 +61,26 @@ public class CuentaContableTableFilter implements Cloneable {
 
 		CuentaContableTableFilter other = new CuentaContableTableFilter();
 
+		other.setEjercicioContable(getEjercicioContable());
 		other.setFiltro(this.getFiltro());
+		other.setPor(getPor());
 
 		return other;
 	}
 
 	@Override
 	public String toString() {
-		return "CuentaContableTableFilter [filtro=" + this.getFiltro() + ", por=" + this.getPor() + "]";
+		return "CuentaContableTableFilter [getEjercicioContable()=" + getEjercicioContable() + ", getFiltro()="
+				+ getFiltro() + ", getPor()=" + getPor() + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((filtro == null) ? 0 : filtro.hashCode());
-		result = prime * result + ((por == null) ? 0 : por.hashCode());
+		result = prime * result + ((getEjercicioContable() == null) ? 0 : getEjercicioContable().hashCode());
+		result = prime * result + ((getFiltro() == null) ? 0 : getFiltro().hashCode());
+		result = prime * result + (( getPor() == null) ? 0 :  getPor().hashCode());
 		return result;
 	}
 
@@ -76,6 +93,11 @@ public class CuentaContableTableFilter implements Cloneable {
 		if (getClass() != obj.getClass())
 			return false;
 		CuentaContableTableFilter other = (CuentaContableTableFilter) obj;
+		if (getEjercicioContable() == null) {
+			if (other.getEjercicioContable() != null)
+				return false;
+		} else if (!getEjercicioContable().equals(other.getEjercicioContable()))
+			return false;
 		if (getFiltro() == null) {
 			if (other.getFiltro() != null)
 				return false;
@@ -88,6 +110,8 @@ public class CuentaContableTableFilter implements Cloneable {
 			return false;
 		return true;
 	}
+
+
 
 	// ---------------------------------------------------------------
 

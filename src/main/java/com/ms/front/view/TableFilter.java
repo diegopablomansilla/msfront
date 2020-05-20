@@ -4,22 +4,22 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public class TableFilter implements Cloneable {
 
-	private final SimpleIntegerProperty limit = new SimpleIntegerProperty();
+//	private final SimpleIntegerProperty limit = new SimpleIntegerProperty();
 	private final SimpleIntegerProperty offset = new SimpleIntegerProperty();
 
 	// ---------------------------------------------------------------
 
 	public TableFilter() {
 		super();
-		limit.set(20);
+//		limit.set(20);
 		offset.setValue(0);
 	}
 
 	// ---------------------------------------------------------------
 
-	public SimpleIntegerProperty limitProperty() {
-		return limit;
-	}
+//	public SimpleIntegerProperty limitProperty() {
+//		return limit;
+//	}
 
 	public SimpleIntegerProperty offsetProperty() {
 		return offset;
@@ -27,13 +27,13 @@ public class TableFilter implements Cloneable {
 
 	// ---------------------------------------------------------------
 
-	public Integer getLimit() {
-		return limit.get();
-	}
-
-	public void setLimit(Integer id) {
-		this.limit.set(id);
-	}
+//	public Integer getLimit() {
+//		return limit.get();
+//	}
+//
+//	public void setLimit(Integer id) {
+//		this.limit.set(id);
+//	}
 
 	public Integer getOffset() {
 		return offset.get();
@@ -47,7 +47,7 @@ public class TableFilter implements Cloneable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.getLimit() == null) ? 0 : this.getLimit().hashCode());
+//		result = prime * result + ((this.getLimit() == null) ? 0 : this.getLimit().hashCode());
 		result = prime * result + ((this.getOffset() == null) ? 0 : getOffset().hashCode());
 		return result;
 	}
@@ -61,11 +61,11 @@ public class TableFilter implements Cloneable {
 		if (getClass() != obj.getClass())
 			return false;
 		TableFilter other = (TableFilter) obj;
-		if (this.getLimit() == null) {
-			if (other.getLimit() != null)
-				return false;
-		} else if (!this.getLimit().equals(other.getLimit()))
-			return false;
+//		if (this.getLimit() == null) {
+//			if (other.getLimit() != null)
+//				return false;
+//		} else if (!this.getLimit().equals(other.getLimit()))
+//			return false;
 		if (this.getOffset() == null) {
 			if (other.getOffset() != null)
 				return false;
@@ -79,17 +79,22 @@ public class TableFilter implements Cloneable {
 
 		TableFilter other = new TableFilter();
 
-		other.setLimit(this.getLimit());
+//		other.setLimit(this.getLimit());
 		other.setOffset(this.getOffset());
 
 		return other;
 	}
 
+//	@Override
+//	public String toString() {
+//		return "[limit=" + this.getLimit() + ", offset=" + this.getOffset() + "]";
+//	}
+
 	@Override
 	public String toString() {
-		return "[limit=" + this.getLimit() + ", offset=" + this.getOffset() + "]";
+		return "[offset=" + this.getOffset() + "]";
 	}
-
+	
 	// ---------------------------------------------------------------
 
 }

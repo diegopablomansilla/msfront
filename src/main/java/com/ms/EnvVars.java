@@ -1,6 +1,6 @@
 package com.ms;
 
-public class EnvironmentVariables {
+public class EnvVars {
 
 	public static final int LIMIT_PAGIN_DEFAULT = 20;
 
@@ -8,7 +8,7 @@ public class EnvironmentVariables {
 	private static String apiVersion;
 	private static Integer defaultPaginLimit = LIMIT_PAGIN_DEFAULT;
 	
-	private EnvironmentVariables() {
+	private EnvVars() {
 		
 	}
 
@@ -17,7 +17,7 @@ public class EnvironmentVariables {
 	}
 
 	public static void setApiHome(String apiHome) {
-		EnvironmentVariables.apiHome = apiHome.trim();
+		EnvVars.apiHome = apiHome.trim();
 	}
 
 	public static String getApiVersion() {
@@ -25,16 +25,16 @@ public class EnvironmentVariables {
 	}
 
 	public static void setApiVersion(String apiVersion) {
-		EnvironmentVariables.apiVersion = apiVersion.trim();
+		EnvVars.apiVersion = apiVersion.trim();
 	}
 
-	public static Integer getDefaultPaginLimit() {
-		EnvironmentVariables.defaultPaginLimit = defaultPaginLimit == null ? LIMIT_PAGIN_DEFAULT : defaultPaginLimit;
+	public static Integer getPaginLimit() {
+		EnvVars.defaultPaginLimit = defaultPaginLimit == null ? LIMIT_PAGIN_DEFAULT : defaultPaginLimit;
 		return defaultPaginLimit;
 	}
 
 	public static void setDefaultPaginLimit(Integer defaultPaginLimit) {
-		EnvironmentVariables.defaultPaginLimit = defaultPaginLimit == null ? LIMIT_PAGIN_DEFAULT : defaultPaginLimit;
+		EnvVars.defaultPaginLimit = defaultPaginLimit == null ? LIMIT_PAGIN_DEFAULT : defaultPaginLimit;
 	}
 
 }
