@@ -2,7 +2,7 @@ package com.ms.view.ejercicio_contable;
 
 import java.time.LocalDate;
 
-import com.ms.Entity;
+import com.ms.front.model.Entity;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -15,7 +15,6 @@ import javafx.beans.property.StringProperty;
 
 public class EjercicioContable extends Entity implements Cloneable, Comparable<EjercicioContable> {
 
-	private final StringProperty id = new SimpleStringProperty();
 	private final IntegerProperty numero = new SimpleIntegerProperty();
 	private final ObjectProperty<LocalDate> apertura = new SimpleObjectProperty<>();
 	private final ObjectProperty<LocalDate> cierre = new SimpleObjectProperty<>();
@@ -32,18 +31,6 @@ public class EjercicioContable extends Entity implements Cloneable, Comparable<E
 	}
 
 	// -----------------------------------------------------
-
-	public StringProperty idProperty() {
-		return id;
-	}
-
-	public void setId(String value) {
-		this.id.set(trim(value));
-	}
-
-	public String getId() {
-		return this.id.get();
-	}
 
 	// -----------------------------------------------------
 
@@ -121,7 +108,7 @@ public class EjercicioContable extends Entity implements Cloneable, Comparable<E
 	}
 
 	public void setComentario(String value) {
-		this.comentario.set(trim(value));
+		this.comentario.set(emptyIsNull(value));
 	}
 
 	public String getComentario() {
@@ -194,7 +181,7 @@ public class EjercicioContable extends Entity implements Cloneable, Comparable<E
 
 		// -------------------------------------------------------------------
 	}
-	
+
 	public void setByOther(EjercicioContable other) {
 		this.setId(other.getId());
 

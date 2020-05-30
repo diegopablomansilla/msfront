@@ -19,8 +19,6 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 	public final String KEY_FILTRO = "filtro";
 	public final String KEY_POR = "por";
 	public final String KEY_OPERADOR = "op";
-	
-	
 
 	private final SimpleStringProperty ejercicioContable = new SimpleStringProperty();
 	private final SimpleStringProperty filtro = new SimpleStringProperty();
@@ -30,7 +28,7 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 	// ---------------------------------------------------------------
 
 	public CuentaContablePaginArgs() {
-		super();		
+		super();
 	}
 
 	// ---------------------------------------------------------------
@@ -135,7 +133,7 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 	}
 
 	@Override
-	protected CuentaContablePaginArgs clone() {
+	public CuentaContablePaginArgs clone() {
 
 		CuentaContablePaginArgs other = new CuentaContablePaginArgs();
 

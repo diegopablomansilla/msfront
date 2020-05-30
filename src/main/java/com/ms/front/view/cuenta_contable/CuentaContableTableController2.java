@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.json.JsonArray;
-
-import com.ms.EnvVars;
+import com.ms.front.model.Pagin;
 import com.ms.front.services.PaginArgs;
-import com.ms.front.services.ResponseJsonObject;
 import com.ms.front.services.Service;
+import com.ms.front.services.ServiceArgs;
 import com.ms.front.view.JavaFXUtil;
 
-import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -28,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -39,6 +38,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -51,9 +51,10 @@ public class CuentaContableTableController2 implements Initializable {
 
 	private Stage stage;
 	private SimpleBooleanProperty modoSeleccionarProperty = new SimpleBooleanProperty();
-	private PaginArgs filterPagin = new PaginArgs();
-	private CuentaContablePaginArgs filter;
-	private CuentaContablePaginArgs filterOld;
+	private PaginArgs paginArgs = new PaginArgs();
+	private CuentaContablePaginArgs args;
+	private CuentaContablePaginArgs argsOld;
+	private Pagin pagin;
 
 	// =============================================================================================
 
@@ -120,6 +121,18 @@ public class CuentaContableTableController2 implements Initializable {
 	@FXML
 	private Button buscar;
 
+	@FXML
+	private Label totalItems;
+
+	@FXML
+	private Label totalPages;
+
+	@FXML
+	private HBox pagination;
+
+	@FXML
+	private ChoiceBox<String> operator;
+
 	// =============================================================================================
 
 	@FXML
@@ -159,6 +172,14 @@ public class CuentaContableTableController2 implements Initializable {
 				porToogleGroup.selectToggle(porCuentaContable);
 				onPorCuentaContable(null);
 			}
+		} else if (event.getCode().equals(KeyCode.DIGIT1) && event.isControlDown()) {
+			if (operator.getSelectionModel().getSelectedIndex() != 0) {
+				operator.getSelectionModel().select(0);
+			}
+		} else if (event.getCode().equals(KeyCode.DIGIT2) && event.isControlDown()) {
+			if (operator.getSelectionModel().getSelectedIndex() != 1) {
+				operator.getSelectionModel().select(1);
+			}
 		}
 	}
 
@@ -176,10 +197,10 @@ public class CuentaContableTableController2 implements Initializable {
 			onBuscarNext();
 		} else if (event.getCode().equals(KeyCode.PAGE_UP)) {
 			onBuscarBack();
-		} else if (event.getCode().equals(KeyCode.HOME)) {			
-			onBuscarHome();
+		} else if (event.getCode().equals(KeyCode.HOME)) {
+			onBuscarFirst();
 		} else if (event.getCode().equals(KeyCode.END)) {
-			onBuscarEnd();
+			onBuscarLast();
 		} else if (event.getCode().equals(KeyCode.DELETE)) {
 			onEliminar(null);
 		} else if (event.getCode().equals(KeyCode.INSERT)) {
@@ -300,35 +321,55 @@ public class CuentaContableTableController2 implements Initializable {
 
 	@FXML
 	private void onPorCuentaContable(ActionEvent event) {
-//		filter.setPor("CUENTA_CONTABLE");
+		args.setPorCuentaContable();
 		filtro.setPromptText("Buscar por cuenta contable");
 		onBuscarStart();
 	}
 
 	@FXML
+	void onActionBack(ActionEvent event) {
+		onBuscarBack();
+	}
+
+	@FXML
+	void onActionFirst(ActionEvent event) {
+		onBuscarFirst();
+	}
+
+	@FXML
+	void onActionLast(ActionEvent event) {
+		onBuscarLast();
+	}
+
+	@FXML
+	void onActionNext(ActionEvent event) {
+		onBuscarNext();
+	}
+
+	@FXML
 	private void onPorNombre(ActionEvent event) {
-//		filter.setPor("NOMBRE");
+		args.setPorNombre();
 		filtro.setPromptText("Buscar por nombre");
 		onBuscarStart();
 	}
 
 	@FXML
 	private void onPorCuentaAgrupadora(ActionEvent event) {
-//		filter.setPor("CUENTA_AGRUPADORA");
+		args.setPorCuentaAgrupadora();
 		filtro.setPromptText("Buscar por cuenta agrupadora");
 		onBuscarStart();
 	}
 
 	@FXML
-	private void onPorCentroDeCosto(ActionEvent event) {
-//		filter.setPor("CENTRO_DE_COSTO");
+	private void onPorCentroDeCosto(ActionEvent event) {		
+		args.setPorCentroDeCosto();
 		filtro.setPromptText("Buscar por centro de costo");
 		onBuscarStart();
 	}
 
 	@FXML
-	private void onPorPuntoDeEquilibrio(ActionEvent event) {
-//		filter.setPor("PUNTO_DE_EQUILIBRIO");
+	private void onPorPuntoDeEquilibrio(ActionEvent event) {		
+		args.setPorPuntoDeEquilibrio();
 		filtro.setPromptText("Buscar por punto de equilibrio");
 		onBuscarStart();
 	}
@@ -353,13 +394,13 @@ public class CuentaContableTableController2 implements Initializable {
 
 		table.setItems(FXCollections.observableArrayList());
 
-		table.getItems().addListener((InvalidationListener) invalidationChange -> {
-			boolean disable = table.getItems().size() == 0;
-			cambiar.setDisable(disable);
-			eliminar.setDisable(disable);
-			copiar.setDisable(disable);
-			seleccionar.setDisable(disable);
-		});
+		// --------------------------------------------------------------------------
+
+		cambiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
+		eliminar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
+		copiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
+		seleccionar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
+		pagination.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 
 		// --------------------------------------------------------------------------
 
@@ -372,6 +413,14 @@ public class CuentaContableTableController2 implements Initializable {
 		porcentaje.setCellValueFactory(new PropertyValueFactory<CuentaContableTableItem, String>("porcentaje"));
 
 		// --------------------------------------------------------------------------
+
+		operator.setItems(
+				FXCollections.observableArrayList("(1) comienza con", "(2) contiene"));		
+		operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_SW_ICT_O_TXT));
+		operator.getSelectionModel().selectFirst();
+
+		operator.getSelectionModel().selectedIndexProperty()
+				.addListener((obs, oldV, newV) -> onBuscarChangeOperadorFiltro((int) newV));
 
 	}
 
@@ -390,7 +439,7 @@ public class CuentaContableTableController2 implements Initializable {
 
 		CuentaContableTableController2 viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
-		viewController.filter = filter;
+		viewController.args = filter;
 		viewController.filtro.textProperty().bindBidirectional(filter.filtroProperty());
 		viewController.onPorCuentaContable(null);
 
@@ -457,136 +506,90 @@ public class CuentaContableTableController2 implements Initializable {
 
 	// ================================================================================================
 
+	private void onBuscarChangeOperadorFiltro(int index) {
+		
+		if(index == 0) {
+			args.setOperador(ServiceArgs.OP_SW_ICT_O);
+			operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_SW_ICT_O_TXT));
+		} else if(index == 1) {
+			args.setOperador(ServiceArgs.OP_C_ICT_A);
+			operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_C_ICT_A_TXT));
+		}
+		onBuscarStart();
+	}
+
 	private void onBuscarStart() {
 
-		if (filterOld != null && filterOld.equals(filter)) {
+		if (argsOld != null && argsOld.equals(args)) {
 			return;
 		}
 
-		status.setText("Buscando la primer página...");
+		onBuscarFirst();
 
-		table.getItems().clear();
-//		filterPagin.setOffset(0);
-		table.getItems().addAll(findAll(filterPagin, filter));
-		if (table.getItems().size() > 0) {
-			table.getSelectionModel().select(0);
-		}
-		table.requestFocus();
-
-		status.setText("");
-
-		filterOld = filter.clone();
+		argsOld = args.clone();
 	}
 
 	private void onBuscarNext() {
-
-		status.setText("Buscando siguiente página...");
-
-//		filterPagin.setOffset(filterPagin.getOffset() + EnvVars.getPaginLimit());
-		List<CuentaContableTableItem> items = findAll(filterPagin, filter);
-		if (items.size() > 0) {
-			table.getItems().clear();
-			table.getItems().addAll(items);
-			table.getSelectionModel().select(0);
-			table.requestFocus();
-		} else {
-//			this.filterPagin.setOffset(this.filterPagin.getOffset() - EnvVars.getPaginLimit());
-		}
-
-		status.setText("");
+		paginArgs.setPageRequestNext();
+		onBuscar("Buscando siguiente página...");
 	}
 
 	private void onBuscarBack() {
-
-		status.setText("Buscando página anterior...");
-
-//		filterPagin.setOffset(filterPagin.getOffset() - EnvVars.getPaginLimit());
-//		if (this.filterPagin.getOffset() >= 0) {
-//			List<CuentaContableTableItem> items = findAll(filterPagin, filter);
-//			if (items.size() > 0) {
-//				table.getItems().clear();
-//				table.getItems().addAll(items);
-//				table.getSelectionModel().select(0);
-//				table.requestFocus();
-//			}
-//		} else {
-//			this.filterPagin.setOffset(0);
-//		}
-
-		status.setText("");
+		paginArgs.setPageRequestBack();
+		onBuscar("Buscando página anterior...");
 	}
-	
-	private void onBuscarHome() {		
 
-		status.setText("Buscando la primer página...");
+	private void onBuscarFirst() {
+		paginArgs.setPageRequestFirst();
+		paginArgs.setLastIndexOld(0);
+		onBuscar("Buscando la primer página...");
+//		argsOld = args.clone();
+	}
+
+	private void onBuscarLast() {
+		paginArgs.setPageRequestLast();
+		paginArgs.setLastIndexOld(0);
+		onBuscar("Buscando última página...");
+	}
+
+	private void onBuscar(String msg) {
+
+		status.setText(msg);
+
+		String lastId = null;
+		if (table.getSelectionModel().getSelectedIndex() > -1) {
+			lastId = table.getSelectionModel().getSelectedItem().getId();
+		}
+
+		List<CuentaContableTableItem> items = findAll(paginArgs, args);
 
 		table.getItems().clear();
-//		filterPagin.setOffset(0);
-		table.getItems().addAll(findAll(filterPagin, filter));
+		table.getItems().addAll(items);
 		if (table.getItems().size() > 0) {
-			table.getSelectionModel().select(0);
+//			table.getSelectionModel().select(0);
+			table.getSelectionModel().selectFirst();
+			for (int i = 0; i < table.getItems().size(); i++) {
+				if (table.getItems().get(i).getId().equals(lastId)) {
+					table.getSelectionModel().select(i);
+					break;
+				}
+			}
 		}
 		table.requestFocus();
-
-		status.setText("");
-
-		filterOld = filter.clone();
-	}
-
-	private void onBuscarEnd() {
-
-		status.setText("Buscando última página...");
-
-		int offset = findLastOffset(filterPagin, filter);
-//		filterPagin.setOffset(offset);
-		List<CuentaContableTableItem> items = findAll(filterPagin, filter);
-		if (items.size() > 0) {
-			table.getItems().clear();
-			table.getItems().addAll(items);
-			table.getSelectionModel().select(table.getItems().size() - 1);
-			table.requestFocus();
-		} else {
-//			this.filterPagin.setOffset(this.filterPagin.getOffset() - EnvVars.getPaginLimit());
-		}
 
 		status.setText("");
 	}
 
 	// ==========================================================================
 
-	private int findLastOffset(PaginArgs filterPagin, CuentaContablePaginArgs filter) {
-
-		try {
-
-			String urlString = "CuentaContable/findLastOffset";
-
-//			ResponseJsonObject r = Service.GET(Service.TYPE_RPC, urlString, "db1", "offset",
-//					filterPagin.getOffset().toString(), "ejercicioContable", filter.getEjercicioContable(), "por",
-//					filter.getPor(), "filtro", filter.getFiltro());
-//
-//			if (r.getStatus() == 500) {
-//				JavaFXUtil.buildAlertService500();
-//			} else if (r.getStatus() == 204) {
-//				return 0;
-//			} else if (r.getStatus() == 200) {
-//				return Integer.parseInt(r.getPayload());
-//			} else {
-//				throw new IllegalStateException("Illegal state response, code " + r.getStatus());
-//			}
-
-		} catch (Exception e) {
-			JavaFXUtil.buildAlertException(e);
+	private List<CuentaContableTableItem> findAll(PaginArgs paginArgs, CuentaContablePaginArgs args) {
+		
+		if(args.getOperador() == null) {
+			args.setOperador(ServiceArgs.OP_SW_ICT_O);
 		}
-		return 0;
-	}
 
-//	private int findLastOffset(TableFilter filterPagin, CuentaContableTableFilter filter) {
-//		
-//		int offset = CuentaContableService.items.size() - 1 - EnvVars.getPaginLimit();
-//		return offset;
-//	}
-
-	private List<CuentaContableTableItem> findAll(PaginArgs filterPagin, CuentaContablePaginArgs filter) {
+		totalItems.setText("");
+		totalPages.setText("");
 
 		List<CuentaContableTableItem> items = new ArrayList<CuentaContableTableItem>();
 
@@ -594,57 +597,56 @@ public class CuentaContableTableController2 implements Initializable {
 
 			String urlString = "CuentaContable/findAll";
 
-//			ResponseJsonObject r = Service.GET(Service.TYPE_RPC, urlString, "db1", "offset",
-//					filterPagin.getOffset().toString(), "ejercicioContable", filter.getEjercicioContable(), "por",
-//					filter.getPor(), "filtro", filter.getFiltro());
-//
-//			if (r.getStatus() == 500) {
-//				JavaFXUtil.buildAlertService500();
-//			} else if (r.getStatus() == 204) {
-//				return items;
-//			} else if (r.getStatus() == 200) {
-//				JsonArray rows = Service.toJsonArray(r.getPayload());
-//				for (int i = 0; i < rows.size(); i++) {
-//					JsonArray columns = rows.getJsonArray(i);
-//					CuentaContableTableItem item = new CuentaContableTableItem();
-//
-//					int c = 0;
-//					if (columns.isNull(c) == false) {
-//						item.setId(columns.getString(c));
-//					}
-//					c++;
-//
-//					if (columns.isNull(c) == false) {
-//						item.setCodigo(columns.getString(c));
-//					}
-//					c++;
-//
-//					if (columns.isNull(c) == false) {
-//						item.setNombre(columns.getString(c));
-//					}
-//					c++;
-//
-//					if (columns.isNull(c) == false) {
-//						item.setCentroCostoContable(columns.getString(c));
-//					}
-//					c++;
-//
-//					if (columns.isNull(c) == false) {
-//						item.setCuentaAgrupadora(columns.getString(c));
-//					}
-//					c++;
-//
-//					if (columns.isNull(c) == false) {
-//						item.setPorcentaje(columns.getString(c));
-//					}
-//
-//					items.add(item);
-//				}
-//
-//				return items;
-//			} else {
-//				throw new IllegalStateException("Illegal state response, code " + r.getStatus());
-//			}
+			pagin = Service.GETPagin(urlString, paginArgs, args);
+			paginArgs.setLastIndexOld(pagin.getLastIndex());
+
+			if (pagin.getThisPageItems() == null || pagin.getThisPageItems().length == 0) {
+				return items;
+			}
+
+			totalItems.setText(pagin.getCantRows().toString() + " ítems");
+			totalPages.setText("Página " + (pagin.getThisPage().getPageNumber() + 1) + " de " + (pagin.getCantPages()));
+
+			Object[][] t = pagin.getThisPageItems();
+
+			for (int i = 0; i < t.length; i++) {
+
+				CuentaContableTableItem item = new CuentaContableTableItem();
+
+				int j = 0;
+				if (t[i][j] != null) {
+					item.setId(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setCodigo(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setNombre(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setCentroCostoContable(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setCuentaAgrupadora(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setPorcentaje(t[i][j].toString());
+				}
+
+				items.add(item);
+			}
+
+			return items;
 
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
@@ -652,38 +654,5 @@ public class CuentaContableTableController2 implements Initializable {
 		return items;
 
 	}
-
-//	private List<CuentaContableTableItem> findAll(TableFilter filterPagin, CuentaContableTableFilter filter) {
-//		
-//		try {
-//			String urlString = "/rpc/v1/CuentaContable/findAll?ejercicioContable=2002";
-//			
-//			ResponseJsonObject  r = Service.GET("rpc", urlString, "db1"); 
-//			
-//			if(r.getStatus() == 200) {
-//				
-//			}
-//
-//			System.out.println(filter);
-//
-//			// ---------------------------------------
-//
-//			int fromIndex = filterPagin.getOffset();
-//			int toIndex = filterPagin.getOffset() + filterPagin.getLimit();
-//
-//			if (fromIndex > CuentaContableService.items.size() - 1) {
-//				return new ArrayList<CuentaContableTableItem>();
-//			}
-//
-//			if (toIndex > CuentaContableService.items.size() - 1) {
-//				return new ArrayList<CuentaContableTableItem>();
-//			}
-//
-//			return CuentaContableService.items.subList(fromIndex, toIndex);
-//		}catch(Exception e) {
-//			
-//		}	
-//
-//	}
 
 }

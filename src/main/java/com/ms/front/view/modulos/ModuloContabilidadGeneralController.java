@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.ms.front.view.cuenta_contable.CuentaContableTableController;
+import com.ms.front.view.cuenta_contable.CuentaContableTable;
 import com.ms.front.view.JavaFXUtil;
 import com.ms.front.view.cuenta_contable.CuentaContablePaginArgs;
 
@@ -70,11 +70,11 @@ public class ModuloContabilidadGeneralController implements Initializable {
 			CuentaContablePaginArgs filter = new CuentaContablePaginArgs();
 			filter.setEjercicioContable("2002");
 			
-			CuentaContableTableController.show(new Stage(), view, filter);
-//			Object o = CuentaContableTableController.showAndWait(new Stage(), view);
-//			System.out.println("=================================================================");
-//			System.out.println("O : " + o);
-//			System.out.println("=================================================================");
+//			CuentaContableTableController.show(new Stage(), view, filter);
+			Object o = CuentaContableTable.showAndWait(new Stage(), view, filter);
+			System.out.println("=================================================================");
+			System.out.println("O : " + o);
+			System.out.println("=================================================================");
 		} catch (IOException e) {
 			JavaFXUtil.buildAlertException(e);
 		}

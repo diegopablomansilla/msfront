@@ -1,8 +1,10 @@
 package com.ms.front.view.cuenta_contable;
 
+import com.ms.front.model.Entity;
+
 import javafx.beans.property.SimpleStringProperty;
 
-public class CuentaContableTableItem {
+public class CuentaContableTableItem extends Entity {
 
 	private final SimpleStringProperty id = new SimpleStringProperty();
 	private final SimpleStringProperty codigo = new SimpleStringProperty();
@@ -10,7 +12,7 @@ public class CuentaContableTableItem {
 	private final SimpleStringProperty centroCostoContable = new SimpleStringProperty();
 	private final SimpleStringProperty cuentaAgrupadora = new SimpleStringProperty();
 	private final SimpleStringProperty porcentaje = new SimpleStringProperty();
-	
+
 	// ---------------------------------------------------------------
 
 	public SimpleStringProperty idProperty() {
@@ -90,35 +92,9 @@ public class CuentaContableTableItem {
 	// ---------------------------------------------------------------
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CuentaContableTableItem other = (CuentaContableTableItem) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		} else if (!getId().equals(other.getId()))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
-		return "CuentaContableTableItem [id=" + this.getId() + ", codigo=" + this.getCodigo() + ", nombre=" + this.getNombre() + "]";
+		return "CuentaContableTableItem [id=" + this.getId() + ", codigo=" + this.getCodigo() + ", nombre="
+				+ this.getNombre() + "]";
 	}
-	
-	
 
 }
