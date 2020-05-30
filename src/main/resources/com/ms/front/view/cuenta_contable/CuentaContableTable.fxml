@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -9,9 +10,10 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#onKeyReleased" prefHeight="486.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.cuenta_contable.CuentaContableTableController">
+<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#onKeyReleased" prefHeight="528.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.cuenta_contable.CuentaContableTableController">
    <children>
       <ToggleButton fx:id="porCuentaContable" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPorCuentaContable" selected="true" text="Por cuenta contable">
          <toggleGroup>
@@ -22,13 +24,13 @@
       <ToggleButton fx:id="porCuentaAgrupadora" layoutX="226.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPorCuentaAgrupadora" text="Por cuenta agrupadora" toggleGroup="$porToogleGroup" />
       <ToggleButton fx:id="porCentroDeCosto" layoutX="370.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPorCentroDeCosto" text="Por centro de costo" toggleGroup="$porToogleGroup" />
       <ToggleButton fx:id="porPuntoDeEquilibrio" layoutX="496.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPorPuntoDeEquilibrio" text="Por punto de equilibrio" toggleGroup="$porToogleGroup" />
-      <TextField fx:id="filtro" layoutX="14.0" layoutY="45.0" onKeyTyped="#onKeyTypedFiltro" prefHeight="25.0" prefWidth="267.0" promptText="buscar por cuenta contable ...">
+      <TextField fx:id="filtro" layoutX="219.0" layoutY="45.0" onKeyTyped="#onKeyTypedFiltro" prefHeight="25.0" prefWidth="650.0" promptText="buscar por cuenta contable ...">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </TextField>
       <Button fx:id="buscar" layoutX="875.0" layoutY="45.0" onAction="#onBuscar" text="_Buscar" />
-      <TableView fx:id="table" layoutX="12.0" layoutY="76.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="373.0" prefWidth="917.0">
+      <TableView fx:id="table" layoutX="12.0" layoutY="76.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="378.0" prefWidth="917.0">
         <columns>
           <TableColumn fx:id="codigo" prefWidth="100.0" sortable="false" text="Cta. contable" />
           <TableColumn fx:id="nombre" prefWidth="409.0" sortable="false" text="Nombre" />
@@ -37,12 +39,42 @@
             <TableColumn fx:id="porcentaje" sortable="false" text="Porcentaje" />
         </columns>
       </TableView>
-      <Button fx:id="agregar" layoutX="14.0" layoutY="454.0" onAction="#onAgregar" text="_Agregar" />
-      <Button fx:id="cambiar" layoutX="79.0" layoutY="454.0" onAction="#onCambiar" text="_Cambiar" />
-      <Button fx:id="eliminar" layoutX="149.0" layoutY="454.0" onAction="#onEliminar" text="_Eliminar" />
-      <Button fx:id="copiar" layoutX="217.0" layoutY="454.0" onAction="#onCopiar" text="Cop_iar" />
-      <Button fx:id="seleccionar" layoutX="850.0" layoutY="454.0" onAction="#onSeleccionar" text="_Seleccionar" />
-      <Label fx:id="status" layoutX="387.0" layoutY="458.0" prefHeight="17.0" prefWidth="283.0" textAlignment="CENTER" />
+      <Button fx:id="agregar" layoutX="15.0" layoutY="492.0" onAction="#onAgregar" text="_Agregar" />
+      <Button fx:id="cambiar" layoutX="80.0" layoutY="492.0" onAction="#onCambiar" text="_Cambiar" />
+      <Button fx:id="eliminar" layoutX="150.0" layoutY="492.0" onAction="#onEliminar" text="_Eliminar" />
+      <Button fx:id="copiar" layoutX="218.0" layoutY="492.0" onAction="#onCopiar" text="Cop_iar" />
+      <Button fx:id="seleccionar" layoutX="851.0" layoutY="492.0" onAction="#onSeleccionar" text="_Seleccionar" />
+      <Label fx:id="status" layoutX="295.0" layoutY="494.0" prefHeight="21.0" prefWidth="464.0" textAlignment="CENTER">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="totalItems" layoutX="15.0" layoutY="462.0" />
+      <HBox fx:id="pagination" layoutX="417.0" layoutY="461.0" spacing="3.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onActionFirst" text="&lt;&lt;">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionBack" text="&lt;">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Button>
+            <Label fx:id="totalPages" text="0" />
+            <Button mnemonicParsing="false" onAction="#onActionNext" text="&gt;">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onActionLast" text="&gt;&gt;">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <ChoiceBox fx:id="operator" layoutX="12.0" layoutY="45.0" prefHeight="25.0" prefWidth="203.0" />
    </children>
    <opaqueInsets>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

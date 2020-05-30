@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="view" prefHeight="137.0" prefWidth="266.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.ModuloContabilidadGeneralController">
+<VBox fx:id="view" prefHeight="137.0" prefWidth="266.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.modulos.ModuloContabilidadGeneralController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>

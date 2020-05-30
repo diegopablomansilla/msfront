@@ -1,11 +1,12 @@
-package com.ms.front.view;
+package com.ms.front.view.modulos;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.ms.front.view.cuenta_contable.CuentaContableTableController;
-import com.ms.front.view.cuenta_contable.CuentaContableTableFilter;
+import com.ms.front.view.JavaFXUtil;
+import com.ms.front.view.cuenta_contable.CuentaContablePaginArgs;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,7 +67,7 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	void onOpenCuentaContableList(ActionEvent event) {
 		try {
 			
-			CuentaContableTableFilter filter = new CuentaContableTableFilter();
+			CuentaContablePaginArgs filter = new CuentaContablePaginArgs();
 			filter.setEjercicioContable("2002");
 			
 			CuentaContableTableController.show(new Stage(), view, filter);

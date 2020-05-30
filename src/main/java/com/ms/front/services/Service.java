@@ -11,36 +11,77 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 
 import com.ms.EnvVars;
+import com.ms.front.model.Pagin;
+import com.ms.front.view.JavaFXUtil;
 
 public class Service {
 
-	public static final String TYPE_RPC = "rpc";
+	public static final String TYPE_RPC = "RPC";
 
-	public static ResponseJsonObject GET(String type, String urlString, String dbKey, String... urlParameters)
+	public static Pagin GETPagin(String urlString, PaginArgs paginArgs, ServiceArgs args)
 			throws IOException, URISyntaxException {
 
-		URI baseUri = new URI(EnvVars.getApiHome() + "/" + type + "/"
-				+ EnvVars.getApiVersion() + "/" + urlString);
+		paginArgs.setDb("db1");
 
-		URI uri = applyParameters(baseUri, urlParameters);
+		Map<String, String> headers = new HashMap<String, String>();
+
+		if (paginArgs.getDb() != null) {
+			headers.put(paginArgs.KEY_DB, paginArgs.getDb());
+		}
+
+		Map<String, String> queryParams = new HashMap<String, String>();
+
+		if (paginArgs.getPageRequest() != null) {
+			queryParams.put(paginArgs.KEY_PAGE_REQUEST, paginArgs.getPageRequest());
+		}
+
+		if (paginArgs.getLastIndexOld() != null) {
+			queryParams.put(paginArgs.KEY_LAST_INDEX_OLD, paginArgs.getLastIndexOld().toString());
+		}
+
+		queryParams.putAll(args.toMap());
+
+		ResponseJsonObject r = GET(TYPE_RPC, urlString, headers, queryParams);
+
+		if (r.getStatus() == 500) {
+			JavaFXUtil.buildAlertService500();
+		} else if (r.getStatus() == 204) {
+
+			return Pagin.fromJson(r.getPayload());
+		} else if (r.getStatus() == 200) {
+			return Pagin.fromJson(r.getPayload());
+		}
+
+		throw new IllegalStateException("Illegal state response, code " + r.getStatus());
+	}
+
+	private static ResponseJsonObject GET(String type, String urlString, Map<String, String> headers,
+			Map<String, String> queryParams) throws IOException, URISyntaxException {
+
+		URI baseUri = new URI(EnvVars.getApiHome() + "/" + type + "/" + EnvVars.getApiVersion() + "/" + urlString);
+
+		URI uri = applyParameters(baseUri, queryParams);
 
 		HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
 		conn.setRequestMethod("GET");
-		
+
 		conn.setRequestProperty("'Content-Type", "application/json; charset=UTF-8");
-		conn.setRequestProperty("dbKey", dbKey);
+		headers.forEach((k, v) -> conn.setRequestProperty(k, v));
 
 		conn.connect();
 		int responseCode = conn.getResponseCode();
 
 		// ---------------------------------------------------
-		StringBuffer payload = new StringBuffer();		
-		
+		StringBuffer payload = new StringBuffer();
+
 		if (responseCode != HttpURLConnection.HTTP_INTERNAL_ERROR) {
 			InputStream in = new BufferedInputStream(conn.getInputStream());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -58,6 +99,23 @@ public class Service {
 
 	}
 
+	private static URI applyParameters(URI baseUri, Map<String, String> queryParams) {
+
+		String[] urlParameters = new String[queryParams.size() * 2];
+
+		Set<String> keys = queryParams.keySet();
+
+		int i = 0;
+		for (String key : keys) {
+			urlParameters[i] = key;
+			i++;
+			urlParameters[i] = queryParams.get(key);
+			i++;
+		}
+
+		return applyParameters(baseUri, urlParameters);
+	}
+
 	private static URI applyParameters(URI baseUri, String... urlParameters) {
 
 		if (urlParameters == null || urlParameters.length == 0) {
@@ -73,10 +131,10 @@ public class Service {
 				query.append("&");
 			}
 			try {
-				
-				if(urlParameters[i + 1] != null) {
-					query.append(urlParameters[i]).append("=").append(URLEncoder.encode(urlParameters[i + 1], "UTF-8"));	
-				}				
+
+				if (urlParameters[i + 1] != null) {
+					query.append(urlParameters[i]).append("=").append(URLEncoder.encode(urlParameters[i + 1], "UTF-8"));
+				}
 			} catch (UnsupportedEncodingException ex) {
 				/*
 				 * As URLEncoder are always correct, this exception should never be thrown.
