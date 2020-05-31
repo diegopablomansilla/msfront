@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="view" prefHeight="137.0" prefWidth="266.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.modulos.ModuloContabilidadGeneralController">
+<VBox fx:id="view" prefHeight="583.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.modulos.ModuloContabilidadGeneralController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -17,16 +17,17 @@
           <items>
             <MenuItem mnemonicParsing="false" text="Plan de cuentas (orden --&gt; cuentas de jerarquía) ..." />
             <MenuItem mnemonicParsing="false" onAction="#onOpenCuentaContableList" text="Plan de cuentas ..." />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+                  <MenuItem mnemonicParsing="false" onAction="#onOpenEjercicioContableList" text="Ejercicios contables ..." />
+            <MenuItem mnemonicParsing="false" text="Modelos de asientos" />
+            <MenuItem mnemonicParsing="false" onAction="#onOpenCentroDeCostoContableList" text="Centros de costos ..." />
+            <MenuItem mnemonicParsing="false" onAction="#onOpenPuntoEquilibrioList" text="Punto de equilibrio" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
+            <MenuItem mnemonicParsing="false" text="Parámetros generales" />
+                  <MenuItem mnemonicParsing="false" text="Fecha de cierre por módulos" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" text="Especificar impresora ..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" text="Salir" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
@@ -50,7 +51,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="528.0" prefWidth="996.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="334.0" prefWidth="342.0" VBox.vgrow="ALWAYS">
       <children>
         <Label alignment="CENTER" layoutX="239.0" layoutY="174.0" style="&#10;" text="MasSoftware" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>

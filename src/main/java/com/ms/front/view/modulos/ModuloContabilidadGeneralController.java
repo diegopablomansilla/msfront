@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.ms.front.view.cuenta_contable.CuentaContableTable;
 import com.ms.front.view.JavaFXUtil;
+import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
+import com.ms.front.view.centro_costo_contable.CentroCostoContableTable;
 import com.ms.front.view.cuenta_contable.CuentaContablePaginArgs;
+import com.ms.front.view.cuenta_contable.CuentaContableTable;
+import com.ms.front.view.ejercicio_contable.EjercicioContableTable;
+import com.ms.front.view.punto_equilibrio.PuntoEquilibrioPaginArgs;
+import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTable;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,19 +71,52 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenCuentaContableList(ActionEvent event) {
 		try {
-			
+
 			CuentaContablePaginArgs filter = new CuentaContablePaginArgs();
 			filter.setEjercicioContable("2002");
-			
-//			CuentaContableTableController.show(new Stage(), view, filter);
-			Object o = CuentaContableTable.showAndWait(new Stage(), view, filter);
-			System.out.println("=================================================================");
-			System.out.println("O : " + o);
-			System.out.println("=================================================================");
+
+			CuentaContableTable.show(new Stage(), view, filter);
+//			Object o = CuentaContableTable.showAndWait(new Stage(), view, filter);
+//			System.out.println("=================================================================");
+//			System.out.println("O : " + o);
+//			System.out.println("=================================================================");
 		} catch (IOException e) {
 			JavaFXUtil.buildAlertException(e);
 		}
 
 	}
+
+	@FXML
+	void onOpenPuntoEquilibrioList(ActionEvent event) {
+		try {
+			PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
+			filter.setEjercicioContable("2002");
+			PuntoEquilibrioTable.show(new Stage(), view, filter);
+		} catch (IOException e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+
+	@FXML
+	void onOpenCentroDeCostoContableList(ActionEvent event) {
+
+		try {
+			CentroCostoContablePaginArgs filter = new CentroCostoContablePaginArgs();
+			filter.setEjercicioContable("2002");
+			CentroCostoContableTable.show(new Stage(), view, filter);
+		} catch (IOException e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+
+	}
+	
+	@FXML
+    void onOpenEjercicioContableList(ActionEvent event) {
+		try {			
+			EjercicioContableTable.show(new Stage(), view);
+		} catch (IOException e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+    }
 
 }

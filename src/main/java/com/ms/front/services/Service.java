@@ -20,11 +20,17 @@ import javax.json.JsonArray;
 
 import com.ms.EnvVars;
 import com.ms.front.model.Pagin;
+import com.ms.front.model.PaginArgs;
+import com.ms.front.model.ServiceArgs;
 import com.ms.front.view.JavaFXUtil;
 
 public class Service {
 
 	public static final String TYPE_RPC = "RPC";
+
+	public static Pagin GETPagin(String urlString, PaginArgs paginArgs) throws IOException, URISyntaxException {
+		return GETPagin(urlString, paginArgs, null);
+	}
 
 	public static Pagin GETPagin(String urlString, PaginArgs paginArgs, ServiceArgs args)
 			throws IOException, URISyntaxException {
@@ -47,7 +53,9 @@ public class Service {
 			queryParams.put(paginArgs.KEY_LAST_INDEX_OLD, paginArgs.getLastIndexOld().toString());
 		}
 
-		queryParams.putAll(args.toMap());
+		if (args != null) {
+			queryParams.putAll(args.toMap());
+		}
 
 		ResponseJsonObject r = GET(TYPE_RPC, urlString, headers, queryParams);
 

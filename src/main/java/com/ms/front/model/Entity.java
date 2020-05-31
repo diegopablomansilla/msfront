@@ -15,11 +15,12 @@ public abstract class Entity extends ObjectModel {
 	// ---------------------------------------------------------------
 
 	public String getId() {
+		this.id.set(this.emptyIsNull(id.get()));
 		return id.get();
 	}
 
 	public void setId(String id) {
-		this.id.set(id);
+		this.id.set(this.emptyIsNull(id));
 	}
 
 	// ---------------------------------------------------------------

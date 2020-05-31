@@ -1,4 +1,4 @@
-package com.ms.front.view.cuenta_contable;
+package com.ms.front.view.punto_equilibrio;
 
 import java.io.IOException;
 import java.net.URL;
@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import com.ms.front.model.Pagin;
 import com.ms.front.model.PaginArgs;
-import com.ms.front.model.ServiceArgs;
 import com.ms.front.services.Service;
 import com.ms.front.view.JavaFXUtil;
 
@@ -26,13 +25,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -43,18 +38,18 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class CuentaContableTable implements Initializable {
+public class PuntoEquilibrioTable implements Initializable {
 
 	private static boolean MODE_SELECCIONAR = true;
 	private static boolean MODE_NORMAL = false;
 
-	private static final String TITLE = "Plan de cuentas";
+	private static final String TITLE = "Puntos de equilibrios";
 
 	private Stage stage;
 	private SimpleBooleanProperty modoSeleccionarProperty = new SimpleBooleanProperty();
 	private PaginArgs paginArgs = new PaginArgs();
-	private CuentaContablePaginArgs args;
-	private CuentaContablePaginArgs argsOld;
+	private PuntoEquilibrioPaginArgs args;
+	private PuntoEquilibrioPaginArgs argsOld;
 	private Pagin pagin;
 
 	// =============================================================================================
@@ -93,96 +88,18 @@ public class CuentaContableTable implements Initializable {
 	private HBox pagination;
 
 	@FXML
-	private TableView<CuentaContableTableItem> table;
+	private TableView<PuntoEquilibrioTableItem> table;
 
 	@FXML
-	private TableColumn<CuentaContableTableItem, String> codigo;
+	private TableColumn<PuntoEquilibrioTableItem, String> numero;
 
 	@FXML
-	private TableColumn<CuentaContableTableItem, String> nombre;
+	private TableColumn<PuntoEquilibrioTableItem, String> nombre;
 
 	@FXML
-	private TableColumn<CuentaContableTableItem, String> centroCostoContable;
-
-	@FXML
-	private TableColumn<CuentaContableTableItem, String> cuentaAgrupadora;
-
-	@FXML
-	private TableColumn<CuentaContableTableItem, String> porcentaje;
-
-	@FXML
-	private ToggleGroup porToogleGroup;
-
-	@FXML
-	private ToggleButton porCuentaContable;
-
-	@FXML
-	private ToggleButton porNombre;
-
-	@FXML
-	private ToggleButton porCuentaAgrupadora;
-
-	@FXML
-	private ToggleButton porCentroDeCosto;
-
-	@FXML
-	private ToggleButton porPuntoDeEquilibrio;
-
-	@FXML
-	private TextField filtro;
-
-	@FXML
-	private ChoiceBox<String> operator;
+	private TableColumn<PuntoEquilibrioTableItem, String> tipoPuntoEquilibrio;
 
 	// =============================================================================================
-
-	@FXML
-	private void onKeyReleased(KeyEvent event) {
-
-		if (event.getCode().equals(KeyCode.TAB) && event.isControlDown() && event.isShiftDown()) {
-			if (porCuentaContable.isSelected()) {
-				porToogleGroup.selectToggle(porPuntoDeEquilibrio);
-				onPorPuntoDeEquilibrio(null);
-			} else if (porNombre.isSelected()) {
-				porToogleGroup.selectToggle(porCuentaContable);
-				onPorCuentaContable(null);
-			} else if (porCuentaAgrupadora.isSelected()) {
-				porToogleGroup.selectToggle(porNombre);
-				onPorNombre(null);
-			} else if (porCentroDeCosto.isSelected()) {
-				porToogleGroup.selectToggle(porCuentaAgrupadora);
-				onPorCuentaAgrupadora(null);
-			} else if (porPuntoDeEquilibrio.isSelected()) {
-				porToogleGroup.selectToggle(porCentroDeCosto);
-				onPorCentroDeCosto(null);
-			}
-		} else if (event.getCode().equals(KeyCode.TAB) && event.isControlDown()) {
-			if (porCuentaContable.isSelected()) {
-				porToogleGroup.selectToggle(porNombre);
-				onPorNombre(null);
-			} else if (porNombre.isSelected()) {
-				porToogleGroup.selectToggle(porCuentaAgrupadora);
-				onPorCuentaAgrupadora(null);
-			} else if (porCuentaAgrupadora.isSelected()) {
-				porToogleGroup.selectToggle(porCentroDeCosto);
-				onPorCentroDeCosto(null);
-			} else if (porCentroDeCosto.isSelected()) {
-				porToogleGroup.selectToggle(porPuntoDeEquilibrio);
-				onPorPuntoDeEquilibrio(null);
-			} else if (porPuntoDeEquilibrio.isSelected()) {
-				porToogleGroup.selectToggle(porCuentaContable);
-				onPorCuentaContable(null);
-			}
-		} else if (event.getCode().equals(KeyCode.DIGIT1) && event.isControlDown()) {
-			if (operator.getSelectionModel().getSelectedIndex() != 0) {
-				operator.getSelectionModel().select(0);
-			}
-		} else if (event.getCode().equals(KeyCode.DIGIT2) && event.isControlDown()) {
-			if (operator.getSelectionModel().getSelectedIndex() != 1) {
-				operator.getSelectionModel().select(1);
-			}
-		}
-	}
 
 	@FXML
 	private void onKeyPressedTable(KeyEvent event) {
@@ -223,33 +140,7 @@ public class CuentaContableTable implements Initializable {
 			} else if (cambiar.isDisable() == false) {
 				onCambiar(null);
 			}
-		} else if (key == 8) {
-			if (filtro.getText().length() > 0) {
-				filtro.setText(filtro.getText().substring(0, filtro.getText().length() - 1));
-			} else if (filtro.getText().length() == 0) {
-				filtro.setText("");
-			}
-		} else {
-			if (filtro.getText() != null) {
-				filtro.setText(filtro.getText() + event.getCharacter());
-			} else {
-				filtro.setText(event.getCharacter());
-			}
-
 		}
-
-	}
-
-	@FXML
-	private void onKeyTypedFiltro(KeyEvent event) {
-
-		int key = (int) event.getCharacter().charAt(0);
-
-//		if (event.isControlDown() && key == 13) {
-		if (event.isControlDown() && key == 10) {
-			onBuscarStart();
-		}
-
 	}
 
 	// =============================================================================================
@@ -271,7 +162,7 @@ public class CuentaContableTable implements Initializable {
 		if (table.getSelectionModel().getSelectedIndex() > -1) {
 			Stage window = new Stage();
 			window.initModality(Modality.APPLICATION_MODAL);
-			window.setTitle(table.getSelectionModel().getSelectedItem().getCodigo());
+			window.setTitle(table.getSelectionModel().getSelectedItem().toString());
 			window.setWidth(300);
 			window.setHeight(200);
 			window.setMaxWidth(300);
@@ -285,7 +176,7 @@ public class CuentaContableTable implements Initializable {
 		if (table.getSelectionModel().getSelectedIndex() > -1) {
 			Stage window = new Stage();
 			window.initModality(Modality.APPLICATION_MODAL);
-			window.setTitle(table.getSelectionModel().getSelectedItem().getCodigo());
+			window.setTitle(table.getSelectionModel().getSelectedItem().toString());
 			window.setWidth(300);
 			window.setHeight(200);
 			window.setMaxWidth(300);
@@ -323,13 +214,6 @@ public class CuentaContableTable implements Initializable {
 	}
 
 	@FXML
-	private void onPorCuentaContable(ActionEvent event) {
-		args.setPorCuentaContable();
-		filtro.setPromptText("Buscar por cuenta contable");
-		onBuscarStart();
-	}
-
-	@FXML
 	void onActionBack(ActionEvent event) {
 		onBuscarBack();
 	}
@@ -349,47 +233,7 @@ public class CuentaContableTable implements Initializable {
 		onBuscarNext();
 	}
 
-	@FXML
-	private void onPorNombre(ActionEvent event) {
-		args.setPorNombre();
-		filtro.setPromptText("Buscar por nombre");
-		onBuscarStart();
-	}
-
-	@FXML
-	private void onPorCuentaAgrupadora(ActionEvent event) {
-		args.setPorCuentaAgrupadora();
-		filtro.setPromptText("Buscar por cuenta agrupadora");
-		onBuscarStart();
-	}
-
-	@FXML
-	private void onPorCentroDeCosto(ActionEvent event) {
-		args.setPorCentroDeCosto();
-		filtro.setPromptText("Buscar por centro de costo");
-		onBuscarStart();
-	}
-
-	@FXML
-	private void onPorPuntoDeEquilibrio(ActionEvent event) {
-		args.setPorPuntoDeEquilibrio();
-		filtro.setPromptText("Buscar por punto de equilibrio");
-		onBuscarStart();
-	}
-
 	// ================================================================================================
-
-	private void onBuscarChangeOperadorFiltro(int index) {
-
-		if (index == 0) {
-			args.setOperador(ServiceArgs.OP_SW_ICT_O);
-			operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_SW_ICT_O_TXT));
-		} else if (index == 1) {
-			args.setOperador(ServiceArgs.OP_C_ICT_A);
-			operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_C_ICT_A_TXT));
-		}
-		onBuscarStart();
-	}
 
 	private void onBuscarStart() {
 
@@ -416,7 +260,6 @@ public class CuentaContableTable implements Initializable {
 		paginArgs.setPageRequestFirst();
 		paginArgs.setLastIndexOld(0);
 		onBuscar("Buscando la primer página...");
-//		argsOld = args.clone();
 	}
 
 	private void onBuscarLast() {
@@ -434,12 +277,11 @@ public class CuentaContableTable implements Initializable {
 			lastId = table.getSelectionModel().getSelectedItem().getId();
 		}
 
-		List<CuentaContableTableItem> items = findAll();
+		List<PuntoEquilibrioTableItem> items = findAll();
 
 		table.getItems().clear();
 		table.getItems().addAll(items);
 		if (table.getItems().size() > 0) {
-//			table.getSelectionModel().select(0);
 			table.getSelectionModel().selectFirst();
 			for (int i = 0; i < table.getItems().size(); i++) {
 				if (table.getItems().get(i).getId().equals(lastId)) {
@@ -455,20 +297,16 @@ public class CuentaContableTable implements Initializable {
 
 	// ==========================================================================
 
-	private List<CuentaContableTableItem> findAll() {
-
-		if (args.getOperador() == null) {
-			args.setOperador(ServiceArgs.OP_SW_ICT_O);
-		}
+	private List<PuntoEquilibrioTableItem> findAll() {
 
 		totalItems.setText("");
 		totalPages.setText("");
 
-		List<CuentaContableTableItem> items = new ArrayList<CuentaContableTableItem>();
+		List<PuntoEquilibrioTableItem> items = new ArrayList<PuntoEquilibrioTableItem>();
 
 		try {
 
-			String urlString = "CuentaContable/findAll";
+			String urlString = "PuntoEquilibrio/findAll";
 
 			pagin = Service.GETPagin(urlString, paginArgs, args);
 			paginArgs.setLastIndexOld(pagin.getLastIndex());
@@ -484,7 +322,7 @@ public class CuentaContableTable implements Initializable {
 
 			for (int i = 0; i < t.length; i++) {
 
-				CuentaContableTableItem item = new CuentaContableTableItem();
+				PuntoEquilibrioTableItem item = new PuntoEquilibrioTableItem();
 
 				int j = 0;
 				if (t[i][j] != null) {
@@ -493,7 +331,7 @@ public class CuentaContableTable implements Initializable {
 
 				j++;
 				if (t[i][j] != null) {
-					item.setCodigo(t[i][j].toString());
+					item.setNumero(t[i][j].toString());
 				}
 
 				j++;
@@ -501,20 +339,19 @@ public class CuentaContableTable implements Initializable {
 					item.setNombre(t[i][j].toString());
 				}
 
-				j++;
+				String tipoPuntoEquilibrio = "";
+				j++; // id
+				j++; // numero
 				if (t[i][j] != null) {
-					item.setCentroCostoContable(t[i][j].toString());
+					tipoPuntoEquilibrio += t[i][j];
 				}
 
-				j++;
+				j++; // nombre
 				if (t[i][j] != null) {
-					item.setCuentaAgrupadora(t[i][j].toString());
+					tipoPuntoEquilibrio += tipoPuntoEquilibrio.trim().length() != 0 ? " - " + t[i][j] : t[i][j];
 				}
 
-				j++;
-				if (t[i][j] != null) {
-					item.setPorcentaje(t[i][j].toString());
-				}
+				item.setTipoPuntoEquilibrio(tipoPuntoEquilibrio);
 
 				items.add(item);
 			}
@@ -558,31 +395,21 @@ public class CuentaContableTable implements Initializable {
 
 		// --------------------------------------------------------------------------
 
-		codigo.setCellValueFactory(new PropertyValueFactory<CuentaContableTableItem, String>("codigo"));
-		nombre.setCellValueFactory(new PropertyValueFactory<CuentaContableTableItem, String>("nombre"));
-		centroCostoContable
-				.setCellValueFactory(new PropertyValueFactory<CuentaContableTableItem, String>("centroCostoContable"));
-		cuentaAgrupadora
-				.setCellValueFactory(new PropertyValueFactory<CuentaContableTableItem, String>("cuentaAgrupadora"));
-		porcentaje.setCellValueFactory(new PropertyValueFactory<CuentaContableTableItem, String>("porcentaje"));
+		numero.setCellValueFactory(new PropertyValueFactory<PuntoEquilibrioTableItem, String>("numero"));
+		nombre.setCellValueFactory(new PropertyValueFactory<PuntoEquilibrioTableItem, String>("nombre"));
+		tipoPuntoEquilibrio
+				.setCellValueFactory(new PropertyValueFactory<PuntoEquilibrioTableItem, String>("tipoPuntoEquilibrio"));
 
 		// --------------------------------------------------------------------------
-
-		operator.setItems(FXCollections.observableArrayList("(1) comienza con", "(2) contiene"));
-		operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_SW_ICT_O_TXT));
-		operator.getSelectionModel().selectFirst();
-
-		operator.getSelectionModel().selectedIndexProperty()
-				.addListener((obs, oldV, newV) -> onBuscarChangeOperadorFiltro((int) newV));
 
 	}
 
 	// ================================================================================================
 
-	private static CuentaContableTable show(Stage stage, Node owner, boolean modoSeleccionar,
-			CuentaContablePaginArgs filter) throws IOException {
+	private static PuntoEquilibrioTable show(Stage stage, Node owner, boolean modoSeleccionar,
+			PuntoEquilibrioPaginArgs filter) throws IOException {
 
-		CuentaContableTable viewController = loadView(modoSeleccionar, filter);
+		PuntoEquilibrioTable viewController = loadView(modoSeleccionar, filter);
 		viewController.stage = stage;
 
 		Scene scene = new Scene(viewController.view);
@@ -620,10 +447,10 @@ public class CuentaContableTable implements Initializable {
 
 	}
 
-	public static CuentaContableTableItem showAndWait(Stage stage, Node owner, CuentaContablePaginArgs filter)
+	public static PuntoEquilibrioTableItem showAndWait(Stage stage, Node owner, PuntoEquilibrioPaginArgs filter)
 			throws IOException {
 
-		CuentaContableTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
+		PuntoEquilibrioTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
 			return viewController.table.getSelectionModel().getSelectedItem();
@@ -632,26 +459,26 @@ public class CuentaContableTable implements Initializable {
 		return null;
 	}
 
-	public static void show(Stage stage, Node owner, CuentaContablePaginArgs filter) throws IOException {
+	public static void show(Stage stage, Node owner, PuntoEquilibrioPaginArgs filter) throws IOException {
 		show(stage, owner, MODE_NORMAL, filter);
 	}
 
-	private static CuentaContableTable loadView(boolean modoSeleccionar, CuentaContablePaginArgs filter)
+	private static PuntoEquilibrioTable loadView(boolean modoSeleccionar, PuntoEquilibrioPaginArgs filter)
 			throws IOException {
 
 		if (filter.getEjercicioContable() == null) {
 			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
 		}
 
-		FXMLLoader loader = new FXMLLoader(CuentaContableTable.class.getResource("CuentaContableTable.fxml"));
+		FXMLLoader loader = new FXMLLoader(PuntoEquilibrioTable.class.getResource("PuntoEquilibrioTable.fxml"));
 
 		loader.load();
 
-		CuentaContableTable viewController = loader.getController();
+		PuntoEquilibrioTable viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
 		viewController.args = filter;
-		viewController.filtro.textProperty().bindBidirectional(filter.filtroProperty());
-		viewController.onPorCuentaContable(null);
+
+		viewController.onBuscarStart();
 
 		return viewController;
 	}

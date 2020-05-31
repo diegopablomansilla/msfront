@@ -1,9 +1,9 @@
-package com.ms.front.view.cuenta_contable;
+package com.ms.old;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Result<T> {
+class Result<T> {
 
 	private int offset;
 	private List<T> items = new ArrayList<T>();

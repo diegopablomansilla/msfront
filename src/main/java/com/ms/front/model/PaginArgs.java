@@ -1,4 +1,4 @@
-package com.ms.front.services;
+package com.ms.front.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,14 +44,16 @@ public class PaginArgs extends ServiceArgs implements Cloneable {
 	// ---------------------------------------------------------------
 
 	public String getDb() {
+		this.db.set(this.emptyIsNull(db.get()));
 		return db.get();
 	}
 
 	public void setDb(String db) {
-		this.db.set(db);
+		this.db.set(this.emptyIsNull(db));
 	}
 
 	public String getPageRequest() {
+		this.pageRequest.set(this.emptyIsNull(pageRequest.get()));
 		return pageRequest.get();
 	}
 
@@ -79,8 +81,8 @@ public class PaginArgs extends ServiceArgs implements Cloneable {
 		return lastIndexOld.get();
 	}
 
-	public void setLastIndexOld(Integer lastIndexOld) {		
-		if(lastIndexOld == null) {
+	public void setLastIndexOld(Integer lastIndexOld) {
+		if (lastIndexOld == null) {
 			lastIndexOld = 0;
 		}
 		this.lastIndexOld.set(lastIndexOld);

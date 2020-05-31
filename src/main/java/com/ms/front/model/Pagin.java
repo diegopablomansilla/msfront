@@ -325,7 +325,7 @@ public class Pagin extends ObjectModel {
 
 						if (jsonArrayRow.get(j).getValueType() == ValueType.STRING) {
 							table[i][j] = jsonArrayRow.getString(j);
-						}
+						} 
 
 					}
 

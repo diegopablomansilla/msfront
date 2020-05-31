@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class CuentaContableTableItem extends Entity {
 
-	private final SimpleStringProperty id = new SimpleStringProperty();
 	private final SimpleStringProperty codigo = new SimpleStringProperty();
 	private final SimpleStringProperty nombre = new SimpleStringProperty();
 	private final SimpleStringProperty centroCostoContable = new SimpleStringProperty();
@@ -14,10 +13,6 @@ public class CuentaContableTableItem extends Entity {
 	private final SimpleStringProperty porcentaje = new SimpleStringProperty();
 
 	// ---------------------------------------------------------------
-
-	public SimpleStringProperty idProperty() {
-		return id;
-	}
 
 	public SimpleStringProperty codigoProperty() {
 		return codigo;
@@ -41,52 +36,49 @@ public class CuentaContableTableItem extends Entity {
 
 	// ---------------------------------------------------------------
 
-	public String getId() {
-		return id.get();
-	}
-
-	public void setId(String id) {
-		this.id.set(id);
-	}
-
 	public String getCodigo() {
+		this.codigo.set(this.emptyIsNull(codigo.get()));
 		return codigo.get();
 	}
 
 	public void setCodigo(String codigo) {
-		this.codigo.set(codigo);
+		this.codigo.set(this.emptyIsNull(codigo));
 	}
 
 	public String getNombre() {
+		this.nombre.set(this.emptyIsNull(nombre.get()));
 		return nombre.get();
 	}
 
 	public void setNombre(String nombre) {
-		this.nombre.set(nombre);
+		this.nombre.set(this.emptyIsNull(nombre));
 	}
 
 	public String getCentroCostoContable() {
+		this.centroCostoContable.set(this.emptyIsNull(centroCostoContable.get()));
 		return centroCostoContable.get();
 	}
 
 	public void setCentroCostoContable(String centroCostoContable) {
-		this.centroCostoContable.set(centroCostoContable);
+		this.centroCostoContable.set(this.emptyIsNull(centroCostoContable));
 	}
 
 	public String getCuentaAgrupadora() {
+		this.cuentaAgrupadora.set(this.emptyIsNull(cuentaAgrupadora.get()));
 		return cuentaAgrupadora.get();
 	}
 
 	public void setCuentaAgrupadora(String cuentaAgrupadora) {
-		this.cuentaAgrupadora.set(cuentaAgrupadora);
+		this.cuentaAgrupadora.set(this.emptyIsNull(cuentaAgrupadora));
 	}
 
 	public String getPorcentaje() {
+		this.porcentaje.set(this.emptyIsNull(porcentaje.get()));
 		return porcentaje.get();
 	}
 
 	public void setPorcentaje(String porcentaje) {
-		this.porcentaje.set(porcentaje);
+		this.porcentaje.set(this.emptyIsNull(porcentaje));
 	}
 
 	// ---------------------------------------------------------------

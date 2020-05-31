@@ -1,4 +1,4 @@
-package com.ms.front.view.cuenta_contable;
+package com.ms.front.view.centro_costo_contable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,27 +7,20 @@ import com.ms.front.model.ServiceArgs;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
+public class CentroCostoContablePaginArgs extends ServiceArgs implements Cloneable {
 
-	private final String CUENTA_CONTABLE = "CUENTA_CONTABLE";
-	private final String NOMBRE = "NOMBRE";
-	private final String CUENTA_AGRUPADORA = "CUENTA_AGRUPADORA";
 	private final String CENTRO_DE_COSTO = "CENTRO_DE_COSTO";
-	private final String PUNTO_DE_EQUILIBRIO = "PUNTO_DE_EQUILIBRIO";
+	private final String NOMBRE = "NOMBRE";
 
 	public final String KEY_EJERCICIO_CONTABLE = "ejercicio";
-	public final String KEY_FILTRO = "filtro";
 	public final String KEY_POR = "por";
-	public final String KEY_OPERADOR = "op";
 
 	private final SimpleStringProperty ejercicioContable = new SimpleStringProperty();
-	private final SimpleStringProperty filtro = new SimpleStringProperty();
 	private final SimpleStringProperty por = new SimpleStringProperty();
-	private final SimpleStringProperty operador = new SimpleStringProperty();
 
 	// ---------------------------------------------------------------
 
-	public CuentaContablePaginArgs() {
+	public CentroCostoContablePaginArgs() {
 		super();
 	}
 
@@ -37,16 +30,8 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 		return ejercicioContable;
 	}
 
-	public SimpleStringProperty filtroProperty() {
-		return filtro;
-	}
-
 	public SimpleStringProperty porProperty() {
 		return por;
-	}
-
-	public SimpleStringProperty operadorProperty() {
-		return operador;
 	}
 
 	// ---------------------------------------------------------------
@@ -59,50 +44,21 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 	public void setEjercicioContable(String v) {
 		this.ejercicioContable.set(this.emptyIsNull(v));
 	}
-	
-	public String getFiltro() {
-		this.filtro.set(this.emptyIsNull(filtro.get()));		
-		return filtro.get();
-	}
-
-	public void setFiltro(String v) {		
-		this.filtro.set(this.emptyIsNull(v));
-	}
 
 	public String getPor() {
 		return por.get();
-	}
-
-	public void setPorCuentaContable() {
-		setPor(CUENTA_CONTABLE);
-	}
-
-	public void setPorNombre() {
-		setPor(NOMBRE);
-	}
-
-	public void setPorCuentaAgrupadora() {
-		setPor(CUENTA_AGRUPADORA);
 	}
 
 	public void setPorCentroDeCosto() {
 		setPor(CENTRO_DE_COSTO);
 	}
 
-	public void setPorPuntoDeEquilibrio() {
-		setPor(PUNTO_DE_EQUILIBRIO);
+	public void setPorNombre() {
+		setPor(NOMBRE);
 	}
 
 	private void setPor(String v) {
 		this.por.set(v == null || v.trim().length() == 0 ? null : v.trim());
-	}
-
-	public String getOperador() {
-		return operador.get();
-	}
-
-	public void setOperador(String v) {
-		this.operador.set(v == null || v.trim().length() == 0 ? null : v.trim());
 	}
 
 	// ---------------------------------------------------------------
@@ -115,38 +71,28 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 			map.put(KEY_EJERCICIO_CONTABLE, this.getEjercicioContable());
 		}
 
-		if (this.getFiltro() != null) {
-			map.put(KEY_FILTRO, this.getFiltro());
-		}
-
 		if (this.getPor() != null) {
 			map.put(KEY_POR, this.getPor());
-		}
-
-		if (this.getOperador() != null) {
-			map.put(KEY_OPERADOR, this.getOperador());
 		}
 
 		return map;
 	}
 
 	@Override
-	public CuentaContablePaginArgs clone() {
+	public CentroCostoContablePaginArgs clone() {
 
-		CuentaContablePaginArgs other = new CuentaContablePaginArgs();
+		CentroCostoContablePaginArgs other = new CentroCostoContablePaginArgs();
 
 		other.setEjercicioContable(getEjercicioContable());
-		other.setFiltro(this.getFiltro());
 		other.setPor(getPor());
-		other.setOperador(getOperador());
 
 		return other;
 	}
 
 	@Override
 	public String toString() {
-		return "CuentaContableTableFilter [getEjercicioContable()=" + getEjercicioContable() + ", getFiltro()="
-				+ getFiltro() + ", getPor()=" + getPor() + ", getOperador()=" + getOperador() + "]";
+		return "CuentaContableTableFilter [getEjercicioContable()=" + getEjercicioContable() + ", getPor()=" + getPor()
+				+ "]";
 	}
 
 	@Override
@@ -154,8 +100,6 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((getEjercicioContable() == null) ? 0 : getEjercicioContable().hashCode());
-		result = prime * result + ((getFiltro() == null) ? 0 : getFiltro().hashCode());
-		result = prime * result + ((getOperador() == null) ? 0 : getOperador().hashCode());
 		result = prime * result + ((getPor() == null) ? 0 : getPor().hashCode());
 		return result;
 	}
@@ -168,21 +112,11 @@ public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CuentaContablePaginArgs other = (CuentaContablePaginArgs) obj;
+		CentroCostoContablePaginArgs other = (CentroCostoContablePaginArgs) obj;
 		if (getEjercicioContable() == null) {
 			if (other.getEjercicioContable() != null)
 				return false;
 		} else if (!getEjercicioContable().equals(other.getEjercicioContable()))
-			return false;
-		if (getFiltro() == null) {
-			if (other.getFiltro() != null)
-				return false;
-		} else if (!getFiltro().equals(other.getFiltro()))
-			return false;
-		if (getOperador() == null) {
-			if (other.getOperador() != null)
-				return false;
-		} else if (!getOperador().equals(other.getOperador()))
 			return false;
 		if (getPor() == null) {
 			if (other.getPor() != null)

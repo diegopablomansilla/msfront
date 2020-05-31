@@ -1,14 +1,12 @@
-package com.ms.front.view.cuenta_contable;
+package com.ms.old;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.ms.front.services.PaginArgs;
-import com.ms.front.services.ResponseJsonObject;
-import com.ms.front.services.Service;
+import com.ms.front.view.cuenta_contable.CuentaContableTableItem;
 
-public class CuentaContableService {
+class CuentaContableService {
 
 	public static List<CuentaContableTableItem> items = new ArrayList<CuentaContableTableItem>();
 
