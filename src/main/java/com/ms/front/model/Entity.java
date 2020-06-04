@@ -2,7 +2,7 @@ package com.ms.front.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public abstract class Entity extends ObjectModel {
+public class Entity extends ObjectModel {
 
 	protected final SimpleStringProperty id = new SimpleStringProperty();
 

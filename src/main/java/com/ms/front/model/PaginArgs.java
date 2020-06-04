@@ -129,7 +129,7 @@ public class PaginArgs extends ServiceArgs implements Cloneable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((getDb() == null) ? 0 : getDb().hashCode());
-		result = prime * result + ((lastIndexOld == null) ? 0 : lastIndexOld.hashCode());
+		result = prime * result + ((getLastIndexOld() == null) ? 0 : getLastIndexOld().hashCode());
 		result = prime * result + ((getPageRequest() == null) ? 0 : getPageRequest().hashCode());
 		return result;
 	}

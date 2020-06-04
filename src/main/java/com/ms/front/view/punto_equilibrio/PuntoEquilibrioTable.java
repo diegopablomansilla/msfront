@@ -26,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
@@ -72,11 +73,14 @@ public class PuntoEquilibrioTable implements Initializable {
 	@FXML
 	private Button seleccionar;
 
-	@FXML
-	private Label status;
+//	@FXML
+//	private Label status;
 
 	@FXML
-	private Button buscar;
+	private ProgressIndicator progress;
+
+//	@FXML
+//	private Button buscar;
 
 	@FXML
 	private Label totalItems;
@@ -270,7 +274,9 @@ public class PuntoEquilibrioTable implements Initializable {
 
 	private void onBuscar(String msg) {
 
-		status.setText(msg);
+//		status.setText(msg);
+		
+		progress.setVisible(true);
 
 		String lastId = null;
 		if (table.getSelectionModel().getSelectedIndex() > -1) {
@@ -291,8 +297,10 @@ public class PuntoEquilibrioTable implements Initializable {
 			}
 		}
 		table.requestFocus();
+		
+		progress.setVisible(false);
 
-		status.setText("");
+//		status.setText("");
 	}
 
 	// ==========================================================================
@@ -374,7 +382,7 @@ public class PuntoEquilibrioTable implements Initializable {
 		eliminar.setTooltip(new Tooltip("Eliminar (ALT+E)"));
 		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
 		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
-		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
+//		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
 		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
 
 		// --------------------------------------------------------------------------

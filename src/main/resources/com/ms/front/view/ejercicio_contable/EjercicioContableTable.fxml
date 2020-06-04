@@ -3,16 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="486.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.ejercicio_contable.EjercicioContableTable">
+<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.ejercicio_contable.EjercicioContableTable">
    <children>
-      <Button fx:id="buscar" layoutX="415.0" layoutY="14.0" onAction="#onBuscar" text="_Buscar" />
-      <TableView fx:id="table" layoutX="15.0" layoutY="45.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="407.0" prefWidth="455.0">
+      <TableView fx:id="table" layoutX="7.0" layoutY="14.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="443.0" prefWidth="459.0">
         <columns>
           <TableColumn fx:id="numero" prefWidth="100.0" sortable="false" text="Ejercicio" />
           <TableColumn fx:id="apertura" prefWidth="87.0" sortable="false" text="Apertura" />
@@ -25,16 +25,12 @@
             </TableColumn>
         </columns>
       </TableView>
-      <Button fx:id="agregar" layoutX="15.0" layoutY="492.0" onAction="#onAgregar" text="_Agregar" />
-      <Button fx:id="cambiar" layoutX="80.0" layoutY="492.0" onAction="#onCambiar" text="_Cambiar" />
-      <Button fx:id="eliminar" layoutX="150.0" layoutY="492.0" onAction="#onEliminar" text="_Eliminar" />
-      <Button fx:id="seleccionar" layoutX="394.0" layoutY="492.0" onAction="#onSeleccionar" text="_Seleccionar" />
-      <Label fx:id="status" layoutX="15.0" layoutY="16.0" prefHeight="21.0" prefWidth="387.0" textAlignment="CENTER">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label fx:id="totalItems" layoutX="15.0" layoutY="462.0" prefHeight="17.0" prefWidth="138.0" />
-      <HBox fx:id="pagination" layoutX="170.0" layoutY="461.0" spacing="3.0">
+      <Button fx:id="agregar" layoutX="9.0" layoutY="491.0" onAction="#onAgregar" text="_Agregar" />
+      <Button fx:id="cambiar" layoutX="74.0" layoutY="491.0" onAction="#onCambiar" text="_Cambiar" />
+      <Button fx:id="eliminar" layoutX="144.0" layoutY="491.0" onAction="#onEliminar" text="_Eliminar" />
+      <Button fx:id="seleccionar" layoutX="388.0" layoutY="491.0" onAction="#onSeleccionar" text="_Seleccionar" />
+      <Label fx:id="totalItems" layoutX="18.0" layoutY="465.0" prefHeight="17.0" prefWidth="138.0" />
+      <HBox fx:id="pagination" layoutX="173.0" layoutY="464.0" spacing="3.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onActionFirst" text="&lt;&lt;">
                <font>
@@ -59,7 +55,8 @@
             </Button>
          </children>
       </HBox>
-      <Button fx:id="elegirEjercicio" layoutX="258.0" layoutY="492.0" onAction="#onElegirEjercicio" text="Elegir ejercicio" />
+      <Button fx:id="elegirEjercicio" layoutX="252.0" layoutY="491.0" onAction="#onElegirEjercicio" text="Elegir ejercicio" />
+      <ProgressIndicator fx:id="progress" layoutX="450.0" layoutY="463.0" prefHeight="19.0" prefWidth="19.0" visible="false" />
    </children>
    <opaqueInsets>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

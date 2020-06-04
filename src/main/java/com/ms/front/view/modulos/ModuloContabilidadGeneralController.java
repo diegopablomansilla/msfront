@@ -33,6 +33,7 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	// ----------------------------------------------------------------------
 
 	public void initialize(URL url, ResourceBundle rb) {
+
 	}
 
 	public static ModuloContabilidadGeneralController loadView() throws IOException {
@@ -109,14 +110,14 @@ public class ModuloContabilidadGeneralController implements Initializable {
 		}
 
 	}
-	
+
 	@FXML
-    void onOpenEjercicioContableList(ActionEvent event) {
-		try {			
+	void onOpenEjercicioContableList(ActionEvent event) {
+		try {
 			EjercicioContableTable.show(new Stage(), view);
 		} catch (IOException e) {
 			JavaFXUtil.buildAlertException(e);
 		}
-    }
+	}
 
 }

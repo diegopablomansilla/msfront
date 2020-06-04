@@ -19,6 +19,8 @@ import javax.json.Json;
 import javax.json.JsonArray;
 
 import com.ms.EnvVars;
+import com.ms.front.model.IdDesc;
+import com.ms.front.model.IdDescArgs;
 import com.ms.front.model.Pagin;
 import com.ms.front.model.PaginArgs;
 import com.ms.front.model.ServiceArgs;
@@ -27,6 +29,41 @@ import com.ms.front.view.JavaFXUtil;
 public class Service {
 
 	public static final String TYPE_RPC = "RPC";
+
+	public static IdDesc GETIdDesc(String urlString, IdDescArgs idDescArgs, ServiceArgs args)
+			throws IOException, URISyntaxException {
+
+		idDescArgs.setDb("db1");
+
+		Map<String, String> headers = new HashMap<String, String>();
+
+		if (idDescArgs.getDb() != null) {
+			headers.put(idDescArgs.KEY_DB, idDescArgs.getDb());
+		}
+
+		Map<String, String> queryParams = new HashMap<String, String>();
+
+		if (idDescArgs.getText() != null) {
+			queryParams.put(idDescArgs.KEY_TEXT, idDescArgs.getText());
+		}
+
+		if (args != null) {
+			queryParams.putAll(args.toMap());
+		}
+
+		ResponseJsonObject r = GET(TYPE_RPC, urlString, headers, queryParams);
+
+		if (r.getStatus() == 500) {
+			JavaFXUtil.buildAlertService500();
+		} else if (r.getStatus() == 204) {
+
+			return IdDesc.fromJson(r.getPayload());
+		} else if (r.getStatus() == 200) {
+			return IdDesc.fromJson(r.getPayload());
+		}
+
+		throw new IllegalStateException("Illegal state response, code " + r.getStatus());
+	}
 
 	public static Pagin GETPagin(String urlString, PaginArgs paginArgs) throws IOException, URISyntaxException {
 		return GETPagin(urlString, paginArgs, null);

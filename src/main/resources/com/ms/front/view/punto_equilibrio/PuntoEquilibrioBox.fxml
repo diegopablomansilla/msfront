@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="86.0" prefWidth="413.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.punto_equilibrio.PuntoEquilibrioBox">
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <children>
+      <Label layoutY="6.0" text="Punto de equlibrio:" />
+      <TextField fx:id="descriptionTXT" editable="false" layoutX="112.0" layoutY="31.0" prefHeight="25.0" prefWidth="269.0" promptText="buscar por codigo o nombre" />
+      <TextField fx:id="searchTXT" layoutX="112.0" layoutY="2.0" onKeyTyped="#onKeyTypedFiltro" prefHeight="25.0" prefWidth="269.0" promptText="buscar por codigo o nombre" visible="false" />
+      <Button fx:id="openBtn" layoutX="387.0" layoutY="2.0" mnemonicParsing="false" text="+" />
+   </children>
+</AnchorPane>

@@ -7,7 +7,7 @@ import com.ms.front.model.ServiceArgs;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class PuntoEquilibrioPaginArgs extends ServiceArgs implements Cloneable {
+public class PuntoEquilibrioIdDescArgs extends ServiceArgs implements Cloneable {
 
 	public final String KEY_EJERCICIO_CONTABLE = "ejercicio";
 
@@ -15,7 +15,7 @@ public class PuntoEquilibrioPaginArgs extends ServiceArgs implements Cloneable {
 
 	// ---------------------------------------------------------------
 
-	public PuntoEquilibrioPaginArgs() {
+	public PuntoEquilibrioIdDescArgs() {
 		super();
 	}
 
@@ -50,9 +50,9 @@ public class PuntoEquilibrioPaginArgs extends ServiceArgs implements Cloneable {
 	}
 
 	@Override
-	public PuntoEquilibrioPaginArgs clone() {
+	public PuntoEquilibrioIdDescArgs clone() {
 
-		PuntoEquilibrioPaginArgs other = new PuntoEquilibrioPaginArgs();
+		PuntoEquilibrioIdDescArgs other = new PuntoEquilibrioIdDescArgs();
 
 		other.setEjercicioContable(getEjercicioContable());
 
@@ -81,7 +81,7 @@ public class PuntoEquilibrioPaginArgs extends ServiceArgs implements Cloneable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PuntoEquilibrioPaginArgs other = (PuntoEquilibrioPaginArgs) obj;
+		PuntoEquilibrioIdDescArgs other = (PuntoEquilibrioIdDescArgs) obj;
 		if (getEjercicioContable() == null) {
 			if (other.getEjercicioContable() != null)
 				return false;

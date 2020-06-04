@@ -1,17 +1,24 @@
 package com.ms.front.view.cuenta_contable;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.ms.front.model.IdDesc;
+import com.ms.front.model.IdDescArgs;
 import com.ms.front.model.Pagin;
 import com.ms.front.model.PaginArgs;
 import com.ms.front.model.ServiceArgs;
 import com.ms.front.services.Service;
 import com.ms.front.view.JavaFXUtil;
+import com.ms.front.view.punto_equilibrio.PuntoEquilibrioIdDescArgs;
+import com.ms.front.view.punto_equilibrio.PuntoEquilibrioPaginArgs;
+import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTable;
+import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTableItem;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,6 +35,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,6 +47,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -77,8 +87,11 @@ public class CuentaContableTable implements Initializable {
 	@FXML
 	private Button seleccionar;
 
+//	@FXML
+//	private Label status;
+
 	@FXML
-	private Label status;
+	private ProgressIndicator progress;
 
 	@FXML
 	private Button buscar;
@@ -133,6 +146,101 @@ public class CuentaContableTable implements Initializable {
 
 	@FXML
 	private ChoiceBox<String> operator;
+
+	@FXML
+	private Label puntoEquilibrioLabel;
+
+	@FXML
+	private Button openPuntoEquilibrioTable;
+
+	@FXML
+	private TextField puntoEquilibrioSearch;
+	
+    @FXML
+    private AnchorPane filterPuntoEqulibrio;
+    
+    @FXML
+    private AnchorPane filterVarios;
+
+	// =============================================================================================
+
+	private String textValueTmpPuntoEquilibrio;
+
+	@FXML
+	void onActionOpenPuntoEquilibrioTable(ActionEvent event) {
+		try {
+			openPuntoEquilibrioTableItem();
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+
+	@FXML
+	void onKeyTypedSearchPuntoEquilibrio(KeyEvent event) {
+		int key = (int) event.getCharacter().charAt(0);
+		if (key == 13) {
+			buscarPuntoEquilibrio();
+		}
+	}
+
+	private void onFocusedPuntoEquilibrioSearch(Boolean oldVal, Boolean newVal) {
+		if (oldVal == false && newVal == true) { // entra
+			textValueTmpPuntoEquilibrio = puntoEquilibrioSearch.getText();
+			puntoEquilibrioSearch.setText("");
+			puntoEquilibrioSearch.setFont(Font.font("System", FontPosture.ITALIC, 12));
+			puntoEquilibrioSearch.setStyle("-fx-background-color: #607d8b; -fx-text-fill: #FFFFFF;"); // blueGrey 500
+		} else if (oldVal == true && newVal == false) { // sale
+			puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
+			puntoEquilibrioSearch.setFont(Font.font("System", FontPosture.REGULAR, 12));
+			puntoEquilibrioSearch.setStyle("");
+		}
+	}
+
+	private void buscarPuntoEquilibrio() {
+
+		try {
+
+			if (puntoEquilibrioSearch.getText().trim().length() == 0) {
+				
+				textValueTmpPuntoEquilibrio = "";
+				puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
+				
+				this.onPorPuntoDeEquilibrio(null);
+				
+				return;
+			}
+
+			IdDesc idDesc = this.puntoEquilibrioFindOneByText(puntoEquilibrioSearch.getText());
+
+			if (idDesc != null && idDesc.getId() != null) {
+				textValueTmpPuntoEquilibrio = idDesc.getDesc();
+				puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
+				openPuntoEquilibrioTable.requestFocus();
+			} else {
+				openPuntoEquilibrioTableItem();
+			}
+			
+			this.onPorPuntoDeEquilibrio(null);
+
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+
+	private void openPuntoEquilibrioTableItem() throws IOException {
+		PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
+		filter.setEjercicioContable(args.getEjercicioContable());
+		PuntoEquilibrioTableItem item = PuntoEquilibrioTable.showAndWait(new Stage(), view, filter);
+		if (item != null) {
+			textValueTmpPuntoEquilibrio = item.getNumero() + " - " + item.getNombre();
+			puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
+			openPuntoEquilibrioTable.requestFocus();
+		} else {
+			textValueTmpPuntoEquilibrio = "";
+			puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
+		}
+
+	}
 
 	// =============================================================================================
 
@@ -323,13 +431,6 @@ public class CuentaContableTable implements Initializable {
 	}
 
 	@FXML
-	private void onPorCuentaContable(ActionEvent event) {
-		args.setPorCuentaContable();
-		filtro.setPromptText("Buscar por cuenta contable");
-		onBuscarStart();
-	}
-
-	@FXML
 	void onActionBack(ActionEvent event) {
 		onBuscarBack();
 	}
@@ -350,31 +451,84 @@ public class CuentaContableTable implements Initializable {
 	}
 
 	@FXML
+	private void onPorCuentaContable(ActionEvent event) {
+		
+		if(porCuentaContable.isSelected()) {
+			filterVarios.setVisible(true);
+			filterPuntoEqulibrio.setVisible(false);
+			args.setFiltro(filtro.getText());
+			args.setPorCuentaContable();
+			filtro.setPromptText("Buscar por cuenta contable");
+			onBuscarStart();	
+		} else {	
+			porToogleGroup.selectToggle(porNombre);
+			onPorNombre(null);
+		}
+		
+						
+	}
+
+	@FXML
 	private void onPorNombre(ActionEvent event) {
-		args.setPorNombre();
-		filtro.setPromptText("Buscar por nombre");
-		onBuscarStart();
+		if(porNombre.isSelected()) {
+			filterVarios.setVisible(true);
+			filterPuntoEqulibrio.setVisible(false);
+			args.setFiltro(filtro.getText());
+			args.setPorNombre();
+			filtro.setPromptText("Buscar por nombre");
+			onBuscarStart();
+		} else {	
+			porToogleGroup.selectToggle(porCuentaAgrupadora);
+			onPorCuentaAgrupadora(null);
+		}
+		
 	}
 
 	@FXML
 	private void onPorCuentaAgrupadora(ActionEvent event) {
-		args.setPorCuentaAgrupadora();
-		filtro.setPromptText("Buscar por cuenta agrupadora");
-		onBuscarStart();
+		if(porCuentaAgrupadora.isSelected()) {
+			filterVarios.setVisible(true);
+			filterPuntoEqulibrio.setVisible(false);
+			args.setFiltro(filtro.getText());
+			args.setPorCuentaAgrupadora();
+			filtro.setPromptText("Buscar por cuenta agrupadora");
+			onBuscarStart();
+		} else {	
+			porToogleGroup.selectToggle(porCentroDeCosto);
+			onPorCentroDeCosto(null);
+		}
+		
 	}
 
 	@FXML
 	private void onPorCentroDeCosto(ActionEvent event) {
-		args.setPorCentroDeCosto();
-		filtro.setPromptText("Buscar por centro de costo");
-		onBuscarStart();
+		if(porCentroDeCosto.isSelected()) {
+			filterVarios.setVisible(false);
+			filterPuntoEqulibrio.setVisible(false);
+			args.setPorCentroDeCosto();
+			filtro.setPromptText("Buscar por centro de costo");
+			onBuscarStart();
+		}else {	
+			porToogleGroup.selectToggle(porPuntoDeEquilibrio);
+			onPorPuntoDeEquilibrio(null);
+		}
+		
 	}
 
 	@FXML
 	private void onPorPuntoDeEquilibrio(ActionEvent event) {
-		args.setPorPuntoDeEquilibrio();
-		filtro.setPromptText("Buscar por punto de equilibrio");
-		onBuscarStart();
+		if(porPuntoDeEquilibrio.isSelected()) {
+			filterVarios.setVisible(false);		
+			filterPuntoEqulibrio.setVisible(true);
+			args.setFiltro(puntoEquilibrioSearch.getText());
+			args.setPorPuntoDeEquilibrio();
+			filtro.setPromptText("Buscar por punto de equilibrio");
+			onBuscarStart();
+		}else {	
+			porToogleGroup.selectToggle(porCuentaContable);
+			onPorCuentaContable(null);
+		}
+		
 	}
 
 	// ================================================================================================
@@ -427,7 +581,9 @@ public class CuentaContableTable implements Initializable {
 
 	private void onBuscar(String msg) {
 
-		status.setText(msg);
+//		status.setText(msg);
+
+		progress.setVisible(true);
 
 		String lastId = null;
 		if (table.getSelectionModel().getSelectedIndex() > -1) {
@@ -450,10 +606,26 @@ public class CuentaContableTable implements Initializable {
 		}
 		table.requestFocus();
 
-		status.setText("");
+//		progress.setVisible(false);
+
+//		status.setText("");
 	}
 
 	// ==========================================================================
+
+	private IdDesc puntoEquilibrioFindOneByText(String text) throws IOException, URISyntaxException {
+
+		IdDescArgs idDescArgs = new IdDescArgs();
+		idDescArgs.setText(text);
+
+		PuntoEquilibrioIdDescArgs argsPuntoEquilibrio = new PuntoEquilibrioIdDescArgs();
+		argsPuntoEquilibrio.setEjercicioContable(args.getEjercicioContable());
+
+		String urlString = "PuntoEquilibrio/findOneByText";
+
+		return Service.GETIdDesc(urlString, idDescArgs, argsPuntoEquilibrio);
+
+	}
 
 	private List<CuentaContableTableItem> findAll() {
 
@@ -528,6 +700,8 @@ public class CuentaContableTable implements Initializable {
 
 	}
 
+	// ==========================================================================
+
 	// ================================================================================================
 
 	public void initialize(URL url, ResourceBundle rb) {
@@ -574,6 +748,11 @@ public class CuentaContableTable implements Initializable {
 
 		operator.getSelectionModel().selectedIndexProperty()
 				.addListener((obs, oldV, newV) -> onBuscarChangeOperadorFiltro((int) newV));
+
+		// --------------------------------------------------------------------------
+
+		puntoEquilibrioSearch.focusedProperty()
+				.addListener((obs, oldVal, newVal) -> onFocusedPuntoEquilibrioSearch(oldVal, newVal));
 
 	}
 
@@ -650,7 +829,7 @@ public class CuentaContableTable implements Initializable {
 		CuentaContableTable viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
 		viewController.args = filter;
-		viewController.filtro.textProperty().bindBidirectional(filter.filtroProperty());
+//		viewController.filtro.textProperty().bindBidirectional(filter.filtroProperty());
 		viewController.onPorCuentaContable(null);
 
 		return viewController;

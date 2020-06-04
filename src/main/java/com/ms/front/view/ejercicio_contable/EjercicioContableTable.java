@@ -26,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -74,11 +75,14 @@ public class EjercicioContableTable implements Initializable {
 	@FXML
 	private Button elegirEjercicio;
 
-	@FXML
-	private Label status;
+//	@FXML
+//	private Label status;
+	
+    @FXML
+    private ProgressIndicator progress;
 
-	@FXML
-	private Button buscar;
+//	@FXML
+//	private Button buscar;
 
 	@FXML
 	private Label totalItems;
@@ -285,7 +289,9 @@ public class EjercicioContableTable implements Initializable {
 
 	private void onBuscar(String msg) {
 
-		status.setText(msg);
+//		status.setText(msg);
+		
+		progress.setVisible(true);
 
 		String lastId = null;
 		if (table.getSelectionModel().getSelectedIndex() > -1) {
@@ -307,8 +313,10 @@ public class EjercicioContableTable implements Initializable {
 			}
 		}
 		table.requestFocus();
+		
+		progress.setVisible(false);
 
-		status.setText("");
+//		status.setText("");
 	}
 
 	// ==========================================================================
@@ -396,7 +404,7 @@ public class EjercicioContableTable implements Initializable {
 		eliminar.setTooltip(new Tooltip("Eliminar (ALT+E)"));
 //		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
 		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
-		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
+//		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
 		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
 
 		// --------------------------------------------------------------------------
@@ -431,16 +439,66 @@ public class EjercicioContableTable implements Initializable {
 
 			protected void updateItem(EjercicioContableTableItem item, boolean empty) {
 				super.updateItem(item, empty);
+
 				// https://stackoverflow.com/questions/30889732/javafx-tableview-change-row-color-based-on-column-value
 				// https://material-ui.com/customization/color/
 				if (item != null && item.getPrincipal() != null && item.getPrincipal().equals("Si")) {
-					setStyle("-fx-background-color: #009688; "); // teal 500
+
+					if (this.isSelected()) {
+						setStyle("-fx-background-color: #009688; "); // teal 500
+					} else {
+						setStyle("-fx-background-color: #80cbc4; "); // teal 200
+					}
+
+					
+//					setBackground(
+//							new Background(new BackgroundFill(Color.AQUA, new CornerRadii(5.0), Insets.EMPTY)));
 				} else {
 					setStyle("");
 				}
 
 			}
 		});
+
+//		table.setRowFactory(new Callback<ListView<String>, ListCell<String>>() {
+//			@Override
+//			public ListCell<String> call(ListView<String> param) {
+//
+//				ListCell<String> cell = new ListCell<String>() {
+//
+//					@Override
+//					protected void updateItem(EjercicioContableTableItem item, boolean empty) {
+//
+//						super.updateItem(item, empty);
+//
+//						setText(item);
+//						
+//						if (item != null && item.getPrincipal() != null && item.getPrincipal().equals("Si")) {
+//							setBackground(
+//									new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), Insets.EMPTY)));
+//						} else {
+//							setStyle("");
+//						}
+//
+//
+//						if ("high".equalsIgnoreCase(item)) {
+//							setBackground(
+//									new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), Insets.EMPTY)));
+//						} else if ("medium".equalsIgnoreCase(item)) {
+//							setBackground(new Background(
+//									new BackgroundFill(Color.YELLOW, new CornerRadii(5.0), Insets.EMPTY)));
+//						} else if ("low".equalsIgnoreCase(item)) {
+//							setBackground(new Background(
+//									new BackgroundFill(Color.GREEN, new CornerRadii(5.0), Insets.EMPTY)));
+//						}
+//					}
+//
+//				};
+//
+//				return cell;
+//
+//			}
+//		});
 
 	}
 
