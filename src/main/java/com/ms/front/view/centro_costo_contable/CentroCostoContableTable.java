@@ -98,9 +98,9 @@ public class CentroCostoContableTable implements Initializable {
 
 //	@FXML
 //	private Label status;
-	
+
 	@FXML
-    private ProgressIndicator progress;
+	private ProgressIndicator progress;
 
 //	@FXML
 //	private Button buscar;
@@ -285,14 +285,28 @@ public class CentroCostoContableTable implements Initializable {
 
 	@FXML
 	private void onPorCentroDeCosto(ActionEvent event) {
-		args.setPorCentroDeCosto();
-		onBuscarStart();
+
+		if (porCentroDeCosto.isSelected()) {
+			args.setPorCentroDeCosto();
+			onBuscarStart();
+		} else {
+			porToogleGroup.selectToggle(porNombre);
+			onPorNombre(null);
+		}
+
 	}
 
 	@FXML
 	private void onPorNombre(ActionEvent event) {
-		args.setPorNombre();
-		onBuscarStart();
+
+		if (porNombre.isSelected()) {
+			args.setPorNombre();
+			onBuscarStart();
+		} else {
+			porToogleGroup.selectToggle(porCentroDeCosto);
+			onPorCentroDeCosto(null);
+		}
+
 	}
 
 	// ================================================================================================
@@ -334,7 +348,7 @@ public class CentroCostoContableTable implements Initializable {
 	private void onBuscar(String msg) {
 
 //		status.setText(msg);
-		
+
 		progress.setVisible(true);
 
 		String lastId = null;
@@ -357,7 +371,7 @@ public class CentroCostoContableTable implements Initializable {
 			}
 		}
 		table.requestFocus();
-		
+
 		progress.setVisible(false);
 
 //		status.setText("");
@@ -406,7 +420,7 @@ public class CentroCostoContableTable implements Initializable {
 				if (t[i][j] != null) {
 					item.setAbreviatura(t[i][j].toString());
 				}
-				
+
 				j++;
 				if (t[i][j] != null) {
 					item.setNombre(t[i][j].toString());

@@ -15,6 +15,9 @@ import com.ms.front.model.PaginArgs;
 import com.ms.front.model.ServiceArgs;
 import com.ms.front.services.Service;
 import com.ms.front.view.JavaFXUtil;
+import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
+import com.ms.front.view.centro_costo_contable.CentroCostoContableTable;
+import com.ms.front.view.centro_costo_contable.CentroCostoContableTableItem;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioIdDescArgs;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioPaginArgs;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTable;
@@ -162,6 +165,98 @@ public class CuentaContableTable implements Initializable {
     @FXML
     private AnchorPane filterVarios;
 
+    @FXML
+    private AnchorPane filterCentroCosto;
+
+    @FXML
+    private Label centroCostoLabel;
+
+    @FXML
+    private TextField centroCostoSearch;
+
+    @FXML
+    private Button openCentroCostoTable;
+
+	// =============================================================================================
+    
+    private String textValueTmpCentroCosto;
+    
+    @FXML
+    void onActionOpenCentoCostoTable(ActionEvent event) {
+    	try {
+			openCentroCostoTableItem();
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+    }
+    
+    @FXML
+	void onKeyTypedSearchCentroCosto(KeyEvent event) {
+		int key = (int) event.getCharacter().charAt(0);
+		if (key == 13) {
+			buscarCentroCosto();
+		}
+	}
+    
+    private void onFocusedCentroCostoSearch(Boolean oldVal, Boolean newVal) {
+		if (oldVal == false && newVal == true) { // entra
+			textValueTmpCentroCosto = centroCostoSearch.getText();
+			centroCostoSearch.setText("");
+			centroCostoSearch.setFont(Font.font("System", FontPosture.ITALIC, 12));
+			centroCostoSearch.setStyle("-fx-background-color: #607d8b; -fx-text-fill: #FFFFFF;"); // blueGrey 500
+		} else if (oldVal == true && newVal == false) { // sale
+			centroCostoSearch.setText(textValueTmpCentroCosto);
+			centroCostoSearch.setFont(Font.font("System", FontPosture.REGULAR, 12));
+			centroCostoSearch.setStyle("");
+		}
+	}
+    
+	private void buscarCentroCosto() {
+
+		try {
+
+			if (centroCostoSearch.getText().trim().length() == 0) {
+				
+				textValueTmpCentroCosto = "";
+				centroCostoSearch.setText(textValueTmpCentroCosto);
+				
+				this.onPorCentroDeCosto(null);
+				
+				return;
+			}
+
+			IdDesc idDesc = this.centroCostoFindOneByText(centroCostoSearch.getText());
+
+			if (idDesc != null && idDesc.getId() != null) {
+				textValueTmpCentroCosto = idDesc.getDesc();
+				centroCostoSearch.setText(textValueTmpCentroCosto);
+				openCentroCostoTable.requestFocus();
+			} else {
+				openCentroCostoTableItem();
+			}
+			
+			this.onPorCentroDeCosto(null);
+
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+	
+	private void openCentroCostoTableItem() throws IOException {
+		CentroCostoContablePaginArgs filter = new CentroCostoContablePaginArgs();
+		filter.setEjercicioContable(args.getEjercicioContable());
+		CentroCostoContableTableItem item = CentroCostoContableTable.showAndWait(new Stage(), view, filter);
+		if (item != null) {
+			textValueTmpCentroCosto = item.getNumero() + " - " + item.getNombre();
+			centroCostoSearch.setText(textValueTmpCentroCosto);
+			openCentroCostoTable.requestFocus();
+		} else {
+			textValueTmpCentroCosto = "";
+			centroCostoSearch.setText(textValueTmpCentroCosto);
+		}
+
+	}
+    
 	// =============================================================================================
 
 	private String textValueTmpPuntoEquilibrio;
@@ -455,7 +550,9 @@ public class CuentaContableTable implements Initializable {
 		
 		if(porCuentaContable.isSelected()) {
 			filterVarios.setVisible(true);
+			filterCentroCosto.setVisible(false);
 			filterPuntoEqulibrio.setVisible(false);
+			
 			args.setFiltro(filtro.getText());
 			args.setPorCuentaContable();
 			filtro.setPromptText("Buscar por cuenta contable");
@@ -472,7 +569,9 @@ public class CuentaContableTable implements Initializable {
 	private void onPorNombre(ActionEvent event) {
 		if(porNombre.isSelected()) {
 			filterVarios.setVisible(true);
+			filterCentroCosto.setVisible(false);
 			filterPuntoEqulibrio.setVisible(false);
+			
 			args.setFiltro(filtro.getText());
 			args.setPorNombre();
 			filtro.setPromptText("Buscar por nombre");
@@ -488,7 +587,9 @@ public class CuentaContableTable implements Initializable {
 	private void onPorCuentaAgrupadora(ActionEvent event) {
 		if(porCuentaAgrupadora.isSelected()) {
 			filterVarios.setVisible(true);
+			filterCentroCosto.setVisible(false);
 			filterPuntoEqulibrio.setVisible(false);
+			
 			args.setFiltro(filtro.getText());
 			args.setPorCuentaAgrupadora();
 			filtro.setPromptText("Buscar por cuenta agrupadora");
@@ -504,7 +605,9 @@ public class CuentaContableTable implements Initializable {
 	private void onPorCentroDeCosto(ActionEvent event) {
 		if(porCentroDeCosto.isSelected()) {
 			filterVarios.setVisible(false);
+			filterCentroCosto.setVisible(true);
 			filterPuntoEqulibrio.setVisible(false);
+			
 			args.setPorCentroDeCosto();
 			filtro.setPromptText("Buscar por centro de costo");
 			onBuscarStart();
@@ -518,8 +621,10 @@ public class CuentaContableTable implements Initializable {
 	@FXML
 	private void onPorPuntoDeEquilibrio(ActionEvent event) {
 		if(porPuntoDeEquilibrio.isSelected()) {
-			filterVarios.setVisible(false);		
+			filterVarios.setVisible(false);
+			filterCentroCosto.setVisible(false);
 			filterPuntoEqulibrio.setVisible(true);
+			
 			args.setFiltro(puntoEquilibrioSearch.getText());
 			args.setPorPuntoDeEquilibrio();
 			filtro.setPromptText("Buscar por punto de equilibrio");
@@ -613,6 +718,20 @@ public class CuentaContableTable implements Initializable {
 
 	// ==========================================================================
 
+	private IdDesc centroCostoFindOneByText(String text) throws IOException, URISyntaxException {
+
+		IdDescArgs idDescArgs = new IdDescArgs();
+		idDescArgs.setText(text);
+
+		PuntoEquilibrioIdDescArgs argsPuntoEquilibrio = new PuntoEquilibrioIdDescArgs();
+		argsPuntoEquilibrio.setEjercicioContable(args.getEjercicioContable());
+
+		String urlString = "CentroCostoContable/findOneByText";
+
+		return Service.GETIdDesc(urlString, idDescArgs, argsPuntoEquilibrio);
+
+	}
+	
 	private IdDesc puntoEquilibrioFindOneByText(String text) throws IOException, URISyntaxException {
 
 		IdDescArgs idDescArgs = new IdDescArgs();
@@ -751,8 +870,11 @@ public class CuentaContableTable implements Initializable {
 
 		// --------------------------------------------------------------------------
 
+		centroCostoSearch.focusedProperty()
+				.addListener((obs, oldVal, newVal) -> onFocusedCentroCostoSearch(oldVal, newVal));
+		
 		puntoEquilibrioSearch.focusedProperty()
-				.addListener((obs, oldVal, newVal) -> onFocusedPuntoEquilibrioSearch(oldVal, newVal));
+		.addListener((obs, oldVal, newVal) -> onFocusedPuntoEquilibrioSearch(oldVal, newVal));
 
 	}
 
