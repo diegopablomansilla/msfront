@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -18,12 +19,30 @@
           <TableColumn fx:id="nombre" prefWidth="409.0" sortable="false" text="Nombre" />
             <TableColumn fx:id="tipoPuntoEquilibrio" minWidth="0.0" prefWidth="212.0" sortable="false" text="Tipo" />
         </columns>
+         <tooltip>
+            <Tooltip text="Buscar (CTRL+ENTER)" />
+         </tooltip>
       </TableView>
-      <Button fx:id="agregar" layoutX="14.0" layoutY="456.0" onAction="#onAgregar" text="_Agregar" />
-      <Button fx:id="cambiar" layoutX="79.0" layoutY="456.0" onAction="#onCambiar" text="_Cambiar" />
-      <Button fx:id="eliminar" layoutX="149.0" layoutY="456.0" onAction="#onEliminar" text="_Eliminar" />
-      <Button fx:id="copiar" layoutX="217.0" layoutY="456.0" onAction="#onCopiar" text="Cop_iar" />
-      <Button fx:id="seleccionar" layoutX="680.0" layoutY="456.0" onAction="#onSeleccionar" text="_Seleccionar" />
+      <Button fx:id="agregar" layoutX="14.0" layoutY="456.0" onAction="#onAgregar" text="_Agregar">
+         <tooltip>
+            <Tooltip text="Agregar (ALT+A)" />
+         </tooltip></Button>
+      <Button fx:id="cambiar" layoutX="79.0" layoutY="456.0" onAction="#onCambiar" text="_Cambiar">
+         <tooltip>
+            <Tooltip text="Cambiar (ALT+C)" />
+         </tooltip></Button>
+      <Button fx:id="eliminar" layoutX="149.0" layoutY="456.0" onAction="#onEliminar" text="_Eliminar">
+         <tooltip>
+            <Tooltip text="Eliminar (ALT+E)" />
+         </tooltip></Button>
+      <Button fx:id="copiar" layoutX="217.0" layoutY="456.0" onAction="#onCopiar" text="Cop_iar">
+         <tooltip>
+            <Tooltip text="Copiar (ALT+I)" />
+         </tooltip></Button>
+      <Button fx:id="seleccionar" layoutX="680.0" layoutY="456.0" onAction="#onSeleccionar" text="_Seleccionar">
+         <tooltip>
+            <Tooltip text="Seleccionar (ALT+S)" />
+         </tooltip></Button>
       <Label fx:id="totalItems" layoutX="14.0" layoutY="431.0" prefHeight="17.0" prefWidth="241.0" />
       <HBox fx:id="pagination" layoutX="331.0" layoutY="430.0" spacing="3.0">
          <children>

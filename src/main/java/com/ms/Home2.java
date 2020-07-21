@@ -1,6 +1,6 @@
 package com.ms;
 
-import com.ms.view.ejercicio_contable.EjercicioContableCrl;
+import com.ms.old.view.ejercicio_contable.EjercicioContableCrl;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

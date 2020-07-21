@@ -225,17 +225,17 @@ public class Pagin extends ObjectModel {
 			return null;
 		}
 
-		String att = "payload";
+//		att = "payload";
+//
+//		if (jo.containsKey(att) && jo.isNull(att)) {
+//			return null;
+//		}
 
-		if (jo.containsKey(att) && jo.isNull(att)) {
-			return null;
-		}
-
-		jo = jo.getJsonObject(att);
+//		jo = jo.getJsonObject(att);
 
 		Pagin p = new Pagin();
 
-		att = "pageRequest";
+		String att = "pageRequest";
 
 		if (jo.containsKey(att) && !jo.isNull(att)) {
 			p.setPageRequest(jo.getString(att));

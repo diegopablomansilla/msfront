@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -27,29 +28,44 @@
       <ToggleButton fx:id="porPuntoDeEquilibrio" layoutX="496.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPorPuntoDeEquilibrio" text="Por punto de equilibrio" toggleGroup="$porToogleGroup" />
       <AnchorPane fx:id="filterVarios" layoutX="12.0" layoutY="44.0">
          <children>
-            <ChoiceBox fx:id="operator" prefHeight="25.0" prefWidth="203.0" />
+            <ChoiceBox fx:id="operator" prefHeight="25.0" prefWidth="203.0">
+               <tooltip>
+                  <Tooltip text="Ctrl + #" />
+               </tooltip></ChoiceBox>
             <TextField fx:id="filtro" layoutX="207.0" onKeyTyped="#onKeyTypedFiltro" prefHeight="25.0" prefWidth="650.0" promptText="buscar por cuenta contable ...">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Buscar (CTRL+ENTER)" />
+               </tooltip>
             </TextField>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="filterCentroCosto" layoutX="12.0" layoutY="44.0" visible="false">
          <children>
             <Label fx:id="centroCostoLabel" layoutY="4.0" text="Centro de costo:" />
-            <TextField fx:id="centroCostoSearch" layoutX="112.0" onKeyTyped="#onKeyTypedSearchCentroCosto" prefHeight="25.0" prefWidth="417.0" promptText="buscar por codigo o nombre" />
+            <TextField fx:id="centroCostoSearch" layoutX="112.0" onKeyTyped="#onKeyTypedSearchCentroCosto" prefHeight="25.0" prefWidth="417.0" promptText="buscar por número o nombre">
+               <tooltip>
+                  <Tooltip text="Buscar (ENTER)" />
+               </tooltip></TextField>
             <Button fx:id="openCentroCostoTable" layoutX="531.0" mnemonicParsing="false" onAction="#onActionOpenCentoCostoTable" text="+" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="filterPuntoEqulibrio" layoutX="12.0" layoutY="44.0" visible="false">
          <children>
             <Label fx:id="puntoEquilibrioLabel" layoutY="4.0" text="Punto de equlibrio:" />
-            <TextField fx:id="puntoEquilibrioSearch" layoutX="112.0" onKeyTyped="#onKeyTypedSearchPuntoEquilibrio" prefHeight="25.0" prefWidth="417.0" promptText="buscar por codigo o nombre" />
+            <TextField fx:id="puntoEquilibrioSearch" layoutX="112.0" onKeyTyped="#onKeyTypedSearchPuntoEquilibrio" prefHeight="25.0" prefWidth="417.0" promptText="buscar por número o nombre">
+               <tooltip>
+                  <Tooltip text="Buscar (ENTER)" />
+               </tooltip></TextField>
             <Button fx:id="openPuntoEquilibrioTable" layoutX="531.0" mnemonicParsing="false" onAction="#onActionOpenPuntoEquilibrioTable" text="+" />
          </children>
       </AnchorPane>
-      <Button fx:id="buscar" layoutX="875.0" layoutY="45.0" onAction="#onBuscar" text="_Buscar" />
+      <Button fx:id="buscar" layoutX="875.0" layoutY="45.0" onAction="#onBuscar" text="_Buscar">
+         <tooltip>
+            <Tooltip text="Buscar (ALT+B)" />
+         </tooltip></Button>
       <TableView fx:id="table" layoutX="12.0" layoutY="74.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="380.0" prefWidth="917.0">
         <columns>
           <TableColumn fx:id="codigo" prefWidth="100.0" sortable="false" text="Cta. contable" />
@@ -58,12 +74,30 @@
             <TableColumn fx:id="cuentaAgrupadora" prefWidth="104.0" sortable="false" text="Cta. agrupadora" />
             <TableColumn fx:id="porcentaje" sortable="false" text="Porcentaje" />
         </columns>
+         <tooltip>
+            <Tooltip text="Buscar (CTRL+ENTER)" />
+         </tooltip>
       </TableView>
-      <Button fx:id="agregar" layoutX="15.0" layoutY="492.0" onAction="#onAgregar" text="_Agregar" />
-      <Button fx:id="cambiar" layoutX="80.0" layoutY="492.0" onAction="#onCambiar" text="_Cambiar" />
-      <Button fx:id="eliminar" layoutX="150.0" layoutY="492.0" onAction="#onEliminar" text="_Eliminar" />
-      <Button fx:id="copiar" layoutX="218.0" layoutY="492.0" onAction="#onCopiar" text="Cop_iar" />
-      <Button fx:id="seleccionar" layoutX="851.0" layoutY="492.0" onAction="#onSeleccionar" text="_Seleccionar" />
+      <Button fx:id="agregar" layoutX="15.0" layoutY="492.0" onAction="#onAgregar" text="_Agregar">
+         <tooltip>
+            <Tooltip text="Agregar (ALT+A)" />
+         </tooltip></Button>
+      <Button fx:id="cambiar" layoutX="80.0" layoutY="492.0" onAction="#onCambiar" text="_Cambiar">
+         <tooltip>
+            <Tooltip text="Cambiar (ALT+C)" />
+         </tooltip></Button>
+      <Button fx:id="eliminar" layoutX="150.0" layoutY="492.0" onAction="#onEliminar" text="_Eliminar">
+         <tooltip>
+            <Tooltip text="Eliminar (ALT+E)" />
+         </tooltip></Button>
+      <Button fx:id="copiar" layoutX="218.0" layoutY="492.0" onAction="#onCopiar" text="Cop_iar">
+         <tooltip>
+            <Tooltip text="Copiar (ALT+I)" />
+         </tooltip></Button>
+      <Button fx:id="seleccionar" layoutX="851.0" layoutY="492.0" onAction="#onSeleccionar" text="_Seleccionar">
+         <tooltip>
+            <Tooltip text="Seleccionar (ALT+S)" />
+         </tooltip></Button>
       <Label fx:id="totalItems" layoutX="15.0" layoutY="462.0" />
       <HBox fx:id="pagination" layoutX="417.0" layoutY="461.0" spacing="3.0">
          <children>

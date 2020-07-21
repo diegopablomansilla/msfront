@@ -57,17 +57,17 @@ public class IdDesc extends ObjectModel {
 			return null;
 		}
 
-		String att = "payload";
+//		String att = "payload";
 
-		if (jo.containsKey(att) && jo.isNull(att)) {
-			return null;
-		}
+//		if (jo.containsKey(att) && jo.isNull(att)) {
+//			return null;
+//		}
 
-		jo = jo.getJsonObject(att);
+//		jo = jo.getJsonObject(att);
 
 		IdDesc p = new IdDesc();
 
-		att = "id";
+		String att = "id";
 
 		if (jo.containsKey(att) && !jo.isNull(att)) {
 			p.setId(jo.getString(att));

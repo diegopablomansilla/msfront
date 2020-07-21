@@ -1,4 +1,4 @@
-package com.ms.view.ejercicio_contable;
+package com.ms.old.view.ejercicio_contable;
 
 import java.time.LocalDate;
 

@@ -1,63 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="view" prefHeight="583.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.modulos.ModuloContabilidadGeneralController">
+<VBox fx:id="view" prefHeight="583.0" prefWidth="1043.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.modulos.ModuloContabilidadGeneralController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Archivos">
           <items>
-            <MenuItem mnemonicParsing="false" text="Plan de cuentas (orden --&gt; cuentas de jerarquía) ..." />
-            <MenuItem mnemonicParsing="false" onAction="#onOpenCuentaContableList" text="Plan de cuentas ..." />
+            <MenuItem disable="true" mnemonicParsing="false" text="Plan de cuentas (orden --&gt; cuentas de jerarquía) ..." />
+            <MenuItem fx:id="mOpenCuentaContableList" mnemonicParsing="false" onAction="#onOpenCuentaContableList" text="Plan de cuentas ..." />
                   <MenuItem mnemonicParsing="false" onAction="#onOpenEjercicioContableList" text="Ejercicios contables ..." />
-            <MenuItem mnemonicParsing="false" text="Modelos de asientos" />
-            <MenuItem mnemonicParsing="false" onAction="#onOpenCentroDeCostoContableList" text="Centros de costos ..." />
-            <MenuItem mnemonicParsing="false" onAction="#onOpenPuntoEquilibrioList" text="Punto de equilibrio" />
+            <MenuItem fx:id="mOpenAsientoModeloList" mnemonicParsing="false" onAction="#onOpenAsientoModeloList" text="Modelos de asientos" />
+            <MenuItem fx:id="mOpenCentroDeCostoContableList" mnemonicParsing="false" onAction="#onOpenCentroDeCostoContableList" text="Centros de costos ..." />
+            <MenuItem fx:id="mOpenPuntoEquilibrioList" mnemonicParsing="false" onAction="#onOpenPuntoEquilibrioList" text="Punto de equilibrio" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Parámetros generales" />
-                  <MenuItem mnemonicParsing="false" text="Fecha de cierre por módulos" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Parámetros generales" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Fecha de cierre por módulos" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Especificar impresora ..." />
+            <MenuItem disable="true" mnemonicParsing="false" text="Especificar impresora ..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Salir" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Salir" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="Asientos">
           <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Nuevo asiento .." />
+            <MenuItem disable="true" mnemonicParsing="false" text="Asientos realizados ..." />
+            <MenuItem disable="true" mnemonicParsing="false" text="Lote de asientos importados ..." />
+            <MenuItem disable="true" mnemonicParsing="false" text="Anulación de asientos ..." />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="Procesos">
           <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem disable="true" mnemonicParsing="false" text="Control de asientos ..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Cierre de contabilidad" />
           </items>
         </Menu>
+            <Menu mnemonicParsing="false" text="Informes">
+               <items>
+                  <MenuItem disable="true" mnemonicParsing="false" text="Balance general" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Balance de comprobación de saldos" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Informe estados de resultados" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Libro diario" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Mayor" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Plan de cuenta ..." />
+               </items>
+            </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="334.0" prefWidth="342.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="558.0" prefWidth="926.0" VBox.vgrow="ALWAYS">
       <children>
-        <Label alignment="CENTER" layoutX="239.0" layoutY="174.0" style="&#10;" text="MasSoftware" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+        <Label alignment="CENTER" layoutX="861.0" layoutY="13.0" style="&#10;" text="Contabilidad General" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
             <Font size="18.0" />
           </font>
         </Label>
+            <Button disable="true" layoutX="10.0" layoutY="14.0" mnemonicParsing="false" text="Plan de cuentas" />
+            <Button disable="true" layoutX="120.0" layoutY="14.0" mnemonicParsing="false" text="Nuevo asiento" />
+            <Button disable="true" layoutX="224.0" layoutY="14.0" mnemonicParsing="false" text="Mayor" />
+            <AnchorPane fx:id="filterEjercicioContable" layoutX="385.0" layoutY="14.0" prefHeight="25.0" prefWidth="264.0">
+               <children>
+                  <Label fx:id="ejercicioContableLabel" layoutX="2.0" layoutY="4.0" text="Ejercicio contable:" />
+                  <TextField fx:id="ejercicioContableSearch" layoutX="108.0" onKeyTyped="#onKeyTypedSearchEjercicioContable" prefHeight="25.0" prefWidth="123.0" promptText="buscar por número" />
+                  <Button fx:id="openEjercicioContableTable" layoutX="234.0" mnemonicParsing="false" onAction="#onActionOpenEjercicioContableTable" text="+" />
+               </children>
+            </AnchorPane>
       </children>
     </AnchorPane>
   </children>

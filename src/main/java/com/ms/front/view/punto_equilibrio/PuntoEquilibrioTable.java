@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.ms.front.commons.services.Service;
 import com.ms.front.model.Pagin;
 import com.ms.front.model.PaginArgs;
-import com.ms.front.services.Service;
 import com.ms.front.view.JavaFXUtil;
 
 import javafx.beans.binding.Bindings;
@@ -377,11 +377,11 @@ public class PuntoEquilibrioTable implements Initializable {
 
 	public void initialize(URL url, ResourceBundle rb) {
 
-		agregar.setTooltip(new Tooltip("Agregar (ALT+A)"));
-		cambiar.setTooltip(new Tooltip("Cambiar (ALT+C)"));
-		eliminar.setTooltip(new Tooltip("Eliminar (ALT+E)"));
-		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
-		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
+//		agregar.setTooltip(new Tooltip("Agregar (ALT+A)"));
+//		cambiar.setTooltip(new Tooltip("Cambiar (ALT+C)"));
+//		eliminar.setTooltip(new Tooltip("Eliminar (ALT+E)"));
+//		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
+//		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
 //		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
 		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
 

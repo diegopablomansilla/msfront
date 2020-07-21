@@ -50,6 +50,19 @@ public class JavaFXUtil {
 		alert.show();
 
 	}
+	
+	public static void buildAlertService400() {
+
+		Alert alert = new Alert(AlertType.ERROR);
+
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.setTitle("ERROR");
+		alert.setHeaderText("Ups ha ocurrido un error!!!");
+		alert.setContentText("Lo sentimos, ha ocurrido un error interno en la app.");
+
+		alert.show();
+
+	}
 
 	public static void buildAlertException(Exception e) {
 

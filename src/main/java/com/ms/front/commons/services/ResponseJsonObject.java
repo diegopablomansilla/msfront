@@ -1,4 +1,4 @@
-package com.ms.front.services;
+package com.ms.front.commons.services;
 
 public class ResponseJsonObject {
 	

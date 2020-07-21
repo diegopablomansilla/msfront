@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -26,12 +27,26 @@
             <TableColumn fx:id="abreviatura" minWidth="0.0" prefWidth="117.0" sortable="false" text="Abreviatura" />
           <TableColumn fx:id="nombre" prefWidth="534.0" sortable="false" text="Nombre" />
         </columns>
+         <tooltip>
+            <Tooltip text="Buscar (CTRL+ENTER)" />
+         </tooltip>
       </TableView>
-      <Button fx:id="agregar" layoutX="15.0" layoutY="492.0" onAction="#onAgregar" text="_Agregar" />
-      <Button fx:id="cambiar" layoutX="80.0" layoutY="492.0" onAction="#onCambiar" text="_Cambiar" />
-      <Button fx:id="eliminar" layoutX="150.0" layoutY="492.0" onAction="#onEliminar" text="_Eliminar" />
-      <Button fx:id="copiar" layoutX="218.0" layoutY="492.0" onAction="#onCopiar" text="Cop_iar" />
-      <Button fx:id="seleccionar" layoutX="709.0" layoutY="492.0" onAction="#onSeleccionar" text="_Seleccionar" />
+      <Button fx:id="agregar" layoutX="15.0" layoutY="492.0" onAction="#onAgregar" text="_Agregar">
+         <tooltip>
+            <Tooltip text="Agregar (ALT+A)" />
+         </tooltip></Button>
+      <Button fx:id="cambiar" layoutX="80.0" layoutY="492.0" onAction="#onCambiar" text="_Cambiar">
+         <tooltip>
+            <Tooltip text="Cambiar (ALT+C)" />
+         </tooltip></Button>
+      <Button fx:id="eliminar" layoutX="150.0" layoutY="492.0" onAction="#onEliminar" text="_Eliminar">
+         <tooltip>
+            <Tooltip text="Eliminar (ALT+E)" />
+         </tooltip></Button>
+      <Button fx:id="seleccionar" layoutX="709.0" layoutY="492.0" onAction="#onSeleccionar" text="_Seleccionar">
+         <tooltip>
+            <Tooltip text="Seleccionar (ALT+S)" />
+         </tooltip></Button>
       <Label fx:id="totalItems" layoutX="15.0" layoutY="462.0" prefHeight="17.0" prefWidth="201.0" />
       <HBox fx:id="pagination" layoutX="340.0" layoutY="461.0" spacing="3.0">
          <children>

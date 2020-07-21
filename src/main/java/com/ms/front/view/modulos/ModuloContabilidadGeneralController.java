@@ -1,39 +1,188 @@
 package com.ms.front.view.modulos;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.ms.front.commons.services.Service;
+import com.ms.front.model.IdDesc;
+import com.ms.front.model.IdDescArgs;
 import com.ms.front.view.JavaFXUtil;
+import com.ms.front.view.asiento_modelo.AsientoModeloPaginArgs;
+import com.ms.front.view.asiento_modelo.AsientoModeloTable;
 import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
 import com.ms.front.view.centro_costo_contable.CentroCostoContableTable;
 import com.ms.front.view.cuenta_contable.CuentaContablePaginArgs;
 import com.ms.front.view.cuenta_contable.CuentaContableTable;
 import com.ms.front.view.ejercicio_contable.EjercicioContableTable;
+import com.ms.front.view.ejercicio_contable.EjercicioContableTableItem;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioPaginArgs;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTable;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
 
 public class ModuloContabilidadGeneralController implements Initializable {
 
+	private static final String TITLE = "Contabilidad general";
+
+	private final SimpleStringProperty ejercicioContableId = new SimpleStringProperty();
+
+	// =============================================================================================
+
 	@FXML
 	public VBox view;
 
-	// ----------------------------------------------------------------------
+	@FXML
+	private MenuItem mOpenCuentaContableList;
 
-	private static final String TITLE = "Contabilidad general";
+	@FXML
+	private MenuItem mOpenAsientoModeloList;
 
-	// ----------------------------------------------------------------------
+	@FXML
+	private MenuItem mOpenCentroDeCostoContableList;
+
+	@FXML
+	private MenuItem mOpenPuntoEquilibrioList;
+
+	@FXML
+	private AnchorPane filterEjercicioContable;
+
+	@FXML
+	private Label ejercicioContableLabel;
+
+	@FXML
+	private TextField ejercicioContableSearch;
+
+	@FXML
+	private Button openEjercicioContableTable;
+
+	// =============================================================================================
+
+	private String textValueTmpEjercicioContable;
+
+	@FXML
+	void onActionOpenEjercicioContableTable(ActionEvent event) {
+		try {
+			openEjercicioContableTableItem();
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+
+	@FXML
+	void onKeyTypedSearchEjercicioContable(KeyEvent event) {
+		int key = (int) event.getCharacter().charAt(0);
+		if (key == 13) {
+			buscarEjercicioContable();
+		}
+	}
+
+	private void onFocusedEjercicioContableSearch(Boolean oldVal, Boolean newVal) {
+		if (oldVal == false && newVal == true) { // entra
+			textValueTmpEjercicioContable = ejercicioContableSearch.getText();
+			ejercicioContableSearch.setText("");
+			ejercicioContableSearch.setFont(Font.font("System", FontPosture.ITALIC, 12));
+			ejercicioContableSearch.setStyle("-fx-background-color: #607d8b; -fx-text-fill: #FFFFFF;"); // blueGrey 500
+		} else if (oldVal == true && newVal == false) { // sale
+			ejercicioContableSearch.setText(textValueTmpEjercicioContable);
+			ejercicioContableSearch.setFont(Font.font("System", FontPosture.REGULAR, 12));
+			ejercicioContableSearch.setStyle("");
+		}
+	}
+
+	private void buscarEjercicioContable() {
+
+		try {
+
+			if (ejercicioContableSearch.getText().trim().length() == 0) {
+
+				textValueTmpEjercicioContable = "";
+				ejercicioContableSearch.setText(textValueTmpEjercicioContable);
+
+				ejercicioContableId.set(null);
+//				args.setFiltro(null);
+//				this.onPorEjercicioContable(null); // buscar findAll
+
+				return;
+			}
+
+			IdDesc idDesc = this.ejercicioContableFindOneByText(ejercicioContableSearch.getText());
+
+			if (idDesc != null && idDesc.getId() != null) {
+				textValueTmpEjercicioContable = idDesc.getDesc();
+				ejercicioContableSearch.setText(textValueTmpEjercicioContable);
+				openEjercicioContableTable.requestFocus();
+
+				ejercicioContableId.set(idDesc.getId());
+//				args.setFiltro(idDesc.getId());
+//				this.onPorEjercicioContable(null); // buscar findAll
+			} else {
+				openEjercicioContableTableItem();
+			}
+
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+
+	private void openEjercicioContableTableItem() throws IOException {
+		EjercicioContableTableItem item = EjercicioContableTable.showAndWait(new Stage(), view);
+		if (item != null) {
+			textValueTmpEjercicioContable = item.getNumero();
+			ejercicioContableSearch.setText(textValueTmpEjercicioContable);
+			openEjercicioContableTable.requestFocus();
+			ejercicioContableId.set(item.getId());
+//			args.setFiltro(item.getId());
+		} else {
+			textValueTmpEjercicioContable = "";
+			ejercicioContableSearch.setText(textValueTmpEjercicioContable);
+			ejercicioContableId.set(null);
+//			args.setFiltro(null);
+		}
+//		this.onPorEjercicioContable(null); // buscar findAll
+
+	}
+
+	private IdDesc ejercicioContableFindOneByText(String text) throws IOException, URISyntaxException {
+
+		IdDescArgs idDescArgs = new IdDescArgs();
+		idDescArgs.setText(text);
+
+		String urlString = "EjercicioContable/findOneByText";
+
+		return Service.GETIdDesc(urlString, idDescArgs);
+
+	}
+
+	// =============================================================================================
 
 	public void initialize(URL url, ResourceBundle rb) {
 
+		mOpenCuentaContableList.disableProperty().bind(Bindings.isEmpty(ejercicioContableId));
+		mOpenAsientoModeloList.disableProperty().bind(Bindings.isEmpty(ejercicioContableId));
+		mOpenCentroDeCostoContableList.disableProperty().bind(Bindings.isEmpty(ejercicioContableId));
+		mOpenPuntoEquilibrioList.disableProperty().bind(Bindings.isEmpty(ejercicioContableId));
+		// --------------------------------------------------------------------------
+
+		ejercicioContableSearch.focusedProperty()
+				.addListener((obs, oldVal, newVal) -> onFocusedEjercicioContableSearch(oldVal, newVal));
 	}
 
 	public static ModuloContabilidadGeneralController loadView() throws IOException {
@@ -55,7 +204,7 @@ public class ModuloContabilidadGeneralController implements Initializable {
 		stage.setScene(new Scene(viewController.view));
 		stage.setTitle(TITLE);
 		stage.setAlwaysOnTop(false);
-//		stage.setResizable(false);
+		stage.setResizable(false);
 		stage.centerOnScreen();
 
 //		stage.initStyle(StageStyle.UTILITY);
@@ -74,14 +223,10 @@ public class ModuloContabilidadGeneralController implements Initializable {
 		try {
 
 			CuentaContablePaginArgs filter = new CuentaContablePaginArgs();
-			filter.setEjercicioContable("2002");
+			filter.setEjercicioContable(ejercicioContableId.get());
 
 			CuentaContableTable.show(new Stage(), view, filter);
-//			Object o = CuentaContableTable.showAndWait(new Stage(), view, filter);
-//			System.out.println("=================================================================");
-//			System.out.println("O : " + o);
-//			System.out.println("=================================================================");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
 
@@ -91,9 +236,9 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	void onOpenPuntoEquilibrioList(ActionEvent event) {
 		try {
 			PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
-			filter.setEjercicioContable("2002");
+			filter.setEjercicioContable(ejercicioContableId.get());
 			PuntoEquilibrioTable.show(new Stage(), view, filter);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
 	}
@@ -103,9 +248,9 @@ public class ModuloContabilidadGeneralController implements Initializable {
 
 		try {
 			CentroCostoContablePaginArgs filter = new CentroCostoContablePaginArgs();
-			filter.setEjercicioContable("2002");
+			filter.setEjercicioContable(ejercicioContableId.get());
 			CentroCostoContableTable.show(new Stage(), view, filter);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
 
@@ -115,7 +260,18 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	void onOpenEjercicioContableList(ActionEvent event) {
 		try {
 			EjercicioContableTable.show(new Stage(), view);
-		} catch (IOException e) {
+		} catch (Exception e) {
+			JavaFXUtil.buildAlertException(e);
+		}
+	}
+
+	@FXML
+	void onOpenAsientoModeloList(ActionEvent event) {
+		try {
+			AsientoModeloPaginArgs filter = new AsientoModeloPaginArgs();
+			filter.setEjercicioContable(ejercicioContableId.get());
+			AsientoModeloTable.show(new Stage(), view, filter);
+		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
 	}

@@ -11,42 +11,35 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.ejercicio_contable.EjercicioContableTable">
+<AnchorPane fx:id="view" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="770.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.asiento_modelo.AsientoModeloTable">
    <children>
-      <TableView fx:id="table" layoutX="7.0" layoutY="14.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="443.0" prefWidth="459.0">
+      <TableView fx:id="table" layoutX="12.0" layoutY="11.0" onKeyPressed="#onKeyPressedTable" onKeyTyped="#onKeyTypedTable" prefHeight="412.0" prefWidth="744.0">
         <columns>
-          <TableColumn fx:id="numero" prefWidth="100.0" sortable="false" text="Ejercicio" />
-          <TableColumn fx:id="apertura" prefWidth="87.0" sortable="false" text="Apertura" />
-            <TableColumn fx:id="cierre" minWidth="0.0" prefWidth="103.0" sortable="false" text="Cierre" />
-            <TableColumn prefWidth="319.0" text="Control de cierre">
-               <columns>
-                  <TableColumn fx:id="cerrado" prefWidth="73.0" sortable="false" text="Ejercicio" />
-                  <TableColumn fx:id="cerradoModulos" prefWidth="74.0" sortable="false" text="Módulos" />
-               </columns>
-            </TableColumn>
+          <TableColumn fx:id="numero" prefWidth="188.0" sortable="false" text="Asiento" />
+          <TableColumn fx:id="nombre" prefWidth="536.0" sortable="false" text="Denominación" />
         </columns>
          <tooltip>
             <Tooltip text="Buscar (CTRL+ENTER)" />
          </tooltip>
       </TableView>
-      <Button fx:id="agregar" layoutX="9.0" layoutY="491.0" onAction="#onAgregar" text="_Agregar">
+      <Button fx:id="agregar" layoutX="14.0" layoutY="456.0" onAction="#onAgregar" text="_Agregar">
          <tooltip>
             <Tooltip text="Agregar (ALT+A)" />
          </tooltip></Button>
-      <Button fx:id="cambiar" layoutX="74.0" layoutY="491.0" onAction="#onCambiar" text="_Cambiar">
+      <Button fx:id="cambiar" layoutX="79.0" layoutY="456.0" onAction="#onCambiar" text="_Cambiar">
          <tooltip>
             <Tooltip text="Cambiar (ALT+C)" />
          </tooltip></Button>
-      <Button fx:id="eliminar" layoutX="144.0" layoutY="491.0" onAction="#onEliminar" text="_Eliminar">
+      <Button fx:id="eliminar" layoutX="149.0" layoutY="456.0" onAction="#onEliminar" text="_Eliminar">
          <tooltip>
             <Tooltip text="Eliminar (ALT+E)" />
          </tooltip></Button>
-      <Button fx:id="seleccionar" layoutX="388.0" layoutY="491.0" onAction="#onSeleccionar" text="_Seleccionar">
+      <Button fx:id="seleccionar" layoutX="680.0" layoutY="456.0" onAction="#onSeleccionar" text="_Seleccionar">
          <tooltip>
             <Tooltip text="Seleccionar (ALT+S)" />
          </tooltip></Button>
-      <Label fx:id="totalItems" layoutX="18.0" layoutY="465.0" prefHeight="17.0" prefWidth="138.0" />
-      <HBox fx:id="pagination" layoutX="173.0" layoutY="464.0" spacing="3.0">
+      <Label fx:id="totalItems" layoutX="14.0" layoutY="431.0" prefHeight="17.0" prefWidth="241.0" />
+      <HBox fx:id="pagination" layoutX="331.0" layoutY="430.0" spacing="3.0">
          <children>
             <Button mnemonicParsing="false" onAction="#onActionFirst" text="&lt;&lt;">
                <font>
@@ -71,7 +64,7 @@
             </Button>
          </children>
       </HBox>
-      <ProgressIndicator fx:id="progress" layoutX="450.0" layoutY="463.0" prefHeight="19.0" prefWidth="19.0" visible="false" />
+      <ProgressIndicator fx:id="progress" layoutX="737.0" layoutY="430.0" prefHeight="19.0" prefWidth="19.0" visible="false" />
    </children>
    <opaqueInsets>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

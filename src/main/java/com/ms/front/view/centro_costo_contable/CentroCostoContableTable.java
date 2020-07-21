@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.ms.front.commons.services.Service;
 import com.ms.front.model.Pagin;
 import com.ms.front.model.PaginArgs;
-import com.ms.front.services.Service;
 import com.ms.front.view.JavaFXUtil;
 
 import javafx.beans.binding.Bindings;
@@ -31,7 +31,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -69,8 +68,8 @@ public class CentroCostoContableTable implements Initializable {
 	@FXML
 	private Button eliminar;
 
-	@FXML
-	private Button copiar;
+//	@FXML
+//	private Button copiar;
 
 	@FXML
 	private Button seleccionar;
@@ -442,13 +441,13 @@ public class CentroCostoContableTable implements Initializable {
 
 	public void initialize(URL url, ResourceBundle rb) {
 
-		agregar.setTooltip(new Tooltip("Agregar (ALT+A)"));
-		cambiar.setTooltip(new Tooltip("Cambiar (ALT+C)"));
-		eliminar.setTooltip(new Tooltip("Eliminar (ALT+E)"));
-		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
-		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
+//		agregar.setTooltip(new Tooltip("Agregar (ALT+A)"));
+//		cambiar.setTooltip(new Tooltip("Cambiar (ALT+C)"));
+//		eliminar.setTooltip(new Tooltip("Eliminar (ALT+E)"));
+//		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
+//		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
 //		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
-		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
+//		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
 
 		// --------------------------------------------------------------------------
 
@@ -462,7 +461,7 @@ public class CentroCostoContableTable implements Initializable {
 
 		cambiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 		eliminar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
-		copiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
+//		copiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 		seleccionar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 		pagination.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 

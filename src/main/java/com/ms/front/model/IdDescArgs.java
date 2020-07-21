@@ -76,7 +76,7 @@ public class IdDescArgs extends ServiceArgs implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "PaginArgs [getDb()=" + getDb() + ", getText()=" + getText() + "]";
+		return "IdDescArgs [getDb()=" + getDb() + ", getText()=" + getText() + "]";
 	}
 
 	@Override

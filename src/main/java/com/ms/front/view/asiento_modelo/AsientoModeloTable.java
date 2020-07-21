@@ -1,4 +1,4 @@
-package com.ms.front.view.ejercicio_contable;
+package com.ms.front.view.asiento_modelo;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +28,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
@@ -39,17 +38,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class EjercicioContableTable implements Initializable {
+public class AsientoModeloTable implements Initializable {
 
 	private static boolean MODE_SELECCIONAR = true;
 	private static boolean MODE_NORMAL = false;
 
-	private static final String TITLE = "Ejercicios contables";
+	private static final String TITLE = "Modelos de asientos";
 
 	private Stage stage;
 	private SimpleBooleanProperty modoSeleccionarProperty = new SimpleBooleanProperty();
 	private PaginArgs paginArgs = new PaginArgs();
-//	private Pagin pagin;
+	private AsientoModeloPaginArgs args;
+	private AsientoModeloPaginArgs argsOld;
+	private Pagin pagin;
 
 	// =============================================================================================
 
@@ -90,22 +91,13 @@ public class EjercicioContableTable implements Initializable {
 	private HBox pagination;
 
 	@FXML
-	private TableView<EjercicioContableTableItem> table;
+	private TableView<AsientoModeloTableItem> table;
 
 	@FXML
-	private TableColumn<EjercicioContableTableItem, String> numero;
+	private TableColumn<AsientoModeloTableItem, String> numero;
 
 	@FXML
-	private TableColumn<EjercicioContableTableItem, String> apertura;
-
-	@FXML
-	private TableColumn<EjercicioContableTableItem, String> cierre;
-
-	@FXML
-	private TableColumn<EjercicioContableTableItem, String> cerrado;
-
-	@FXML
-	private TableColumn<EjercicioContableTableItem, String> cerradoModulos;
+	private TableColumn<AsientoModeloTableItem, String> nombre;
 
 	// =============================================================================================
 
@@ -149,7 +141,6 @@ public class EjercicioContableTable implements Initializable {
 				onCambiar(null);
 			}
 		}
-
 	}
 
 	// =============================================================================================
@@ -242,22 +233,17 @@ public class EjercicioContableTable implements Initializable {
 		onBuscarNext();
 	}
 
-	@FXML
-	void onElegirEjercicio(ActionEvent event) {
-
-	}
-
 	// ================================================================================================
 
 	private void onBuscarStart() {
 
-//		if (argsOld != null && argsOld.equals(args)) {
-//			return;
-//		}
+		if (argsOld != null && argsOld.equals(args)) {
+			return;
+		}
 
 		onBuscarFirst();
 
-//		argsOld = args.clone();
+		argsOld = args.clone();
 	}
 
 	private void onBuscarNext() {
@@ -274,7 +260,6 @@ public class EjercicioContableTable implements Initializable {
 		paginArgs.setPageRequestFirst();
 		paginArgs.setLastIndexOld(0);
 		onBuscar("Buscando la primer página...");
-//		argsOld = args.clone();
 	}
 
 	private void onBuscarLast() {
@@ -294,12 +279,11 @@ public class EjercicioContableTable implements Initializable {
 			lastId = table.getSelectionModel().getSelectedItem().getId();
 		}
 
-		List<EjercicioContableTableItem> items = findAll();
+		List<AsientoModeloTableItem> items = findAll();
 
 		table.getItems().clear();
 		table.getItems().addAll(items);
 		if (table.getItems().size() > 0) {
-//			table.getSelectionModel().select(0);
 			table.getSelectionModel().selectFirst();
 			for (int i = 0; i < table.getItems().size(); i++) {
 				if (table.getItems().get(i).getId().equals(lastId)) {
@@ -317,18 +301,18 @@ public class EjercicioContableTable implements Initializable {
 
 	// ==========================================================================
 
-	private List<EjercicioContableTableItem> findAll() {
+	private List<AsientoModeloTableItem> findAll() {
 
 		totalItems.setText("");
 		totalPages.setText("");
 
-		List<EjercicioContableTableItem> items = new ArrayList<EjercicioContableTableItem>();
+		List<AsientoModeloTableItem> items = new ArrayList<AsientoModeloTableItem>();
 
 		try {
 
-			String urlString = "EjercicioContable/findAllPagin";
+			String urlString = "AsientoModelo/findAll";
 
-			Pagin pagin = Service.GETPagin(urlString, paginArgs);
+			pagin = Service.GETPagin(urlString, paginArgs, args);
 			paginArgs.setLastIndexOld(pagin.getLastIndex());
 
 			if (pagin.getThisPageItems() == null || pagin.getThisPageItems().length == 0) {
@@ -342,7 +326,7 @@ public class EjercicioContableTable implements Initializable {
 
 			for (int i = 0; i < t.length; i++) {
 
-				EjercicioContableTableItem item = new EjercicioContableTableItem();
+				AsientoModeloTableItem item = new AsientoModeloTableItem();
 
 				int j = 0;
 				if (t[i][j] != null) {
@@ -356,27 +340,7 @@ public class EjercicioContableTable implements Initializable {
 
 				j++;
 				if (t[i][j] != null) {
-					item.setApertura(t[i][j].toString());
-				}
-
-				j++;
-				if (t[i][j] != null) {
-					item.setCierre(t[i][j].toString());
-				}
-
-				j++;
-				if (t[i][j] != null) {
-					item.setCerrado(t[i][j].toString());
-				}
-
-				j++;
-				if (t[i][j] != null) {
-					item.setCerradoModulos(t[i][j].toString());
-				}
-
-				j++;
-				if (t[i][j] != null) {
-					item.setPrincipal(t[i][j].toString());
+					item.setNombre(t[i][j].toString());
 				}
 
 				items.add(item);
@@ -421,86 +385,19 @@ public class EjercicioContableTable implements Initializable {
 
 		// --------------------------------------------------------------------------
 
-		numero.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("numero"));
-		apertura.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("apertura"));
-		cierre.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("cierre"));
-		cerrado.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("cerrado"));
-		cerradoModulos
-				.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("cerradoModulos"));
+		numero.setCellValueFactory(new PropertyValueFactory<AsientoModeloTableItem, String>("numero"));
+		nombre.setCellValueFactory(new PropertyValueFactory<AsientoModeloTableItem, String>("nombre"));
 
 		// --------------------------------------------------------------------------
-
-		table.setRowFactory(tv -> new TableRow<EjercicioContableTableItem>() {
-
-			protected void updateItem(EjercicioContableTableItem item, boolean empty) {
-				super.updateItem(item, empty);
-
-				// https://stackoverflow.com/questions/30889732/javafx-tableview-change-row-color-based-on-column-value
-				// https://material-ui.com/customization/color/
-				if (item != null && item.getPrincipal() != null && item.getPrincipal().equals("Si")) {
-
-					if (this.isSelected()) {
-						setStyle("-fx-background-color: #009688; "); // teal 500
-					} else {
-						setStyle("-fx-background-color: #80cbc4; "); // teal 200
-					}
-
-//					setBackground(
-//							new Background(new BackgroundFill(Color.AQUA, new CornerRadii(5.0), Insets.EMPTY)));
-				} else {
-					setStyle("");
-				}
-
-			}
-		});
-
-//		table.setRowFactory(new Callback<ListView<String>, ListCell<String>>() {
-//			@Override
-//			public ListCell<String> call(ListView<String> param) {
-//
-//				ListCell<String> cell = new ListCell<String>() {
-//
-//					@Override
-//					protected void updateItem(EjercicioContableTableItem item, boolean empty) {
-//
-//						super.updateItem(item, empty);
-//
-//						setText(item);
-//						
-//						if (item != null && item.getPrincipal() != null && item.getPrincipal().equals("Si")) {
-//							setBackground(
-//									new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), Insets.EMPTY)));
-//						} else {
-//							setStyle("");
-//						}
-//
-//
-//						if ("high".equalsIgnoreCase(item)) {
-//							setBackground(
-//									new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), Insets.EMPTY)));
-//						} else if ("medium".equalsIgnoreCase(item)) {
-//							setBackground(new Background(
-//									new BackgroundFill(Color.YELLOW, new CornerRadii(5.0), Insets.EMPTY)));
-//						} else if ("low".equalsIgnoreCase(item)) {
-//							setBackground(new Background(
-//									new BackgroundFill(Color.GREEN, new CornerRadii(5.0), Insets.EMPTY)));
-//						}
-//					}
-//
-//				};
-//
-//				return cell;
-//
-//			}
-//		});
 
 	}
 
 	// ================================================================================================
 
-	private static EjercicioContableTable show(Stage stage, Node owner, boolean modoSeleccionar) throws IOException {
+	private static AsientoModeloTable show(Stage stage, Node owner, boolean modoSeleccionar,
+			AsientoModeloPaginArgs filter) throws IOException {
 
-		EjercicioContableTable viewController = loadView(modoSeleccionar);
+		AsientoModeloTable viewController = loadView(modoSeleccionar, filter);
 		viewController.stage = stage;
 
 		Scene scene = new Scene(viewController.view);
@@ -538,9 +435,10 @@ public class EjercicioContableTable implements Initializable {
 
 	}
 
-	public static EjercicioContableTableItem showAndWait(Stage stage, Node owner) throws IOException {
+	public static AsientoModeloTableItem showAndWait(Stage stage, Node owner, AsientoModeloPaginArgs filter)
+			throws IOException {
 
-		EjercicioContableTable viewController = show(stage, owner, MODE_SELECCIONAR);
+		AsientoModeloTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
 			return viewController.table.getSelectionModel().getSelectedItem();
@@ -549,22 +447,24 @@ public class EjercicioContableTable implements Initializable {
 		return null;
 	}
 
-	public static void show(Stage stage, Node owner) throws IOException {
-		show(stage, owner, MODE_NORMAL);
+	public static void show(Stage stage, Node owner, AsientoModeloPaginArgs filter) throws IOException {
+		show(stage, owner, MODE_NORMAL, filter);
 	}
 
-	private static EjercicioContableTable loadView(boolean modoSeleccionar) throws IOException {
+	private static AsientoModeloTable loadView(boolean modoSeleccionar, AsientoModeloPaginArgs filter)
+			throws IOException {
 
-//		if (filter.getEjercicioContable() == null) {
-//			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
-//		}
+		if (filter.getEjercicioContable() == null) {
+			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
+		}
 
-		FXMLLoader loader = new FXMLLoader(EjercicioContableTable.class.getResource("EjercicioContableTable.fxml"));
+		FXMLLoader loader = new FXMLLoader(AsientoModeloTable.class.getResource("AsientoModeloTable.fxml"));
 
 		loader.load();
 
-		EjercicioContableTable viewController = loader.getController();
+		AsientoModeloTable viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
+		viewController.args = filter;
 
 		viewController.onBuscarStart();
 

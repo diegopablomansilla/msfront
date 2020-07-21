@@ -52,7 +52,7 @@ public class Entity extends ObjectModel {
 
 	@Override
 	public String toString() {
-		return "CuentaContableTableItem [id=" + this.getId() + "]";
+		return "Entity [id=" + this.getId() + "]";
 	}
 
 }

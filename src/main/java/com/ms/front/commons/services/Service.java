@@ -1,4 +1,4 @@
-package com.ms.front.services;
+package com.ms.front.commons.services;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -29,6 +29,10 @@ import com.ms.front.view.JavaFXUtil;
 public class Service {
 
 	public static final String TYPE_RPC = "RPC";
+
+	public static IdDesc GETIdDesc(String urlString, IdDescArgs idDescArgs) throws IOException, URISyntaxException {
+		return GETIdDesc(urlString, idDescArgs, null);
+	}
 
 	public static IdDesc GETIdDesc(String urlString, IdDescArgs idDescArgs, ServiceArgs args)
 			throws IOException, URISyntaxException {
@@ -98,8 +102,9 @@ public class Service {
 
 		if (r.getStatus() == 500) {
 			JavaFXUtil.buildAlertService500();
+		} else if (r.getStatus() == 400) {
+			JavaFXUtil.buildAlertService400();
 		} else if (r.getStatus() == 204) {
-
 			return Pagin.fromJson(r.getPayload());
 		} else if (r.getStatus() == 200) {
 			return Pagin.fromJson(r.getPayload());
@@ -108,10 +113,10 @@ public class Service {
 		throw new IllegalStateException("Illegal state response, code " + r.getStatus());
 	}
 
-	private static ResponseJsonObject GET(String type, String urlString, Map<String, String> headers,
+	public static ResponseJsonObject GET(String type, String urlString, Map<String, String> headers,
 			Map<String, String> queryParams) throws IOException, URISyntaxException {
 
-		URI baseUri = new URI(EnvVars.getApiHome() + "/" + type + "/" + EnvVars.getApiVersion() + "/" + urlString);
+		URI baseUri = new URI(EnvVars.getApiHome() + "/" + EnvVars.getApiVersion() + "/" + type + "/" + urlString);
 
 		URI uri = applyParameters(baseUri, queryParams);
 
@@ -127,7 +132,7 @@ public class Service {
 		// ---------------------------------------------------
 		StringBuffer payload = new StringBuffer();
 
-		if (responseCode != HttpURLConnection.HTTP_INTERNAL_ERROR) {
+		if (responseCode == HttpURLConnection.HTTP_OK) {
 			InputStream in = new BufferedInputStream(conn.getInputStream());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
@@ -141,10 +146,9 @@ public class Service {
 		conn.disconnect();
 
 		return new ResponseJsonObject(responseCode, new String(payload.toString().getBytes(), "UTF-8"));
-
 	}
 
-	private static URI applyParameters(URI baseUri, Map<String, String> queryParams) {
+	public static URI applyParameters(URI baseUri, Map<String, String> queryParams) {
 
 		String[] urlParameters = new String[queryParams.size() * 2];
 
