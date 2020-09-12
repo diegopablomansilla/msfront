@@ -1,4 +1,4 @@
-package x.com.ms.front.model;
+package com.ms.front.model;
 
 import java.util.ArrayList;
 import java.util.List;

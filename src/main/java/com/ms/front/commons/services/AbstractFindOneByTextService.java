@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ms.front.EnvVars;
-
-import x.com.ms.front.model.IdDesc;
+import com.ms.front.model.IdDesc;
 
 public abstract class AbstractFindOneByTextService extends AbstractService {
 

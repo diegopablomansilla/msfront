@@ -1,4 +1,4 @@
-package com.ms.front.view.modulos;
+package com.ms.front.view;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,12 +6,9 @@ import java.util.ResourceBundle;
 
 import com.ms.front.Session;
 import com.ms.front.commons.views.JavaFXUtil;
+import com.ms.front.model.IdDesc;
+import com.ms.front.model.TableItem7;
 import com.ms.front.services.EjercicioContableFindOneByText;
-import com.ms.front.view.AsientoModeloTable;
-import com.ms.front.view.CentroCostoContableTable;
-import com.ms.front.view.CuentaContableTable;
-import com.ms.front.view.EjercicioContableTable;
-import com.ms.front.view.PuntoEquilibrioTable;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,8 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
-import x.com.ms.front.model.IdDesc;
-import x.com.ms.front.model.TableItem7;
 
 public class ModuloContabilidadGeneralController implements Initializable {
 

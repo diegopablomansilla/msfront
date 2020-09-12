@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import com.ms.front.Session;
 import com.ms.front.commons.views.Table;
 import com.ms.front.model.Pagin;
+import com.ms.front.model.TableItem4;
 import com.ms.front.services.CentroCostoContableFindAllPagin;
 
 import javafx.event.ActionEvent;
@@ -22,7 +23,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.TableItem4;
 
 public class CentroCostoContableTable extends Table<TableItem4> {
 

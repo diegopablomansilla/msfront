@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="view" prefHeight="583.0" prefWidth="1043.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.modulos.ModuloContabilidadGeneralController">
+<VBox fx:id="view" prefHeight="583.0" prefWidth="1043.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ms.front.view.ModuloContabilidadGeneralController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>

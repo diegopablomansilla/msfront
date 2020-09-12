@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ms.front.commons.services.AbstractFindOneByTextService;
-
-import x.com.ms.front.model.IdDesc;
+import com.ms.front.model.IdDesc;
 
 public class PuntoEquilibrioFindOneByText extends AbstractFindOneByTextService {
 

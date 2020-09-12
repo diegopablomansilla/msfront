@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import com.ms.front.Session;
 import com.ms.front.commons.views.Table;
 import com.ms.front.model.Pagin;
+import com.ms.front.model.TableItem7;
 import com.ms.front.services.EjercicioContableFindAllPagin;
 
 import javafx.event.ActionEvent;
@@ -19,7 +20,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.TableItem7;
 
 public class EjercicioContableTable extends Table<TableItem7> {
 

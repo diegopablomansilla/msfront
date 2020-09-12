@@ -1,8 +1,7 @@
 package com.ms.front.services;
 
 import com.ms.front.commons.services.AbstractFindOneByTextService;
-
-import x.com.ms.front.model.IdDesc;
+import com.ms.front.model.IdDesc;
 
 public class EjercicioContableFindOneByText extends AbstractFindOneByTextService {
 

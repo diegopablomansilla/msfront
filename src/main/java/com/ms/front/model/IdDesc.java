@@ -1,11 +1,11 @@
-package x.com.ms.front.model;
+package com.ms.front.model;
 
 import java.io.StringReader;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 
-public class IdDesc extends ObjectModel {
+public class IdDesc {
 
 	private String id;
 	private String desc;
@@ -24,17 +24,6 @@ public class IdDesc extends ObjectModel {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
-	}
-
-	public JsonObject toJson() {
-
-		JsonObjectWrapper j = new JsonObjectWrapper();
-
-		j.set("id", this.getId());
-
-		j.set("desc", this.getDesc());
-
-		return j.build();
 	}
 
 	public static IdDesc fromJson(String json) {

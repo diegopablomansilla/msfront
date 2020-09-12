@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.ms.front.model.Pagin;
+import com.ms.front.model.TableItem1;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -32,8 +33,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import x.com.ms.front.model.ServiceArgs;
-import x.com.ms.front.model.TableItem1;
 
 public abstract class Table<T> implements Initializable {
 
@@ -50,8 +49,8 @@ public abstract class Table<T> implements Initializable {
 	protected String pageRequest = PAGE_REQUEST_FIRST;
 	protected Integer lastIndexOld = 0;
 
-	protected ServiceArgs args;
-	protected ServiceArgs argsOld;
+//	protected ServiceArgs args;
+//	protected ServiceArgs argsOld;
 
 	// =============================================================================================
 

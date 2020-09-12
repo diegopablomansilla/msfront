@@ -9,7 +9,10 @@ import java.util.ResourceBundle;
 import com.ms.front.Session;
 import com.ms.front.commons.views.JavaFXUtil;
 import com.ms.front.commons.views.Table;
+import com.ms.front.model.IdDesc;
 import com.ms.front.model.Pagin;
+import com.ms.front.model.TableItem4;
+import com.ms.front.model.TableItem6;
 import com.ms.front.services.CentroCostoContableFindOneByText;
 import com.ms.front.services.CuentaContableFindAllPagin;
 import com.ms.front.services.PuntoEquilibrioFindOneByText;
@@ -33,10 +36,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.IdDesc;
-import x.com.ms.front.model.ServiceArgs;
-import x.com.ms.front.model.TableItem4;
-import x.com.ms.front.model.TableItem6;
 
 public class CuentaContableTable extends Table<TableItem6> {
 
@@ -442,7 +441,7 @@ public class CuentaContableTable extends Table<TableItem6> {
 		// --------------------------------------------------------------------------
 
 		operator.setItems(FXCollections.observableArrayList("(1) comienza con", "(2) contiene"));
-		operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + ServiceArgs.OP_SW_ICT_O_TXT));
+		operator.setTooltip(new Tooltip("Buscar (CTRL+#) - " + OP_SW_ICT_O_TXT));
 		operator.getSelectionModel().selectFirst();
 
 		operator.getSelectionModel().selectedIndexProperty()
