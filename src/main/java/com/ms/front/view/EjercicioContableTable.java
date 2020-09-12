@@ -12,7 +12,6 @@ import com.ms.front.model.Pagin;
 import com.ms.front.model.TableItem7;
 import com.ms.front.services.EjercicioContableFindAllPagin;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
@@ -39,13 +38,6 @@ public class EjercicioContableTable extends Table<TableItem7> {
 
 	@FXML
 	private TableColumn<TableItem7, String> att6;
-
-	// =============================================================================================
-
-	@FXML
-	protected void onElegirEjercicio(ActionEvent event) {
-
-	}
 
 	// ================================================================================================
 

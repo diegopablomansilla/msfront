@@ -1,4 +1,4 @@
-package com.ms;
+package com.ms.front;
 
 import com.ms.front.view.ModuloContabilidadGeneralController;
 

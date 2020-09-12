@@ -4,6 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
 
+// java -jar ms_front.jar --module-path D:\dev\jdk\openjfx-13.0.1_windows-x64_bin-sdk\javafx-sdk-13.0.1\lib --add-modules=javafx.controls
+
+
+// java --module-path %PATH_TO_FX% --add-modules javafx.controls HelloFX
+
+set PATH_TO_FX="D:\\dev\\jdk\\openjfx-13.0.1_windows-x64_bin-sdk\\javafx-sdk-13.0.1\\lib"
+
 public class EnvVars {
 
 	private static String apiHome;
