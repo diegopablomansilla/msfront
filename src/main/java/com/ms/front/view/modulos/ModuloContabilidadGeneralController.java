@@ -1,18 +1,17 @@
 package com.ms.front.view.modulos;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.ms.front.Session;
 import com.ms.front.commons.views.JavaFXUtil;
+import com.ms.front.services.EjercicioContableFindOneByText;
 import com.ms.front.view.AsientoModeloTable;
 import com.ms.front.view.CentroCostoContableTable;
+import com.ms.front.view.CuentaContableTable;
 import com.ms.front.view.EjercicioContableTable;
 import com.ms.front.view.PuntoEquilibrioTable;
-import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
-import com.ms.front.view.cuenta_contable.CuentaContablePaginArgs;
-import com.ms.front.view.cuenta_contable.CuentaContableTable;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -31,9 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
-import x.com.ms.front.commons.services.Service;
 import x.com.ms.front.model.IdDesc;
-import x.com.ms.front.model.IdDescArgs;
 import x.com.ms.front.model.TableItem7;
 
 public class ModuloContabilidadGeneralController implements Initializable {
@@ -121,7 +118,9 @@ public class ModuloContabilidadGeneralController implements Initializable {
 				return;
 			}
 
-			IdDesc idDesc = this.ejercicioContableFindOneByText(ejercicioContableSearch.getText());
+//			IdDesc idDesc = this.ejercicioContableFindOneByText(ejercicioContableSearch.getText());
+			EjercicioContableFindOneByText service = new EjercicioContableFindOneByText();
+			IdDesc idDesc = service.find(Session.DB, ejercicioContableSearch.getText());
 
 			if (idDesc != null && idDesc.getId() != null) {
 				textValueTmpEjercicioContable = idDesc.getDesc();
@@ -155,17 +154,6 @@ public class ModuloContabilidadGeneralController implements Initializable {
 //			args.setFiltro(null);
 		}
 //		this.onPorEjercicioContable(null); // buscar findAll
-
-	}
-
-	private IdDesc ejercicioContableFindOneByText(String text) throws IOException, URISyntaxException {
-
-		IdDescArgs idDescArgs = new IdDescArgs();
-		idDescArgs.setText(text);
-
-		String urlString = "EjercicioContable/findOneByText";
-
-		return Service.GETIdDesc(urlString, idDescArgs);
 
 	}
 
@@ -219,11 +207,7 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenCuentaContableList(ActionEvent event) {
 		try {
-
-			CuentaContablePaginArgs filter = new CuentaContablePaginArgs();
-			filter.setEjercicioContable(ejercicioContableId.get());
-
-			CuentaContableTable.show(new Stage(), view, filter);
+			CuentaContableTable.show(view, ejercicioContableId.get(), CuentaContableTable.POR_CUENTA_CONTABLE);
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
@@ -233,10 +217,6 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenPuntoEquilibrioList(ActionEvent event) {
 		try {
-
-//			ServiceArgs args = new ServiceArgs();
-//			args.put("ejercicio", ejercicioContableId.get());
-
 			PuntoEquilibrioTable.show(view, ejercicioContableId.get());
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
@@ -247,9 +227,8 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	void onOpenCentroDeCostoContableList(ActionEvent event) {
 
 		try {
-			CentroCostoContablePaginArgs filter = new CentroCostoContablePaginArgs();
-//			filter.setEjercicioContable(ejercicioContableId.get());
-			CentroCostoContableTable.show(view, ejercicioContableId.get(), "NOMBRE");
+			CentroCostoContableTable.show(view, ejercicioContableId.get(),
+					CentroCostoContableTable.POR_CENTRO_DE_COSTO);
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
@@ -268,12 +247,6 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenAsientoModeloList(ActionEvent event) {
 		try {
-//			AsientoModeloPaginArgs filter = new AsientoModeloPaginArgs();
-//			filter.setEjercicioContable(ejercicioContableId.get());
-			
-//			ServiceArgs args = new ServiceArgs();
-//			args.put("ejercicio", ejercicioContableId.get());
-			
 			AsientoModeloTable.show(view, ejercicioContableId.get());
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);

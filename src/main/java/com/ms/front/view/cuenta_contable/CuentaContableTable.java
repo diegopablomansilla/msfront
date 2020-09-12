@@ -9,10 +9,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.ms.front.commons.views.JavaFXUtil;
+import com.ms.front.view.CentroCostoContableTable;
 import com.ms.front.view.PuntoEquilibrioTable;
-import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
-import com.ms.front.view.centro_costo_contable.CentroCostoContableTable;
-import com.ms.front.view.centro_costo_contable.CentroCostoContableTableItem;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioIdDescArgs;
 
 import javafx.beans.binding.Bindings;
@@ -242,15 +240,13 @@ public class CuentaContableTable implements Initializable {
 		}
 	}
 
-	private void openCentroCostoTableItem() throws IOException {
-		CentroCostoContablePaginArgs filter = new CentroCostoContablePaginArgs();
-		filter.setEjercicioContable(args.getEjercicioContable());
-		CentroCostoContableTableItem item = CentroCostoContableTable.showAndWait(new Stage(), view, filter);
+	private void openCentroCostoTableItem() throws IOException {		
+		TableItem4 item = CentroCostoContableTable.showAndWait(view, args.getEjercicioContable(), CentroCostoContableTable.POR_CENTRO_DE_COSTO);
 		if (item != null) {
-			textValueTmpCentroCosto = item.getNumero() + " - " + item.getNombre();
+			textValueTmpCentroCosto = item.getAtt2() + " - " + item.getAtt3();
 			centroCostoSearch.setText(textValueTmpCentroCosto);
 			openCentroCostoTable.requestFocus();
-			args.setFiltro(item.getId());
+			args.setFiltro(item.getAtt1());
 		} else {
 			textValueTmpCentroCosto = "";
 			centroCostoSearch.setText(textValueTmpCentroCosto);

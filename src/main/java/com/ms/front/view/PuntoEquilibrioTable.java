@@ -18,7 +18,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.TableItem1;
 import x.com.ms.front.model.TableItem4;
 
 public class PuntoEquilibrioTable extends Table<TableItem4> {
@@ -106,7 +105,7 @@ public class PuntoEquilibrioTable extends Table<TableItem4> {
 	// SHOW
 	// **********************************************************************************************************
 
-	public static TableItem1 showAndWait(Node owner, String ejercicioContableId) throws IOException {
+	public static TableItem4 showAndWait(Node owner, String ejercicioContableId) throws IOException {
 
 		if (ejercicioContableId == null) {
 			throw new IllegalArgumentException("ejercicioContableId is null");
@@ -129,6 +128,7 @@ public class PuntoEquilibrioTable extends Table<TableItem4> {
 
 		// ---------------------------------------------------------------------------
 
+		viewController.ejercicioContableId = ejercicioContableId;
 		viewController.onBuscarStart();
 		viewController.table.requestFocus();
 
@@ -140,7 +140,7 @@ public class PuntoEquilibrioTable extends Table<TableItem4> {
 		// ---------------------------------------------------------------------------
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
-			return (TableItem1) viewController.table.getSelectionModel().getSelectedItem();
+			return viewController.table.getSelectionModel().getSelectedItem();
 		}
 
 		return null;

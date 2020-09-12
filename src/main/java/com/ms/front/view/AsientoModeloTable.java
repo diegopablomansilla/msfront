@@ -17,7 +17,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.TableItem1;
 import x.com.ms.front.model.TableItem3;
 
 public class AsientoModeloTable extends Table<TableItem3> {
@@ -79,7 +78,7 @@ public class AsientoModeloTable extends Table<TableItem3> {
 	// SHOW
 	// **********************************************************************************************************
 
-	public static TableItem1 showAndWait(Node owner, String ejercicioContableId) throws IOException {
+	public static TableItem3 showAndWait(Node owner, String ejercicioContableId) throws IOException {
 
 		if (ejercicioContableId == null) {
 			throw new IllegalArgumentException("ejercicioContableId is null");
@@ -111,7 +110,7 @@ public class AsientoModeloTable extends Table<TableItem3> {
 		// ---------------------------------------------------------------------------
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
-			return (TableItem1) viewController.table.getSelectionModel().getSelectedItem();
+			return viewController.table.getSelectionModel().getSelectedItem();
 		}
 
 		return null;

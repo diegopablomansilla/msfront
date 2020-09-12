@@ -19,7 +19,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.TableItem1;
 import x.com.ms.front.model.TableItem7;
 
 public class EjercicioContableTable extends Table<TableItem7> {
@@ -164,7 +163,7 @@ public class EjercicioContableTable extends Table<TableItem7> {
 	// SHOW
 	// **********************************************************************************************************
 
-	public static TableItem1 showAndWait(Stage stage, Node owner) throws IOException {
+	public static TableItem7 showAndWait(Stage stage, Node owner) throws IOException {
 
 		// ---------------------------------------------------------------------------
 
@@ -184,7 +183,7 @@ public class EjercicioContableTable extends Table<TableItem7> {
 		// ---------------------------------------------------------------------------
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
-			return (TableItem1) viewController.table.getSelectionModel().getSelectedItem();
+			return viewController.table.getSelectionModel().getSelectedItem();
 		}
 
 		return null;

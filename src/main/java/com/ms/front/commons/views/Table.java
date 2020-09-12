@@ -231,15 +231,15 @@ public abstract class Table<T> implements Initializable {
 
 	protected void onBuscarStart() {
 
-		if (args != null && argsOld != null && argsOld.equals(args)) {
-			return;
-		}
+//		if (args != null && argsOld != null && argsOld.equals(args)) {
+//			return;
+//		}
 
 		onBuscarFirst();
 
-		if (args != null) {
-			argsOld = args.clone();
-		}
+//		if (args != null) {
+//			argsOld = args.clone();
+//		}
 	}
 
 	protected void onBuscarNext() {

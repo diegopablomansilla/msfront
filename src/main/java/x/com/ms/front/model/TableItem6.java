@@ -11,6 +11,35 @@ public class TableItem6 extends TableItem5 {
 
 	// ---------------------------------------------------------------
 
+	public TableItem6() {
+
+	}
+
+	public TableItem6(Object[] r) {
+
+		int j = 0;
+
+		this.setAtt1(r[j]);
+
+		j++;
+		this.setAtt2(r[j]);
+
+		j++;
+		this.setAtt3(r[j]);
+
+		j++;
+		this.setAtt4(r[j]);
+
+		j++;
+		this.setAtt5(r[j]);
+
+		j++;
+		this.setAtt6(r[j]);
+
+	}
+
+	// ---------------------------------------------------------------
+
 	public SimpleStringProperty att6Property() {
 		return att6;
 	}

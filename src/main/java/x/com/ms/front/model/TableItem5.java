@@ -11,6 +11,32 @@ public class TableItem5 extends TableItem4 {
 
 	// ---------------------------------------------------------------
 
+	public TableItem5() {
+
+	}
+
+	public TableItem5(Object[] r) {
+
+		int j = 0;
+
+		this.setAtt1(r[j]);
+
+		j++;
+		this.setAtt2(r[j]);
+
+		j++;
+		this.setAtt3(r[j]);
+
+		j++;
+		this.setAtt4(r[j]);
+		
+		j++;
+		this.setAtt5(r[j]);
+
+	}
+
+	// ---------------------------------------------------------------
+
 	public SimpleStringProperty att5Property() {
 		return att5;
 	}
@@ -29,7 +55,7 @@ public class TableItem5 extends TableItem4 {
 	public void setAtt5(Object v) {
 		this.att5.set(this.emptyIsNull(v));
 	}
-	
+
 	// ---------------------------------------------------------------
 
 	public static List<TableItem5> toList5(Object[][] t) {

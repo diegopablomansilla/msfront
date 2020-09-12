@@ -22,13 +22,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import x.com.ms.front.model.TableItem1;
 import x.com.ms.front.model.TableItem4;
 
 public class CentroCostoContableTable extends Table<TableItem4> {
 
-	protected static final String POR_CENTRO_DE_COSTO = "CENTRO_DE_COSTO";
-	protected static final String POR_NOMBRE = "NOMBRE";
+	public static final String POR_CENTRO_DE_COSTO = "CENTRO_DE_COSTO";
+	public static final String POR_NOMBRE = "NOMBRE";
 
 	private String ejercicioContableId;
 	private String por;
@@ -170,7 +169,7 @@ public class CentroCostoContableTable extends Table<TableItem4> {
 	// SHOW
 	// **********************************************************************************************************
 
-	public static TableItem1 showAndWait(Node owner, String ejercicioContableId, String por) throws IOException {
+	public static TableItem4 showAndWait(Node owner, String ejercicioContableId, String por) throws IOException {
 
 		if (ejercicioContableId == null) {
 			throw new IllegalArgumentException("ejercicioContableId is null");
@@ -217,7 +216,7 @@ public class CentroCostoContableTable extends Table<TableItem4> {
 		// ---------------------------------------------------------------------------
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
-			return (TableItem1) viewController.table.getSelectionModel().getSelectedItem();
+			return viewController.table.getSelectionModel().getSelectedItem();
 		}
 
 		return null;
