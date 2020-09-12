@@ -4,7 +4,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
-import com.ms.front.services.EjercicioContableFinAllPagin;
 import com.ms.front.view.modulos.ModuloContabilidadGeneralController;
 
 import javafx.application.Application;

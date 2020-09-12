@@ -40,7 +40,7 @@ import x.com.ms.front.commons.services.Service;
 import x.com.ms.front.model.Pagin;
 import x.com.ms.front.model.PaginArgs;
 
-public class CentroCostoContableTable implements Initializable {
+public class CentroCostoContableTable2 implements Initializable {
 
 	private static boolean MODE_SELECCIONAR = true;
 	private static boolean MODE_NORMAL = false;
@@ -477,10 +477,10 @@ public class CentroCostoContableTable implements Initializable {
 
 	// ================================================================================================
 
-	private static CentroCostoContableTable show(Stage stage, Node owner, boolean modoSeleccionar,
+	private static CentroCostoContableTable2 show(Stage stage, Node owner, boolean modoSeleccionar,
 			CentroCostoContablePaginArgs filter) throws IOException {
 
-		CentroCostoContableTable viewController = loadView(modoSeleccionar, filter);
+		CentroCostoContableTable2 viewController = loadView(modoSeleccionar, filter);
 		viewController.stage = stage;
 
 		Scene scene = new Scene(viewController.view);
@@ -521,7 +521,7 @@ public class CentroCostoContableTable implements Initializable {
 	public static CentroCostoContableTableItem showAndWait(Stage stage, Node owner, CentroCostoContablePaginArgs filter)
 			throws IOException {
 
-		CentroCostoContableTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
+		CentroCostoContableTable2 viewController = show(stage, owner, MODE_SELECCIONAR, filter);
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
 			return viewController.table.getSelectionModel().getSelectedItem();
@@ -534,18 +534,18 @@ public class CentroCostoContableTable implements Initializable {
 		show(stage, owner, MODE_NORMAL, filter);
 	}
 
-	private static CentroCostoContableTable loadView(boolean modoSeleccionar, CentroCostoContablePaginArgs filter)
+	private static CentroCostoContableTable2 loadView(boolean modoSeleccionar, CentroCostoContablePaginArgs filter)
 			throws IOException {
 
 		if (filter.getEjercicioContable() == null) {
 			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
 		}
 
-		FXMLLoader loader = new FXMLLoader(CentroCostoContableTable.class.getResource("CentroCostoContableTable.fxml"));
+		FXMLLoader loader = new FXMLLoader(CentroCostoContableTable2.class.getResource("CentroCostoContableTable.fxml"));
 
 		loader.load();
 
-		CentroCostoContableTable viewController = loader.getController();
+		CentroCostoContableTable2 viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
 		viewController.args = filter;
 

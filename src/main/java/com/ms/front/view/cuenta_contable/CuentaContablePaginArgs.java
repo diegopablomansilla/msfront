@@ -3,9 +3,8 @@ package com.ms.front.view.cuenta_contable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ms.front.model.ServiceArgs;
-
 import javafx.beans.property.SimpleStringProperty;
+import x.com.ms.front.model.ServiceArgs;
 
 public class CuentaContablePaginArgs extends ServiceArgs implements Cloneable {
 

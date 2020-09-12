@@ -2,8 +2,6 @@ package com.ms.old.view.ejercicio_contable;
 
 import java.time.LocalDate;
 
-import com.ms.front.model.Entity;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -12,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import x.com.ms.front.model.Entity;
 
 public class EjercicioContable extends Entity implements Cloneable, Comparable<EjercicioContable> {
 

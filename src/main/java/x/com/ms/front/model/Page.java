@@ -1,12 +1,9 @@
-package com.ms.front.model;
+package x.com.ms.front.model;
 
 import java.io.StringReader;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-
-import com.ms.front.commons.json.JsonObjectWrapper;
-import com.ms.front.commons.model.ObjectModel;
 
 public class Page extends ObjectModel implements Cloneable {
 

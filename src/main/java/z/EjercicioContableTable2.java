@@ -1,4 +1,4 @@
-package com.ms.front.view.centro_costo_contable;
+package z;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,9 +25,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -40,19 +39,17 @@ import x.com.ms.front.commons.services.Service;
 import x.com.ms.front.model.Pagin;
 import x.com.ms.front.model.PaginArgs;
 
-public class CentroCostoContableTable implements Initializable {
+class EjercicioContableTable2 implements Initializable {
 
 	private static boolean MODE_SELECCIONAR = true;
 	private static boolean MODE_NORMAL = false;
 
-	private static final String TITLE = "Centros de costos";
+	private static final String TITLE = "Ejercicios contables";
 
 	private Stage stage;
 	private SimpleBooleanProperty modoSeleccionarProperty = new SimpleBooleanProperty();
 	private PaginArgs paginArgs = new PaginArgs();
-	private CentroCostoContablePaginArgs args;
-	private CentroCostoContablePaginArgs argsOld;
-	private Pagin pagin;
+//	private Pagin pagin;
 
 	// =============================================================================================
 
@@ -74,27 +71,6 @@ public class CentroCostoContableTable implements Initializable {
 	@FXML
 	private Button seleccionar;
 
-	@FXML
-	private ToggleGroup porToogleGroup;
-
-	@FXML
-	private ToggleButton porCentroDeCosto;
-
-	@FXML
-	private ToggleButton porNombre;
-
-	@FXML
-	private TableView<CentroCostoContableTableItem> table;
-
-	@FXML
-	private TableColumn<CentroCostoContableTableItem, String> numero;
-
-	@FXML
-	private TableColumn<CentroCostoContableTableItem, String> abreviatura;
-
-	@FXML
-	private TableColumn<CentroCostoContableTableItem, String> nombre;
-
 //	@FXML
 //	private Label status;
 
@@ -113,30 +89,25 @@ public class CentroCostoContableTable implements Initializable {
 	@FXML
 	private HBox pagination;
 
-	// =============================================================================================
+	@FXML
+	private TableView<EjercicioContableTableItem> table;
 
 	@FXML
-	private void onKeyReleased(KeyEvent event) {
+	private TableColumn<EjercicioContableTableItem, String> numero;
 
-		if (event.getCode().equals(KeyCode.TAB) && event.isControlDown() && event.isShiftDown()) {
-			if (porCentroDeCosto.isSelected()) {
-				porToogleGroup.selectToggle(porNombre);
-				onPorNombre(null);
-			} else if (porNombre.isSelected()) {
-				porToogleGroup.selectToggle(porCentroDeCosto);
-				onPorCentroDeCosto(null);
-			}
-		} else if (event.getCode().equals(KeyCode.TAB) && event.isControlDown()) {
+	@FXML
+	private TableColumn<EjercicioContableTableItem, String> apertura;
 
-			if (porCentroDeCosto.isSelected()) {
-				porToogleGroup.selectToggle(porNombre);
-				onPorNombre(null);
-			} else if (porNombre.isSelected()) {
-				porToogleGroup.selectToggle(porCentroDeCosto);
-				onPorCentroDeCosto(null);
-			}
-		}
-	}
+	@FXML
+	private TableColumn<EjercicioContableTableItem, String> cierre;
+
+	@FXML
+	private TableColumn<EjercicioContableTableItem, String> cerrado;
+
+	@FXML
+	private TableColumn<EjercicioContableTableItem, String> cerradoModulos;
+
+	// =============================================================================================
 
 	@FXML
 	private void onKeyPressedTable(KeyEvent event) {
@@ -177,17 +148,6 @@ public class CentroCostoContableTable implements Initializable {
 			} else if (cambiar.isDisable() == false) {
 				onCambiar(null);
 			}
-		}
-
-	}
-
-	@FXML
-	private void onKeyTypedFiltro(KeyEvent event) {
-
-		int key = (int) event.getCharacter().charAt(0);
-//		if (event.isControlDown() && key == 13) {
-		if (event.isControlDown() && key == 10) {
-			onBuscarStart();
 		}
 
 	}
@@ -283,28 +243,7 @@ public class CentroCostoContableTable implements Initializable {
 	}
 
 	@FXML
-	private void onPorCentroDeCosto(ActionEvent event) {
-
-		if (porCentroDeCosto.isSelected()) {
-			args.setPorCentroDeCosto();
-			onBuscarStart();
-		} else {
-			porToogleGroup.selectToggle(porNombre);
-			onPorNombre(null);
-		}
-
-	}
-
-	@FXML
-	private void onPorNombre(ActionEvent event) {
-
-		if (porNombre.isSelected()) {
-			args.setPorNombre();
-			onBuscarStart();
-		} else {
-			porToogleGroup.selectToggle(porCentroDeCosto);
-			onPorCentroDeCosto(null);
-		}
+	void onElegirEjercicio(ActionEvent event) {
 
 	}
 
@@ -312,13 +251,13 @@ public class CentroCostoContableTable implements Initializable {
 
 	private void onBuscarStart() {
 
-		if (argsOld != null && argsOld.equals(args)) {
-			return;
-		}
+//		if (argsOld != null && argsOld.equals(args)) {
+//			return;
+//		}
 
 		onBuscarFirst();
 
-		argsOld = args.clone();
+//		argsOld = args.clone();
 	}
 
 	private void onBuscarNext() {
@@ -355,7 +294,7 @@ public class CentroCostoContableTable implements Initializable {
 			lastId = table.getSelectionModel().getSelectedItem().getId();
 		}
 
-		List<CentroCostoContableTableItem> items = findAll();
+		List<EjercicioContableTableItem> items = findAll();
 
 		table.getItems().clear();
 		table.getItems().addAll(items);
@@ -378,18 +317,18 @@ public class CentroCostoContableTable implements Initializable {
 
 	// ==========================================================================
 
-	private List<CentroCostoContableTableItem> findAll() {
+	private List<EjercicioContableTableItem> findAll() {
 
 		totalItems.setText("");
 		totalPages.setText("");
 
-		List<CentroCostoContableTableItem> items = new ArrayList<CentroCostoContableTableItem>();
+		List<EjercicioContableTableItem> items = new ArrayList<EjercicioContableTableItem>();
 
 		try {
 
-			String urlString = "CentroCostoContable/findAll";
+			String urlString = "EjercicioContable/findAllPagin";
 
-			pagin = Service.GETPagin(urlString, paginArgs, args);
+			Pagin pagin = Service.GETPagin(urlString, paginArgs);
 			paginArgs.setLastIndexOld(pagin.getLastIndex());
 
 			if (pagin.getThisPageItems() == null || pagin.getThisPageItems().length == 0) {
@@ -403,7 +342,7 @@ public class CentroCostoContableTable implements Initializable {
 
 			for (int i = 0; i < t.length; i++) {
 
-				CentroCostoContableTableItem item = new CentroCostoContableTableItem();
+				EjercicioContableTableItem item = new EjercicioContableTableItem();
 
 				int j = 0;
 				if (t[i][j] != null) {
@@ -417,12 +356,27 @@ public class CentroCostoContableTable implements Initializable {
 
 				j++;
 				if (t[i][j] != null) {
-					item.setAbreviatura(t[i][j].toString());
+					item.setApertura(t[i][j].toString());
 				}
 
 				j++;
 				if (t[i][j] != null) {
-					item.setNombre(t[i][j].toString());
+					item.setCierre(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setCerrado(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setCerradoModulos(t[i][j].toString());
+				}
+
+				j++;
+				if (t[i][j] != null) {
+					item.setPrincipal(t[i][j].toString());
 				}
 
 				items.add(item);
@@ -467,20 +421,86 @@ public class CentroCostoContableTable implements Initializable {
 
 		// --------------------------------------------------------------------------
 
-		numero.setCellValueFactory(new PropertyValueFactory<CentroCostoContableTableItem, String>("numero"));
-		abreviatura.setCellValueFactory(new PropertyValueFactory<CentroCostoContableTableItem, String>("abreviatura"));
-		nombre.setCellValueFactory(new PropertyValueFactory<CentroCostoContableTableItem, String>("nombre"));
+		numero.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("numero"));
+		apertura.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("apertura"));
+		cierre.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("cierre"));
+		cerrado.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("cerrado"));
+		cerradoModulos
+				.setCellValueFactory(new PropertyValueFactory<EjercicioContableTableItem, String>("cerradoModulos"));
 
 		// --------------------------------------------------------------------------
+
+		table.setRowFactory(tv -> new TableRow<EjercicioContableTableItem>() {
+
+			protected void updateItem(EjercicioContableTableItem item, boolean empty) {
+				super.updateItem(item, empty);
+
+				// https://stackoverflow.com/questions/30889732/javafx-tableview-change-row-color-based-on-column-value
+				// https://material-ui.com/customization/color/
+				if (item != null && item.getPrincipal() != null && item.getPrincipal().equals("Si")) {
+
+					if (this.isSelected()) {
+						setStyle("-fx-background-color: #009688; "); // teal 500
+					} else {
+						setStyle("-fx-background-color: #80cbc4; "); // teal 200
+					}
+
+//					setBackground(
+//							new Background(new BackgroundFill(Color.AQUA, new CornerRadii(5.0), Insets.EMPTY)));
+				} else {
+					setStyle("");
+				}
+
+			}
+		});
+
+//		table.setRowFactory(new Callback<ListView<String>, ListCell<String>>() {
+//			@Override
+//			public ListCell<String> call(ListView<String> param) {
+//
+//				ListCell<String> cell = new ListCell<String>() {
+//
+//					@Override
+//					protected void updateItem(EjercicioContableTableItem item, boolean empty) {
+//
+//						super.updateItem(item, empty);
+//
+//						setText(item);
+//						
+//						if (item != null && item.getPrincipal() != null && item.getPrincipal().equals("Si")) {
+//							setBackground(
+//									new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), Insets.EMPTY)));
+//						} else {
+//							setStyle("");
+//						}
+//
+//
+//						if ("high".equalsIgnoreCase(item)) {
+//							setBackground(
+//									new Background(new BackgroundFill(Color.RED, new CornerRadii(5.0), Insets.EMPTY)));
+//						} else if ("medium".equalsIgnoreCase(item)) {
+//							setBackground(new Background(
+//									new BackgroundFill(Color.YELLOW, new CornerRadii(5.0), Insets.EMPTY)));
+//						} else if ("low".equalsIgnoreCase(item)) {
+//							setBackground(new Background(
+//									new BackgroundFill(Color.GREEN, new CornerRadii(5.0), Insets.EMPTY)));
+//						}
+//					}
+//
+//				};
+//
+//				return cell;
+//
+//			}
+//		});
 
 	}
 
 	// ================================================================================================
 
-	private static CentroCostoContableTable show(Stage stage, Node owner, boolean modoSeleccionar,
-			CentroCostoContablePaginArgs filter) throws IOException {
+	private static EjercicioContableTable2 show(Stage stage, Node owner, boolean modoSeleccionar) throws IOException {
 
-		CentroCostoContableTable viewController = loadView(modoSeleccionar, filter);
+		EjercicioContableTable2 viewController = loadView(modoSeleccionar);
 		viewController.stage = stage;
 
 		Scene scene = new Scene(viewController.view);
@@ -518,10 +538,9 @@ public class CentroCostoContableTable implements Initializable {
 
 	}
 
-	public static CentroCostoContableTableItem showAndWait(Stage stage, Node owner, CentroCostoContablePaginArgs filter)
-			throws IOException {
+	public static EjercicioContableTableItem showAndWait(Stage stage, Node owner) throws IOException {
 
-		CentroCostoContableTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
+		EjercicioContableTable2 viewController = show(stage, owner, MODE_SELECCIONAR);
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
 			return viewController.table.getSelectionModel().getSelectedItem();
@@ -530,26 +549,24 @@ public class CentroCostoContableTable implements Initializable {
 		return null;
 	}
 
-	public static void show(Stage stage, Node owner, CentroCostoContablePaginArgs filter) throws IOException {
-		show(stage, owner, MODE_NORMAL, filter);
+	public static void show(Stage stage, Node owner) throws IOException {
+		show(stage, owner, MODE_NORMAL);
 	}
 
-	private static CentroCostoContableTable loadView(boolean modoSeleccionar, CentroCostoContablePaginArgs filter)
-			throws IOException {
+	private static EjercicioContableTable2 loadView(boolean modoSeleccionar) throws IOException {
 
-		if (filter.getEjercicioContable() == null) {
-			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
-		}
+//		if (filter.getEjercicioContable() == null) {
+//			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
+//		}
 
-		FXMLLoader loader = new FXMLLoader(CentroCostoContableTable.class.getResource("CentroCostoContableTable.fxml"));
+		FXMLLoader loader = new FXMLLoader(EjercicioContableTable2.class.getResource("EjercicioContableTable.fxml"));
 
 		loader.load();
 
-		CentroCostoContableTable viewController = loader.getController();
+		EjercicioContableTable2 viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
-		viewController.args = filter;
 
-		viewController.onPorCentroDeCosto(null);
+		viewController.onBuscarStart();
 
 		return viewController;
 	}

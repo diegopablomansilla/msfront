@@ -1,32 +1,31 @@
-package com.ms.front.view.centro_costo_contable;
+package z;
 
 import javafx.beans.property.SimpleStringProperty;
 import x.com.ms.front.model.Entity;
 
-public class CentroCostoContableTableItem extends Entity {
+class PuntoEquilibrioTableItem extends Entity {
 
 	private final SimpleStringProperty numero = new SimpleStringProperty();
-	private final SimpleStringProperty abreviatura = new SimpleStringProperty();
 	private final SimpleStringProperty nombre = new SimpleStringProperty();
+	private final SimpleStringProperty tipoPuntoEquilibrio = new SimpleStringProperty();
 
 	// ---------------------------------------------------------------
 
-	public SimpleStringProperty codigoProperty() {
+	public SimpleStringProperty numeroProperty() {
 		return numero;
 	}
-
-	public SimpleStringProperty abreviaturaProperty() {
-		return abreviatura;
-	}
-
+	
 	public SimpleStringProperty nombreProperty() {
 		return nombre;
+	}
+
+	public SimpleStringProperty tipoPuntoEquilibrioProperty() {
+		return tipoPuntoEquilibrio;
 	}
 
 	// ---------------------------------------------------------------
 
 	public String getNumero() {
-		this.numero.set(this.emptyIsNull(numero.get()));
 		return numero.get();
 	}
 
@@ -35,7 +34,6 @@ public class CentroCostoContableTableItem extends Entity {
 	}
 
 	public String getNombre() {
-		this.nombre.set(this.emptyIsNull(nombre.get()));
 		return nombre.get();
 	}
 
@@ -43,13 +41,12 @@ public class CentroCostoContableTableItem extends Entity {
 		this.nombre.set(this.emptyIsNull(nombre));
 	}
 
-	public String getAbreviatura() {
-		this.abreviatura.set(this.emptyIsNull(abreviatura.get()));
-		return abreviatura.get();
+	public String getTipoPuntoEquilibrio() {
+		return tipoPuntoEquilibrio.get();
 	}
 
-	public void setAbreviatura(String abreviatura) {
-		this.abreviatura.set(this.emptyIsNull(abreviatura));
+	public void setTipoPuntoEquilibrio(String tipoPuntoEquilibrio) {
+		this.tipoPuntoEquilibrio.set(tipoPuntoEquilibrio);
 	}
 
 	// ---------------------------------------------------------------

@@ -5,20 +5,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.ms.front.commons.services.Service;
-import com.ms.front.model.IdDesc;
-import com.ms.front.model.IdDescArgs;
-import com.ms.front.view.JavaFXUtil;
-import com.ms.front.view.asiento_modelo.AsientoModeloPaginArgs;
-import com.ms.front.view.asiento_modelo.AsientoModeloTable;
+import com.ms.front.commons.views.JavaFXUtil;
+import com.ms.front.view.AsientoModeloTable;
+import com.ms.front.view.CentroCostoContableTable;
+import com.ms.front.view.EjercicioContableTable;
+import com.ms.front.view.PuntoEquilibrioTable;
 import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
-import com.ms.front.view.centro_costo_contable.CentroCostoContableTable;
 import com.ms.front.view.cuenta_contable.CuentaContablePaginArgs;
 import com.ms.front.view.cuenta_contable.CuentaContableTable;
-import com.ms.front.view.ejercicio_contable.EjercicioContableTable;
-import com.ms.front.view.ejercicio_contable.EjercicioContableTableItem;
-import com.ms.front.view.punto_equilibrio.PuntoEquilibrioPaginArgs;
-import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTable;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -37,6 +31,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
+import x.com.ms.front.commons.services.Service;
+import x.com.ms.front.model.IdDesc;
+import x.com.ms.front.model.IdDescArgs;
+import x.com.ms.front.model.TableItem7;
 
 public class ModuloContabilidadGeneralController implements Initializable {
 
@@ -143,12 +141,12 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	}
 
 	private void openEjercicioContableTableItem() throws IOException {
-		EjercicioContableTableItem item = EjercicioContableTable.showAndWait(new Stage(), view);
+		TableItem7 item = (TableItem7) EjercicioContableTable.showAndWait(new Stage(), view);
 		if (item != null) {
-			textValueTmpEjercicioContable = item.getNumero();
+			textValueTmpEjercicioContable = item.getAtt2();
 			ejercicioContableSearch.setText(textValueTmpEjercicioContable);
 			openEjercicioContableTable.requestFocus();
-			ejercicioContableId.set(item.getId());
+			ejercicioContableId.set(item.getAtt1());
 //			args.setFiltro(item.getId());
 		} else {
 			textValueTmpEjercicioContable = "";
@@ -235,9 +233,11 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenPuntoEquilibrioList(ActionEvent event) {
 		try {
-			PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
-			filter.setEjercicioContable(ejercicioContableId.get());
-			PuntoEquilibrioTable.show(new Stage(), view, filter);
+
+//			ServiceArgs args = new ServiceArgs();
+//			args.put("ejercicio", ejercicioContableId.get());
+
+			PuntoEquilibrioTable.show(view, ejercicioContableId.get());
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
@@ -248,8 +248,8 @@ public class ModuloContabilidadGeneralController implements Initializable {
 
 		try {
 			CentroCostoContablePaginArgs filter = new CentroCostoContablePaginArgs();
-			filter.setEjercicioContable(ejercicioContableId.get());
-			CentroCostoContableTable.show(new Stage(), view, filter);
+//			filter.setEjercicioContable(ejercicioContableId.get());
+			CentroCostoContableTable.show(view, ejercicioContableId.get(), "NOMBRE");
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}
@@ -268,9 +268,13 @@ public class ModuloContabilidadGeneralController implements Initializable {
 	@FXML
 	void onOpenAsientoModeloList(ActionEvent event) {
 		try {
-			AsientoModeloPaginArgs filter = new AsientoModeloPaginArgs();
-			filter.setEjercicioContable(ejercicioContableId.get());
-			AsientoModeloTable.show(new Stage(), view, filter);
+//			AsientoModeloPaginArgs filter = new AsientoModeloPaginArgs();
+//			filter.setEjercicioContable(ejercicioContableId.get());
+			
+//			ServiceArgs args = new ServiceArgs();
+//			args.put("ejercicio", ejercicioContableId.get());
+			
+			AsientoModeloTable.show(view, ejercicioContableId.get());
 		} catch (Exception e) {
 			JavaFXUtil.buildAlertException(e);
 		}

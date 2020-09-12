@@ -1,4 +1,4 @@
-package com.ms.front.view.centro_costo_contable;
+package z;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,8 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -40,18 +39,18 @@ import x.com.ms.front.commons.services.Service;
 import x.com.ms.front.model.Pagin;
 import x.com.ms.front.model.PaginArgs;
 
-public class CentroCostoContableTable implements Initializable {
+class PuntoEquilibrioTable implements Initializable {
 
 	private static boolean MODE_SELECCIONAR = true;
 	private static boolean MODE_NORMAL = false;
 
-	private static final String TITLE = "Centros de costos";
+	private static final String TITLE = "Puntos de equilibrios";
 
 	private Stage stage;
 	private SimpleBooleanProperty modoSeleccionarProperty = new SimpleBooleanProperty();
 	private PaginArgs paginArgs = new PaginArgs();
-	private CentroCostoContablePaginArgs args;
-	private CentroCostoContablePaginArgs argsOld;
+	private PuntoEquilibrioPaginArgs args;
+	private PuntoEquilibrioPaginArgs argsOld;
 	private Pagin pagin;
 
 	// =============================================================================================
@@ -68,32 +67,11 @@ public class CentroCostoContableTable implements Initializable {
 	@FXML
 	private Button eliminar;
 
-//	@FXML
-//	private Button copiar;
+	@FXML
+	private Button copiar;
 
 	@FXML
 	private Button seleccionar;
-
-	@FXML
-	private ToggleGroup porToogleGroup;
-
-	@FXML
-	private ToggleButton porCentroDeCosto;
-
-	@FXML
-	private ToggleButton porNombre;
-
-	@FXML
-	private TableView<CentroCostoContableTableItem> table;
-
-	@FXML
-	private TableColumn<CentroCostoContableTableItem, String> numero;
-
-	@FXML
-	private TableColumn<CentroCostoContableTableItem, String> abreviatura;
-
-	@FXML
-	private TableColumn<CentroCostoContableTableItem, String> nombre;
 
 //	@FXML
 //	private Label status;
@@ -113,30 +91,19 @@ public class CentroCostoContableTable implements Initializable {
 	@FXML
 	private HBox pagination;
 
-	// =============================================================================================
+	@FXML
+	private TableView<PuntoEquilibrioTableItem> table;
 
 	@FXML
-	private void onKeyReleased(KeyEvent event) {
+	private TableColumn<PuntoEquilibrioTableItem, String> numero;
 
-		if (event.getCode().equals(KeyCode.TAB) && event.isControlDown() && event.isShiftDown()) {
-			if (porCentroDeCosto.isSelected()) {
-				porToogleGroup.selectToggle(porNombre);
-				onPorNombre(null);
-			} else if (porNombre.isSelected()) {
-				porToogleGroup.selectToggle(porCentroDeCosto);
-				onPorCentroDeCosto(null);
-			}
-		} else if (event.getCode().equals(KeyCode.TAB) && event.isControlDown()) {
+	@FXML
+	private TableColumn<PuntoEquilibrioTableItem, String> nombre;
 
-			if (porCentroDeCosto.isSelected()) {
-				porToogleGroup.selectToggle(porNombre);
-				onPorNombre(null);
-			} else if (porNombre.isSelected()) {
-				porToogleGroup.selectToggle(porCentroDeCosto);
-				onPorCentroDeCosto(null);
-			}
-		}
-	}
+	@FXML
+	private TableColumn<PuntoEquilibrioTableItem, String> tipoPuntoEquilibrio;
+
+	// =============================================================================================
 
 	@FXML
 	private void onKeyPressedTable(KeyEvent event) {
@@ -178,18 +145,6 @@ public class CentroCostoContableTable implements Initializable {
 				onCambiar(null);
 			}
 		}
-
-	}
-
-	@FXML
-	private void onKeyTypedFiltro(KeyEvent event) {
-
-		int key = (int) event.getCharacter().charAt(0);
-//		if (event.isControlDown() && key == 13) {
-		if (event.isControlDown() && key == 10) {
-			onBuscarStart();
-		}
-
 	}
 
 	// =============================================================================================
@@ -282,32 +237,6 @@ public class CentroCostoContableTable implements Initializable {
 		onBuscarNext();
 	}
 
-	@FXML
-	private void onPorCentroDeCosto(ActionEvent event) {
-
-		if (porCentroDeCosto.isSelected()) {
-			args.setPorCentroDeCosto();
-			onBuscarStart();
-		} else {
-			porToogleGroup.selectToggle(porNombre);
-			onPorNombre(null);
-		}
-
-	}
-
-	@FXML
-	private void onPorNombre(ActionEvent event) {
-
-		if (porNombre.isSelected()) {
-			args.setPorNombre();
-			onBuscarStart();
-		} else {
-			porToogleGroup.selectToggle(porCentroDeCosto);
-			onPorCentroDeCosto(null);
-		}
-
-	}
-
 	// ================================================================================================
 
 	private void onBuscarStart() {
@@ -335,7 +264,6 @@ public class CentroCostoContableTable implements Initializable {
 		paginArgs.setPageRequestFirst();
 		paginArgs.setLastIndexOld(0);
 		onBuscar("Buscando la primer página...");
-//		argsOld = args.clone();
 	}
 
 	private void onBuscarLast() {
@@ -347,7 +275,7 @@ public class CentroCostoContableTable implements Initializable {
 	private void onBuscar(String msg) {
 
 //		status.setText(msg);
-
+		
 		progress.setVisible(true);
 
 		String lastId = null;
@@ -355,12 +283,11 @@ public class CentroCostoContableTable implements Initializable {
 			lastId = table.getSelectionModel().getSelectedItem().getId();
 		}
 
-		List<CentroCostoContableTableItem> items = findAll();
+		List<PuntoEquilibrioTableItem> items = findAll();
 
 		table.getItems().clear();
 		table.getItems().addAll(items);
 		if (table.getItems().size() > 0) {
-//			table.getSelectionModel().select(0);
 			table.getSelectionModel().selectFirst();
 			for (int i = 0; i < table.getItems().size(); i++) {
 				if (table.getItems().get(i).getId().equals(lastId)) {
@@ -370,7 +297,7 @@ public class CentroCostoContableTable implements Initializable {
 			}
 		}
 		table.requestFocus();
-
+		
 		progress.setVisible(false);
 
 //		status.setText("");
@@ -378,16 +305,16 @@ public class CentroCostoContableTable implements Initializable {
 
 	// ==========================================================================
 
-	private List<CentroCostoContableTableItem> findAll() {
+	private List<PuntoEquilibrioTableItem> findAll() {
 
 		totalItems.setText("");
 		totalPages.setText("");
 
-		List<CentroCostoContableTableItem> items = new ArrayList<CentroCostoContableTableItem>();
+		List<PuntoEquilibrioTableItem> items = new ArrayList<PuntoEquilibrioTableItem>();
 
 		try {
 
-			String urlString = "CentroCostoContable/findAll";
+			String urlString = "PuntoEquilibrio/findAll";
 
 			pagin = Service.GETPagin(urlString, paginArgs, args);
 			paginArgs.setLastIndexOld(pagin.getLastIndex());
@@ -403,7 +330,7 @@ public class CentroCostoContableTable implements Initializable {
 
 			for (int i = 0; i < t.length; i++) {
 
-				CentroCostoContableTableItem item = new CentroCostoContableTableItem();
+				PuntoEquilibrioTableItem item = new PuntoEquilibrioTableItem();
 
 				int j = 0;
 				if (t[i][j] != null) {
@@ -417,13 +344,22 @@ public class CentroCostoContableTable implements Initializable {
 
 				j++;
 				if (t[i][j] != null) {
-					item.setAbreviatura(t[i][j].toString());
-				}
-
-				j++;
-				if (t[i][j] != null) {
 					item.setNombre(t[i][j].toString());
 				}
+
+				String tipoPuntoEquilibrio = "";
+				j++; // id
+				j++; // numero
+				if (t[i][j] != null) {
+					tipoPuntoEquilibrio += t[i][j];
+				}
+
+				j++; // nombre
+				if (t[i][j] != null) {
+					tipoPuntoEquilibrio += tipoPuntoEquilibrio.trim().length() != 0 ? " - " + t[i][j] : t[i][j];
+				}
+
+				item.setTipoPuntoEquilibrio(tipoPuntoEquilibrio);
 
 				items.add(item);
 			}
@@ -447,7 +383,7 @@ public class CentroCostoContableTable implements Initializable {
 //		copiar.setTooltip(new Tooltip("Copiar (ALT+I)"));
 //		seleccionar.setTooltip(new Tooltip("Seleccionar (ALT+S)"));
 //		buscar.setTooltip(new Tooltip("Buscar (ALT+B)"));
-//		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
+		table.setTooltip(new Tooltip("Buscar (CTRL+ENTER)"));
 
 		// --------------------------------------------------------------------------
 
@@ -461,15 +397,16 @@ public class CentroCostoContableTable implements Initializable {
 
 		cambiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 		eliminar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
-//		copiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
+		copiar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 		seleccionar.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 		pagination.disableProperty().bind(Bindings.size(table.getItems()).isEqualTo(0));
 
 		// --------------------------------------------------------------------------
 
-		numero.setCellValueFactory(new PropertyValueFactory<CentroCostoContableTableItem, String>("numero"));
-		abreviatura.setCellValueFactory(new PropertyValueFactory<CentroCostoContableTableItem, String>("abreviatura"));
-		nombre.setCellValueFactory(new PropertyValueFactory<CentroCostoContableTableItem, String>("nombre"));
+		numero.setCellValueFactory(new PropertyValueFactory<PuntoEquilibrioTableItem, String>("numero"));
+		nombre.setCellValueFactory(new PropertyValueFactory<PuntoEquilibrioTableItem, String>("nombre"));
+		tipoPuntoEquilibrio
+				.setCellValueFactory(new PropertyValueFactory<PuntoEquilibrioTableItem, String>("tipoPuntoEquilibrio"));
 
 		// --------------------------------------------------------------------------
 
@@ -477,10 +414,10 @@ public class CentroCostoContableTable implements Initializable {
 
 	// ================================================================================================
 
-	private static CentroCostoContableTable show(Stage stage, Node owner, boolean modoSeleccionar,
-			CentroCostoContablePaginArgs filter) throws IOException {
+	private static PuntoEquilibrioTable show(Stage stage, Node owner, boolean modoSeleccionar,
+			PuntoEquilibrioPaginArgs filter) throws IOException {
 
-		CentroCostoContableTable viewController = loadView(modoSeleccionar, filter);
+		PuntoEquilibrioTable viewController = loadView(modoSeleccionar, filter);
 		viewController.stage = stage;
 
 		Scene scene = new Scene(viewController.view);
@@ -518,10 +455,10 @@ public class CentroCostoContableTable implements Initializable {
 
 	}
 
-	public static CentroCostoContableTableItem showAndWait(Stage stage, Node owner, CentroCostoContablePaginArgs filter)
+	public static PuntoEquilibrioTableItem showAndWait(Stage stage, Node owner, PuntoEquilibrioPaginArgs filter)
 			throws IOException {
 
-		CentroCostoContableTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
+		PuntoEquilibrioTable viewController = show(stage, owner, MODE_SELECCIONAR, filter);
 
 		if (viewController.table.getSelectionModel().getSelectedIndex() > -1) {
 			return viewController.table.getSelectionModel().getSelectedItem();
@@ -530,26 +467,26 @@ public class CentroCostoContableTable implements Initializable {
 		return null;
 	}
 
-	public static void show(Stage stage, Node owner, CentroCostoContablePaginArgs filter) throws IOException {
+	public static void show(Stage stage, Node owner, PuntoEquilibrioPaginArgs filter) throws IOException {
 		show(stage, owner, MODE_NORMAL, filter);
 	}
 
-	private static CentroCostoContableTable loadView(boolean modoSeleccionar, CentroCostoContablePaginArgs filter)
+	private static PuntoEquilibrioTable loadView(boolean modoSeleccionar, PuntoEquilibrioPaginArgs filter)
 			throws IOException {
 
 		if (filter.getEjercicioContable() == null) {
 			throw new IllegalArgumentException("filter.getEjercicioContable() is null");
 		}
 
-		FXMLLoader loader = new FXMLLoader(CentroCostoContableTable.class.getResource("CentroCostoContableTable.fxml"));
+		FXMLLoader loader = new FXMLLoader(PuntoEquilibrioTable.class.getResource("PuntoEquilibrioTable.fxml"));
 
 		loader.load();
 
-		CentroCostoContableTable viewController = loader.getController();
+		PuntoEquilibrioTable viewController = loader.getController();
 		viewController.modoSeleccionarProperty.set(modoSeleccionar);
 		viewController.args = filter;
 
-		viewController.onPorCentroDeCosto(null);
+		viewController.onBuscarStart();
 
 		return viewController;
 	}

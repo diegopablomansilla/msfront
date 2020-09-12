@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.ms.front.model.Entity;
-import com.ms.front.view.JavaFXUtil;
+import com.ms.front.commons.views.JavaFXUtil;
+import com.ms.front.view.PuntoEquilibrioTable;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import x.com.ms.front.model.Entity;
+import x.com.ms.front.model.TableItem4;
 
 public class PuntoEquilibrioBox implements Initializable {
 
@@ -76,11 +77,14 @@ public class PuntoEquilibrioBox implements Initializable {
 //			if (event.isControlDown() && key == 10) {
 			if (key == 13) {
 
-				PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
-				filter.setEjercicioContable("2002");
-				PuntoEquilibrioTableItem item = PuntoEquilibrioTable.showAndWait(new Stage(), view, filter);
+//				PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
+//				filter.setEjercicioContable("2002");
+//				ServiceArgs filter = new ServiceArgs();
+//				filter.put("ejercicio", "2002");
+				
+				TableItem4 item = (TableItem4) PuntoEquilibrioTable.showAndWait(view, "2002");
 				if (item != null) {
-					descriptionTXT.setText(item.getNumero() + " - " + item.getNombre());
+					descriptionTXT.setText(item.getAtt2() + " - " + item.getAtt3());
 					searchTXT.setText("");
 					
 //					descriptionTXT.setVisible(true);

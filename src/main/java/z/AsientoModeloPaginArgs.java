@@ -1,4 +1,4 @@
-package com.ms.front.view.punto_equilibrio;
+package z;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
 import x.com.ms.front.model.ServiceArgs;
 
-public class PuntoEquilibrioIdDescArgs extends ServiceArgs implements Cloneable {
+class AsientoModeloPaginArgs extends ServiceArgs implements Cloneable {
 
 	public final String KEY_EJERCICIO_CONTABLE = "ejercicio";
 
@@ -14,7 +14,7 @@ public class PuntoEquilibrioIdDescArgs extends ServiceArgs implements Cloneable 
 
 	// ---------------------------------------------------------------
 
-	public PuntoEquilibrioIdDescArgs() {
+	public AsientoModeloPaginArgs() {
 		super();
 	}
 
@@ -49,9 +49,9 @@ public class PuntoEquilibrioIdDescArgs extends ServiceArgs implements Cloneable 
 	}
 
 	@Override
-	public PuntoEquilibrioIdDescArgs clone() {
+	public AsientoModeloPaginArgs clone() {
 
-		PuntoEquilibrioIdDescArgs other = new PuntoEquilibrioIdDescArgs();
+		AsientoModeloPaginArgs other = new AsientoModeloPaginArgs();
 
 		other.setEjercicioContable(getEjercicioContable());
 
@@ -60,7 +60,7 @@ public class PuntoEquilibrioIdDescArgs extends ServiceArgs implements Cloneable 
 
 	@Override
 	public String toString() {
-		return "PuntoEquilibrioPaginArgs [getEjercicioContable()=" + getEjercicioContable() + "]";
+		return "AsientoModeloPaginArgs [getEjercicioContable()=" + getEjercicioContable() + "]";
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class PuntoEquilibrioIdDescArgs extends ServiceArgs implements Cloneable 
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PuntoEquilibrioIdDescArgs other = (PuntoEquilibrioIdDescArgs) obj;
+		AsientoModeloPaginArgs other = (AsientoModeloPaginArgs) obj;
 		if (getEjercicioContable() == null) {
 			if (other.getEjercicioContable() != null)
 				return false;

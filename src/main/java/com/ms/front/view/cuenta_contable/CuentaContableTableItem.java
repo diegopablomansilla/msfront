@@ -1,8 +1,7 @@
 package com.ms.front.view.cuenta_contable;
 
-import com.ms.front.model.Entity;
-
 import javafx.beans.property.SimpleStringProperty;
+import x.com.ms.front.model.Entity;
 
 public class CuentaContableTableItem extends Entity {
 

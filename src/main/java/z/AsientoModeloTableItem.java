@@ -1,22 +1,17 @@
-package com.ms.front.view.centro_costo_contable;
+package z;
 
 import javafx.beans.property.SimpleStringProperty;
 import x.com.ms.front.model.Entity;
 
-public class CentroCostoContableTableItem extends Entity {
+class AsientoModeloTableItem extends Entity {
 
 	private final SimpleStringProperty numero = new SimpleStringProperty();
-	private final SimpleStringProperty abreviatura = new SimpleStringProperty();
 	private final SimpleStringProperty nombre = new SimpleStringProperty();
 
 	// ---------------------------------------------------------------
 
-	public SimpleStringProperty codigoProperty() {
+	public SimpleStringProperty numeroProperty() {
 		return numero;
-	}
-
-	public SimpleStringProperty abreviaturaProperty() {
-		return abreviatura;
 	}
 
 	public SimpleStringProperty nombreProperty() {
@@ -26,7 +21,6 @@ public class CentroCostoContableTableItem extends Entity {
 	// ---------------------------------------------------------------
 
 	public String getNumero() {
-		this.numero.set(this.emptyIsNull(numero.get()));
 		return numero.get();
 	}
 
@@ -35,21 +29,11 @@ public class CentroCostoContableTableItem extends Entity {
 	}
 
 	public String getNombre() {
-		this.nombre.set(this.emptyIsNull(nombre.get()));
 		return nombre.get();
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre.set(this.emptyIsNull(nombre));
-	}
-
-	public String getAbreviatura() {
-		this.abreviatura.set(this.emptyIsNull(abreviatura.get()));
-		return abreviatura.get();
-	}
-
-	public void setAbreviatura(String abreviatura) {
-		this.abreviatura.set(this.emptyIsNull(abreviatura));
 	}
 
 	// ---------------------------------------------------------------

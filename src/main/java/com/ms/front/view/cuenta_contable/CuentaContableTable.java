@@ -8,20 +8,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.ms.front.commons.services.Service;
-import com.ms.front.model.IdDesc;
-import com.ms.front.model.IdDescArgs;
-import com.ms.front.model.Pagin;
-import com.ms.front.model.PaginArgs;
-import com.ms.front.model.ServiceArgs;
-import com.ms.front.view.JavaFXUtil;
+import com.ms.front.commons.views.JavaFXUtil;
+import com.ms.front.view.PuntoEquilibrioTable;
 import com.ms.front.view.centro_costo_contable.CentroCostoContablePaginArgs;
 import com.ms.front.view.centro_costo_contable.CentroCostoContableTable;
 import com.ms.front.view.centro_costo_contable.CentroCostoContableTableItem;
 import com.ms.front.view.punto_equilibrio.PuntoEquilibrioIdDescArgs;
-import com.ms.front.view.punto_equilibrio.PuntoEquilibrioPaginArgs;
-import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTable;
-import com.ms.front.view.punto_equilibrio.PuntoEquilibrioTableItem;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -55,6 +47,13 @@ import javafx.scene.text.FontPosture;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import x.com.ms.front.commons.services.Service;
+import x.com.ms.front.model.IdDesc;
+import x.com.ms.front.model.IdDescArgs;
+import x.com.ms.front.model.Pagin;
+import x.com.ms.front.model.PaginArgs;
+import x.com.ms.front.model.ServiceArgs;
+import x.com.ms.front.model.TableItem4;
 
 public class CuentaContableTable implements Initializable {
 
@@ -329,14 +328,19 @@ public class CuentaContableTable implements Initializable {
 	}
 
 	private void openPuntoEquilibrioTableItem() throws IOException {
-		PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
-		filter.setEjercicioContable(args.getEjercicioContable());
-		PuntoEquilibrioTableItem item = PuntoEquilibrioTable.showAndWait(new Stage(), view, filter);
+//		PuntoEquilibrioPaginArgs filter = new PuntoEquilibrioPaginArgs();
+//		filter.setEjercicioContable(args.getEjercicioContable());
+		
+//		ServiceArgs filter = new ServiceArgs();
+//		filter.put("ejercicio", args.getEjercicioContable());
+		
+		
+		TableItem4 item = (TableItem4) PuntoEquilibrioTable.showAndWait(view, args.getEjercicioContable());
 		if (item != null) {
-			textValueTmpPuntoEquilibrio = item.getNumero() + " - " + item.getNombre();
+			textValueTmpPuntoEquilibrio = item.getAtt2() + " - " + item.getAtt3();
 			puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
 			openPuntoEquilibrioTable.requestFocus();
-			args.setFiltro(item.getId());
+			args.setFiltro(item.getAtt1());
 		} else {
 			textValueTmpPuntoEquilibrio = "";
 			puntoEquilibrioSearch.setText(textValueTmpPuntoEquilibrio);
