@@ -34,18 +34,20 @@ public class EnvVars {
 	private static void loadApiHome() {
 		try {
 
-			String API_FILES = System.getenv().get("MS_API_FILES");
+//			String API_FILES = System.getenv().get("MS_API_FILES");
+//
+//			if (API_FILES == null || API_FILES.trim().length() == 0) {
+////				API_FILES = "C:/mssapi";
+//				API_FILES = "D:/dev/source/msapi/configuracion/msapi";
+//
+//				System.out.println(
+//						"[WARNING] No se encontro la variable de entorno MS_API_FILES. Se usa como valor por defecto "
+//								+ API_FILES);
+//			}
 
-			if (API_FILES == null || API_FILES.trim().length() == 0) {
-//				API_FILES = "C:/mssapi";
-				API_FILES = "D:/dev/source/msapi/configuracion/msapi";
-
-				System.out.println(
-						"[WARNING] No se encontro la variable de entorno MS_API_FILES. Se usa como valor por defecto "
-								+ API_FILES);
-			}
-
-			FileReader reader = new FileReader(API_FILES + File.separatorChar + "tareasapi.properties");
+			
+			String path = System.getProperties().get("user.dir").toString() + File.separatorChar + "msfront.properties";
+			FileReader reader = new FileReader(path);
 
 			Properties p = new Properties();
 			p.load(reader);
