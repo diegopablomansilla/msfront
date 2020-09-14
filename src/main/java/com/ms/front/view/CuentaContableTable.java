@@ -159,11 +159,6 @@ public class CuentaContableTable extends Table<TableItem6> {
 
 		CuentaContableFindAllPagin service = new CuentaContableFindAllPagin();
 
-		System.out.println(ejercicioContableId);
-		System.out.println(por);
-		System.out.println(operador);
-		System.out.println(filtroValue);
-
 		if (por.equals(POR_CUENTA_CONTABLE)) {
 			filtroValue = filtro.getText();
 		} else if (por.equals(POR_NOMBRE)) {
